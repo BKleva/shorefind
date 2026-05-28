@@ -200,6 +200,44 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .info-note{background:#e8f5fb;border-radius:10px;border:1px solid rgba(26,107,138,.25);padding:10px 14px;font-size:12px;color:#0D3D54;line-height:1.7;margin-bottom:1.25rem;display:flex;gap:8px;align-items:flex-start}
 .info-note i{font-size:14px;flex-shrink:0;margin-top:1px;color:#1A6B8A}
 .logo-sub{font-size:10px;font-weight:600;color:#4BB8B8;letter-spacing:.12em;text-transform:uppercase;font-family:'Sora',sans-serif;margin-left:7px;vertical-align:middle}
+.det-back{display:flex;align-items:center;gap:6px;font-size:12px;color:#666;cursor:pointer;margin-bottom:1.75rem;width:fit-content}
+.det-back:hover{color:#1A6B8A}
+.det-hero{background:#0D3D54;border-radius:20px;padding:3rem 2.5rem 3.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.det-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;border:1px solid rgba(75,184,184,.1)}
+.det-eye{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.det-eye::before{content:'';width:24px;height:1px;background:#4BB8B8;display:inline-block}
+.det-name{font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:#fff;line-height:1.05;margin-bottom:.75rem}
+.det-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#4BB8B8;margin-bottom:1.75rem;line-height:1.5}
+.det-badges{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:1.5rem}
+.det-badge{display:flex;align-items:center;gap:7px;font-size:12px;color:rgba(255,255,255,.7)}
+.det-badge i{font-size:14px;color:#4BB8B8}
+.det-visit{background:#4BB8B8;color:#0D3D54;border-radius:100px;padding:10px 22px;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.det-gallery{display:grid;gap:8px;margin-bottom:2rem;border-radius:16px;overflow:hidden;height:380px}
+.det-gallery.g1{grid-template-columns:1fr}
+.det-gallery.g2{grid-template-columns:3fr 2fr}
+.det-gallery.g3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
+.det-photo{background:#DDD8CE;overflow:hidden}
+.det-photo.main{grid-row:1/3}
+.det-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.det-photo-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:40px}
+.det-desc{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:1.75rem;margin-bottom:2rem;display:flex;gap:14px}
+.det-desc i{font-size:22px;color:#4BB8B8;flex-shrink:0;margin-top:4px}
+.det-desc p{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:#0F1923;line-height:1.7}
+.det-sec-lbl{font-family:'Playfair Display',serif;font-size:24px;color:#0F1923;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid #DDD8CE;display:block}
+.det-hl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:2.5rem}
+.det-hl{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.5rem}
+.det-hl-ico{width:44px;height:44px;border-radius:12px;background:#0D3D54;display:flex;align-items:center;justify-content:center;color:#4BB8B8;font-size:20px;margin-bottom:1rem}
+.det-hl-title{font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;margin-bottom:.5rem}
+.det-hl-text{font-size:12px;color:#555;line-height:1.8}
+.det-info-strip{background:#0D3D54;border-radius:16px;padding:1.75rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-top:2rem}
+.det-info-item{display:flex;flex-direction:column;gap:5px}
+.det-info-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600}
+.det-info-val{font-size:13px;color:#fff}
+.det-info-val a{color:#4BB8B8;text-decoration:none}
+.ped-sec{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.5rem;margin-bottom:1rem}
+.ped-sec-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:1rem;display:block}
+.hl-ed-block{border:1px solid #DDD8CE;border-radius:10px;padding:1rem;margin-bottom:.75rem;background:#FAF8F4}
+.pp-box{width:52px;height:52px;border-radius:8px;background:#F0EDE6;border:1px solid #DDD8CE;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:18px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -437,6 +475,41 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <div class="adm-empty" id="adm-empty">No listings yet.</div>
     </div>
   </div>
+
+  <!-- DETAIL -->
+  <div id="page-detail" class="page">
+    <div class="det-back" onclick="showPage('dir')"><i class="ti ti-arrow-left"></i> Back to directory</div>
+    <div id="det-content"></div>
+  </div>
+
+  <!-- PAGE EDITOR -->
+  <div id="page-editor" class="page">
+    <div style="max-width:680px;margin:0 auto">
+      <div class="su-back" onclick="showPage('admin')"><i class="ti ti-arrow-left"></i> Back to admin</div>
+      <div style="margin-bottom:1.75rem">
+        <h2 style="font-family:'Playfair Display',serif;font-size:26px;color:#0F1923;margin-bottom:4px" id="ped-bname">Edit Page</h2>
+        <p style="font-size:12px;color:#888">Customize how this Spotlight business appears on its detail page.</p>
+      </div>
+      <div class="ped-sec">
+        <span class="ped-sec-lbl">Tagline</span>
+        <div class="fg"><input class="finput" id="ped-tagline" type="text" placeholder="A short, vivid line that captures the business…"><span style="font-size:11px;color:#888;margin-top:4px;display:block">Shown beneath the business name on their page.</span></div>
+      </div>
+      <div class="ped-sec">
+        <span class="ped-sec-lbl">Photos <span style="font-weight:400;text-transform:none;letter-spacing:0">— paste up to 3 image URLs</span></span>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;margin-bottom:8px"><div class="pp-box" id="pp-0"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p0" type="url" placeholder="https://…" oninput="previewPhoto(0)"></div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;margin-bottom:8px"><div class="pp-box" id="pp-1"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p1" type="url" placeholder="https://…" oninput="previewPhoto(1)"></div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center"><div class="pp-box" id="pp-2"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p2" type="url" placeholder="https://…" oninput="previewPhoto(2)"></div>
+      </div>
+      <div class="ped-sec">
+        <span class="ped-sec-lbl">What people love <span style="font-weight:400;text-transform:none;letter-spacing:0">— up to 3 highlights</span></span>
+        <div id="ped-hls"></div>
+      </div>
+      <div class="form-actions" style="margin-top:1.5rem">
+        <span class="btn btn-pri" onclick="savePage()"><i class="ti ti-check"></i> Save page</span>
+        <span class="btn btn-sec" onclick="showPage('admin')">Cancel</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -575,7 +648,7 @@ function renderDir() {
   const ed = document.getElementById('dir-empty');
   if (!all.length) { sd.innerHTML=''; fd.innerHTML=''; ld.innerHTML=''; ed.style.display='block'; return; }
   ed.style.display = 'none';
-  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card"><div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2><p class="sc-desc">${e.desc||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div></div>${e.website?`<a href="${e.website}" class="sc-cta" style="text-decoration:none;color:#4BB8B8" target="_blank">Visit site</a>`:'<span class="sc-cta">View</span>'}</div>`).join('')}</div>` : '';
+  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2><p class="sc-desc">${e.desc||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div></div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
   fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card"><div class="fc-top"><div class="fc-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div><span class="fc-ribbon">Featured</span></div><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}</p><div class="fc-rating"><span class="stars">★★★★★</span>&nbsp;4.8</div>${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" style="color:#1A6B8A;font-size:11px;text-decoration:none" target="_blank">${e.website.replace('https://','')}</a></div>`:''}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div></div>`).join('')}</div>` : '';
   ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card"><div class="li-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div><div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p></div></div>`).join('')}</div>` : '';
 }
@@ -718,7 +791,7 @@ function renderAdmin() {
     const dc = e.status==='active' ? 'active' : e.status==='pending' ? 'pending' : 'hidden';
     const sl = e.status==='active' ? 'Active' : e.status==='pending' ? 'Pending' : 'Hidden';
     const tr = document.createElement('tr'); tr.id = 'row-' + e.id;
-    tr.innerHTML = `<td><strong style="font-size:12px;color:#0F1923">${e.bname}</strong><br><span style="color:#888;font-size:11px">${e.town}</span></td><td><span class="tp ${e.plan}">${cap(e.plan)}</span></td><td style="text-transform:capitalize;color:#333;font-size:11px">${e.cat}</td><td style="font-size:11px;color:#333">${e.county.replace(' County','')}</td><td style="font-size:12px;color:#0F1923"><span class="sdot ${dc}"></span>${sl}</td><td style="font-size:11px;color:#333">${e.fname} ${e.lname}</td><td style="white-space:nowrap">${e.status==='pending'?`<span class="act-btn approve" title="Approve" onclick="appEnt(${e.id})"><i class="ti ti-check"></i></span>`:''} ${e.status==='active'?`<span class="act-btn" title="Hide" onclick="togSt(${e.id},'hidden')"><i class="ti ti-eye-off"></i></span>`:''} ${e.status==='hidden'?`<span class="act-btn approve" title="Show" onclick="togSt(${e.id},'active')"><i class="ti ti-eye"></i></span>`:''} <span class="act-btn" title="Edit" onclick="togEdit(${e.id})"><i class="ti ti-edit"></i></span> <span class="act-btn del" title="Delete" onclick="delEnt(${e.id})"><i class="ti ti-trash"></i></span></td>`;
+    tr.innerHTML = `<td><strong style="font-size:12px;color:#0F1923">${e.bname}</strong><br><span style="color:#888;font-size:11px">${e.town}</span></td><td><span class="tp ${e.plan}">${cap(e.plan)}</span></td><td style="text-transform:capitalize;color:#333;font-size:11px">${e.cat}</td><td style="font-size:11px;color:#333">${e.county.replace(' County','')}</td><td style="font-size:12px;color:#0F1923"><span class="sdot ${dc}"></span>${sl}</td><td style="font-size:11px;color:#333">${e.fname} ${e.lname}</td><td style="white-space:nowrap">${e.status==='pending'?`<span class="act-btn approve" title="Approve" onclick="appEnt(${e.id})"><i class="ti ti-check"></i></span>`:''} ${e.status==='active'?`<span class="act-btn" title="Hide" onclick="togSt(${e.id},'hidden')"><i class="ti ti-eye-off"></i></span>`:''} ${e.status==='hidden'?`<span class="act-btn approve" title="Show" onclick="togSt(${e.id},'active')"><i class="ti ti-eye"></i></span>`:''} ${e.plan==='spotlight'?'<span class="act-btn" title="Edit page" onclick="editPage('+e.id+')"><i class="ti ti-layout"></i></span> ':''}<span class="act-btn" title="Edit" onclick="togEdit(${e.id})"><i class="ti ti-edit"></i></span> <span class="act-btn del" title="Delete" onclick="delEnt(${e.id})"><i class="ti ti-trash"></i></span></td>`;
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
@@ -733,6 +806,121 @@ function saveEd(id) { const e=db.find(x=>x.id===id); if(!e) return; e.bname=docu
 function appEnt(id) { const e=db.find(x=>x.id===id); if(e){ e.status='active'; saveDB(); renderAdmin(); } }
 function togSt(id,st) { const e=db.find(x=>x.id===id); if(e){ e.status=st; saveDB(); renderAdmin(); } }
 function delEnt(id) { db=db.filter(x=>x.id!==id); saveDB(); renderAdmin(); }
+
+// ============================================================
+// DETAIL PAGE
+// ============================================================
+let selDetailId = null;
+
+function showDetail(id) {
+  const e = db.find(x => x.id === id);
+  if (!e) return;
+  selDetailId = id;
+  const photos = (e.photos || []).filter(p => p);
+  const hl = (e.highlights || []).filter(h => h.title || h.text);
+  const img = url => `<div class="det-photo"><img src="${url}" alt="" onerror="this.style.opacity=0"></div>`;
+  let gallery = '';
+  if (!photos.length) {
+    gallery = `<div class="det-gallery g1"><div class="det-photo"><div class="det-photo-ph"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div></div></div>`;
+  } else if (photos.length === 1) {
+    gallery = `<div class="det-gallery g1">${img(photos[0])}</div>`;
+  } else if (photos.length === 2) {
+    gallery = `<div class="det-gallery g2">${img(photos[0])}${img(photos[1])}</div>`;
+  } else {
+    gallery = `<div class="det-gallery g3"><div class="det-photo main"><img src="${photos[0]}" alt=""></div>${img(photos[1])}${img(photos[2])}</div>`;
+  }
+  const infoItems = [
+    e.town    ? `<div class="det-info-item"><span class="det-info-lbl">Location</span><span class="det-info-val">${e.town}, ${e.county.replace(' County','')}</span></div>` : '',
+    e.hours   ? `<div class="det-info-item"><span class="det-info-lbl">Hours</span><span class="det-info-val">${e.hours}</span></div>` : '',
+    e.phone   ? `<div class="det-info-item"><span class="det-info-lbl">Phone</span><span class="det-info-val">${e.phone}</span></div>` : '',
+    e.website ? `<div class="det-info-item"><span class="det-info-lbl">Website</span><span class="det-info-val"><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></span></div>` : '',
+    e.email   ? `<div class="det-info-item"><span class="det-info-lbl">Email</span><span class="det-info-val"><a href="mailto:${e.email}">${e.email}</a></span></div>` : '',
+  ].filter(Boolean).join('');
+  document.getElementById('det-content').innerHTML = `
+    <div class="det-hero">
+      <p class="det-eye">Spotlight Business</p>
+      <h1 class="det-name">${e.bname}</h1>
+      ${e.tagline ? `<p class="det-tagline">${e.tagline}</p>` : ''}
+      <div class="det-badges">
+        <span class="det-badge"><i class="ti ti-map-pin"></i>${e.town}, ${e.county.replace(' County','')}</span>
+        ${e.hours ? `<span class="det-badge"><i class="ti ti-clock"></i>${e.hours}</span>` : ''}
+        <span class="det-badge"><i class="ti ${CATI[e.cat]||'ti-building'}"></i>${cap(e.cat)}</span>
+      </div>
+      ${e.website ? `<a href="${e.website}" class="det-visit" target="_blank"><i class="ti ti-external-link"></i> Visit website</a>` : ''}
+    </div>
+    ${gallery}
+    ${e.desc ? `<div class="det-desc"><i class="ti ti-quote"></i><p>${e.desc}</p></div>` : ''}
+    ${hl.length ? `<span class="det-sec-lbl">What people love</span><div class="det-hl-grid">${hl.map(h=>`<div class="det-hl"><div class="det-hl-ico"><i class="ti ${h.icon||'ti-star'}"></i></div><p class="det-hl-title">${h.title}</p><p class="det-hl-text">${h.text}</p></div>`).join('')}</div>` : ''}
+    ${infoItems ? `<div class="det-info-strip">${infoItems}</div>` : ''}
+  `;
+  showPage('detail');
+}
+
+// ============================================================
+// PAGE EDITOR
+// ============================================================
+let selPageId = null;
+const HL_ICONS = [
+  {v:'ti-star',l:'Star'},{v:'ti-heart',l:'Heart'},{v:'ti-thumb-up',l:'Thumbs up'},
+  {v:'ti-award',l:'Award'},{v:'ti-flame',l:'Fire'},{v:'ti-sparkles',l:'Sparkles'},
+  {v:'ti-clock',l:'Clock'},{v:'ti-tools-kitchen-2',l:'Food & Kitchen'},{v:'ti-leaf',l:'Nature'},
+  {v:'ti-users',l:'Community'},{v:'ti-shield-check',l:'Quality'},{v:'ti-map-pin',l:'Location'}
+];
+
+function editPage(id) {
+  const e = db.find(x => x.id === id);
+  if (!e) return;
+  selPageId = id;
+  document.getElementById('ped-bname').textContent = e.bname;
+  document.getElementById('ped-tagline').value = e.tagline || '';
+  const ph = e.photos || [];
+  [0,1,2].forEach(i => { document.getElementById('ped-p'+i).value = ph[i] || ''; previewPhoto(i); });
+  renderHlEditors(e.highlights && e.highlights.length ? e.highlights : [{icon:'ti-star',title:'',text:''}]);
+  showPage('editor');
+}
+
+function previewPhoto(i) {
+  const url = document.getElementById('ped-p'+i).value.trim();
+  const box = document.getElementById('pp-'+i);
+  box.innerHTML = url
+    ? `<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=ti></i>'">`
+    : `<i class="ti ti-photo"></i>`;
+}
+
+function getHlData() {
+  return Array.from(document.querySelectorAll('.hl-ed-block')).map((_,i) => ({
+    icon:  document.getElementById('hle-icon-'+i)?.value || 'ti-star',
+    title: document.getElementById('hle-title-'+i)?.value.trim() || '',
+    text:  document.getElementById('hle-text-'+i)?.value.trim() || ''
+  }));
+}
+
+function renderHlEditors(hls) {
+  document.getElementById('ped-hls').innerHTML =
+    hls.map((h,i) => `<div class="hl-ed-block" id="hlb-${i}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#888">Highlight ${i+1}</span>
+        ${hls.length > 1 ? `<span style="font-size:11px;color:#C03030;cursor:pointer" onclick="removeHl(${i})">Remove</span>` : ''}
+      </div>
+      <div style="display:grid;grid-template-columns:180px 1fr;gap:8px;margin-bottom:8px">
+        <div class="fg"><label class="flbl">Icon</label><select class="fsel" id="hle-icon-${i}">${HL_ICONS.map(ic=>`<option value="${ic.v}"${h.icon===ic.v?' selected':''}>${ic.l}</option>`).join('')}</select></div>
+        <div class="fg"><label class="flbl">Title</label><input class="finput" id="hle-title-${i}" value="${esc(h.title||'')}" placeholder="e.g. Best fish tacos at the shore"></div>
+      </div>
+      <div class="fg"><label class="flbl">Description</label><textarea class="fta" id="hle-text-${i}" placeholder="What makes this special? Keep it vivid and specific.">${esc(h.text||'')}</textarea></div>
+    </div>`).join('') +
+    (hls.length < 3 ? `<span class="btn btn-sec" style="font-size:11px;padding:7px 14px" onclick="addHl()"><i class="ti ti-plus"></i> Add highlight</span>` : '');
+}
+
+function addHl()     { const d = getHlData(); if (d.length < 3) { d.push({icon:'ti-star',title:'',text:''}); renderHlEditors(d); } }
+function removeHl(i) { const d = getHlData(); d.splice(i,1); renderHlEditors(d); }
+
+function savePage() {
+  const e = db.find(x => x.id === selPageId); if (!e) return;
+  e.tagline    = document.getElementById('ped-tagline').value.trim();
+  e.photos     = [0,1,2].map(i => document.getElementById('ped-p'+i).value.trim());
+  e.highlights = getHlData().filter(h => h.title || h.text);
+  saveDB(); showPage('admin');
+}
 
 // ============================================================
 // INIT
