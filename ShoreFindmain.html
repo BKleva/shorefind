@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shoreworks — South Jersey's Premier Local Directory</title>
+<title>Shoreworks Catalog — South Jersey's Premier Local Directory</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
@@ -199,12 +199,13 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .adm-empty{text-align:center;padding:2.5rem;color:#888;font-size:13px}
 .info-note{background:#e8f5fb;border-radius:10px;border:1px solid rgba(26,107,138,.25);padding:10px 14px;font-size:12px;color:#0D3D54;line-height:1.7;margin-bottom:1.25rem;display:flex;gap:8px;align-items:flex-start}
 .info-note i{font-size:14px;flex-shrink:0;margin-top:1px;color:#1A6B8A}
+.logo-sub{font-size:10px;font-weight:600;color:#4BB8B8;letter-spacing:.12em;text-transform:uppercase;font-family:'Sora',sans-serif;margin-left:7px;vertical-align:middle}
 </style>
 </head>
 <body>
 <div class="app">
   <nav class="nav">
-    <div class="logo" onclick="showPage('dir')">Shore<em>works</em></div>
+    <div class="logo" onclick="showPage('dir')">Shore<em>works</em><span class="logo-sub">Catalog</span></div>
     <div class="nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
       <span class="nb" id="nav-pricing" onclick="showPage('pricing')">Pricing</span>
@@ -413,6 +414,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <h2>Admin Dashboard</h2>
       <div style="display:flex;gap:6px">
         <span class="nb" onclick="showPage('dir')"><i class="ti ti-eye"></i> View directory</span>
+        <span class="nb" onclick="startSignup('featured', true)">+ Add comp</span>
         <span class="nb solid" onclick="startSignup('featured')">+ Add listing</span>
       </div>
     </div>
@@ -501,7 +503,7 @@ const SEED = [
 // ============================================================
 // APP STATE
 // ============================================================
-let annual = false, selPlan = 'featured', selCat = '';
+let annual = false, selPlan = 'featured', selCat = '', fromAdmin = false;
 let dirCounty = 'all', dirCat = 'all';
 let db = [];
 
@@ -595,8 +597,8 @@ function toggleBilling() {
 // ============================================================
 // SIGNUP FLOW
 // ============================================================
-function startSignup(plan) {
-  selPlan = plan; selCat = '';
+function startSignup(plan, isAdmin) {
+  selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
   ['su-bname','su-county','su-town','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
@@ -604,7 +606,11 @@ function startSignup(plan) {
   document.getElementById('su-descrow').style.display = (plan !== 'local') ? 'grid' : 'none';
   document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
   const price = annual ? PRICES[plan].a : PRICES[plan].m;
-  document.getElementById('su-planbar').innerHTML = `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price">$${price}/mo${annual?' · annual':''}</span></div>`;
+  document.getElementById('su-planbar').innerHTML = fromAdmin
+    ? `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price" style="color:#4BB8B8">Complimentary</span></div>`
+    : `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price">$${price}/mo${annual?' · annual':''}</span></div>`;
+  const back = document.querySelector('.su-back');
+  if (back) { back.onclick = () => showPage(fromAdmin ? 'admin' : 'pricing'); back.innerHTML = `<i class="ti ti-arrow-left"></i> Back to ${fromAdmin ? 'admin' : 'pricing'}`; }
   goSuStep(1);
   showPage('signup');
 }
@@ -648,7 +654,7 @@ function su2() {
   if (!ok) return;
   const price = annual ? PRICES[selPlan].a : PRICES[selPlan].m;
   document.getElementById('rv-plan').textContent    = PNAMES[selPlan];
-  document.getElementById('rv-price').textContent   = '$' + price + '/mo';
+  document.getElementById('rv-price').textContent   = fromAdmin ? 'Complimentary' : '$' + price + '/mo';
   document.getElementById('rv-bname').textContent   = document.getElementById('su-bname').value.trim();
   document.getElementById('rv-county').textContent  = document.getElementById('su-county').value;
   document.getElementById('rv-town').textContent    = document.getElementById('su-town').value.trim();
@@ -676,13 +682,14 @@ function submitSu() {
       website: document.getElementById('su-website').value.trim(),
       desc:    document.getElementById('su-desc').value.trim(),
       hours:   document.getElementById('su-hours').value.trim(),
-      billing: annual ? 'annual' : 'monthly',
-      price:   annual ? PRICES[selPlan].a : PRICES[selPlan].m,
-      status:  'pending',
+      billing: fromAdmin ? 'comp' : (annual ? 'annual' : 'monthly'),
+      price:   fromAdmin ? 0 : (annual ? PRICES[selPlan].a : PRICES[selPlan].m),
+      status:  fromAdmin ? 'active' : 'pending',
       submitted: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
     };
     db.push(entry); saveDB();
-    document.getElementById('suc-details').innerHTML = `<div class="sd-row"><span class="sdk">Business</span><span class="sdv">${entry.bname}</span></div><div class="sd-row"><span class="sdk">Plan</span><span class="sdv">${PNAMES[entry.plan]}</span></div><div class="sd-row"><span class="sdk">Status</span><span class="sdv" style="color:#8a6520">Pending review</span></div><div class="sd-row" style="border-bottom:none"><span class="sdk">Email</span><span class="sdv">${entry.email}</span></div>`;
+    const statusLabel = entry.status === 'active' ? `<span class="sdv" style="color:#1A7A4A">Active</span>` : `<span class="sdv" style="color:#8a6520">Pending review</span>`;
+    document.getElementById('suc-details').innerHTML = `<div class="sd-row"><span class="sdk">Business</span><span class="sdv">${entry.bname}</span></div><div class="sd-row"><span class="sdk">Plan</span><span class="sdv">${PNAMES[entry.plan]}</span></div><div class="sd-row"><span class="sdk">Status</span>${statusLabel}</div><div class="sd-row" style="border-bottom:none"><span class="sdk">Email</span><span class="sdv">${entry.email}</span></div>`;
     btn.innerHTML = '<i class="ti ti-check"></i> Submit listing';
     showPage('success');
   }, 800);
