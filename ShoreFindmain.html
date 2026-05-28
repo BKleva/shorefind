@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShoreFind — South Jersey's Premier Local Directory</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{color:#1a1a1a;background:#FAF8F4}
+body{font-family:'Sora',sans-serif;min-height:100vh;font-size:14px}
+.app{max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.page{display:none}.page.active{display:block}
+div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;margin-bottom:2rem;border-bottom:1px solid #DDD8CE;flex-wrap:wrap;gap:8px}
+.logo{font-family:'Playfair Display',serif;font-size:20px;color:#0D3D54;cursor:pointer;flex-shrink:0}
+.logo em{color:#4BB8B8;font-style:italic}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nb{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #DDD8CE;transition:all .15s;font-family:'Sora',sans-serif;display:inline-block;text-align:center;user-select:none;color:#333;background:#fff}
+.nb:hover,.nb.active{border-color:#1A6B8A;color:#0D3D54;background:#e8f5fb}
+.nb.solid{background:#0D3D54;color:#fff;border-color:#0D3D54}
+.nb.solid:hover{background:#0a2f40;color:#fff}
+
+.dir-hero{background:#0D3D54;border-radius:20px;padding:3rem 2.5rem 3.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.dir-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(75,184,184,.15)}
+.hero-tag{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:500;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.hero-tag::before{content:'';width:24px;height:1px;background:#4BB8B8;display:inline-block}
+.dir-hero h1{font-family:'Playfair Display',serif;font-size:44px;font-weight:400;color:#fff;line-height:1.1;margin-bottom:.8rem;max-width:480px}
+.dir-hero h1 em{font-style:italic;color:#4BB8B8}
+.dir-hero p{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:2rem;max-width:380px;line-height:1.8}
+.search-bar{display:flex;max-width:460px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:100px;overflow:hidden}
+.search-bar input{flex:1;background:transparent;border:none;padding:12px 20px;color:#fff;font-size:13px;font-family:'Sora',sans-serif;outline:none}
+.search-bar input::placeholder{color:rgba(255,255,255,.35)}
+.search-btn-el{background:#4BB8B8;border:none;padding:0 22px;color:#0D3D54;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif}
+
+.filters-row{display:flex;gap:.9rem;flex-direction:column;margin-bottom:2rem}
+.filter-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#555;font-weight:600;margin-bottom:6px;display:block}
+.filter-strip{display:flex;gap:6px;flex-wrap:wrap}
+.ftag{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:100px;font-size:12px;font-weight:500;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid #C8C4BB;background:#ffffff;color:#222222;line-height:1;user-select:none;transition:border-color .15s,background .15s,color .15s}
+.ftag .ficon{font-size:12px;color:#666;transition:color .15s}
+.ftag:hover{border-color:#1A6B8A;color:#0D3D54;background:#e8f5fb}
+.ftag:hover .ficon{color:#1A6B8A}
+.ftag.on{background:#d4ecf7;color:#0D3D54;border-color:#1A6B8A;font-weight:600}
+.ftag.on .ficon{color:#1A6B8A}
+
+.tier-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.tbadge{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:100px}
+.tb-spot{background:#0D3D54;color:#4BB8B8}
+.tb-feat{background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b}
+.tb-local{background:#F0EDE6;color:#3A4A56}
+.tier-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:#0F1923}
+.tier-count{font-size:11px;color:#7A8A96;margin-left:auto}
+
+.spot-grid{display:grid;gap:10px;margin-bottom:2.5rem}
+.spot-card{background:#0D3D54;border-radius:16px;padding:1.75rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;cursor:pointer;transition:transform .2s;position:relative;overflow:hidden}
+.spot-card:hover{transform:translateY(-3px);background:#0a2f40}
+.sc-eye{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#4BB8B8;margin-bottom:8px;font-weight:500}
+.sc-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;color:#fff;line-height:1.1;margin-bottom:8px}
+.sc-desc{font-size:12px;color:rgba(255,255,255,.65);line-height:1.8;max-width:380px}
+.sc-meta{display:flex;gap:14px;margin-top:1.1rem;flex-wrap:wrap}
+.sc-tag{font-size:11px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.sc-tag i{font-size:12px;color:#4BB8B8}
+.sc-cta{background:rgba(75,184,184,.12);border:1px solid rgba(75,184,184,.3);border-radius:100px;padding:9px 18px;color:#4BB8B8;font-size:11px;font-weight:500;white-space:nowrap;align-self:center;cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-block}
+
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-bottom:2.5rem}
+.feat-card{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.25rem;cursor:pointer;transition:all .18s}
+.feat-card:hover{border-color:#1A6B8A;transform:translateY(-2px)}
+.fc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.fc-icon{width:40px;height:40px;border-radius:10px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:17px}
+.fc-ribbon{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8a6520;background:#FBF3E2;border:1px solid #d4a84b;padding:3px 8px;border-radius:100px;font-weight:600}
+.fc-name{font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;line-height:1.2;margin-bottom:3px}
+.fc-cat{font-size:11px;color:#7A8A96;margin-bottom:8px}
+.fc-rating{display:flex;align-items:center;gap:5px;font-size:12px;color:#333}
+.stars{color:#d4a84b;font-size:11px}
+.fc-foot{font-size:11px;color:#7A8A96;display:flex;align-items:center;gap:4px;margin-top:10px;padding-top:10px;border-top:1px solid #F0EDE6}
+
+.local-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:2.5rem}
+.local-card{background:#fff;border-radius:10px;border:1px solid #DDD8CE;padding:1rem;cursor:pointer;transition:border-color .15s;display:flex;gap:10px;align-items:flex-start}
+.local-card:hover{border-color:#4BB8B8}
+.li-icon{width:34px;height:34px;border-radius:8px;background:#F0EDE6;display:flex;align-items:center;justify-content:center;color:#3A4A56;font-size:15px;flex-shrink:0}
+.li-name{font-size:13px;font-weight:500;color:#0F1923;line-height:1.3}
+.li-cat{font-size:11px;color:#7A8A96;margin-top:2px}
+.empty-state{text-align:center;padding:3rem;color:#7A8A96;font-size:13px;background:#fff;border-radius:14px;border:1px solid #DDD8CE;margin-bottom:2rem}
+
+.pricing-hero{text-align:center;padding:2.5rem 0 2rem}
+.ph-eye{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:500;margin-bottom:.9rem;display:flex;align-items:center;justify-content:center;gap:8px}
+.ph-eye::before,.ph-eye::after{content:'';width:20px;height:1px;background:#4BB8B8;display:inline-block}
+.pricing-hero h1{font-family:'Playfair Display',serif;font-size:40px;color:#0F1923;line-height:1.1;margin-bottom:.75rem}
+.pricing-hero h1 em{font-style:italic;color:#1A6B8A}
+.pricing-hero p{font-size:13px;color:#666;max-width:360px;margin:0 auto;line-height:1.8}
+.billing-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:1.5rem 0 2.5rem;color:#333}
+.billing-row span{font-size:13px;color:#333}
+.tog{width:40px;height:22px;border-radius:11px;background:#DDD8CE;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;border:none}
+.tog.on{background:#0D3D54}
+.tog-thumb{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform .2s}
+.tog.on .tog-thumb{transform:translateX(18px)}
+.save-pill{font-size:10px;font-weight:600;background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b;padding:3px 10px;border-radius:100px;opacity:0;transition:opacity .2s}
+.save-pill.show{opacity:1}
+.plans-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:2.5rem}
+.plan-card{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:1.75rem;display:flex;flex-direction:column;transition:all .18s;position:relative;overflow:hidden}
+.plan-card:hover{border-color:#1A6B8A;transform:translateY(-2px)}
+.plan-card.pop{border:1.5px solid #1A6B8A;background:#e8f5fb}
+.pop-banner{background:#0D3D54;color:#4BB8B8;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;text-align:center;padding:6px;margin:-1.75rem -1.75rem 1.5rem;border-radius:14px 14px 0 0}
+.ptb{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:3px 10px;border-radius:100px;margin-bottom:10px}
+.pname{font-family:'Playfair Display',serif;font-size:22px;color:#0F1923;margin-bottom:4px}
+.pdesc{font-size:12px;color:#666;line-height:1.7;margin-bottom:1.25rem}
+.pprice{margin-bottom:1.25rem;display:flex;align-items:baseline;gap:3px}
+.pamount{font-family:'Playfair Display',serif;font-size:42px;color:#0F1923;line-height:1}
+.pper{font-size:12px;color:#666}
+.pfeats{list-style:none;margin-bottom:1.5rem;flex:1}
+.pfeats li{font-size:12px;color:#333;padding:6px 0;border-bottom:1px solid #F0EDE6;display:flex;align-items:center;gap:8px;line-height:1.4}
+.pfeats li:last-child{border-bottom:none}
+.pfeats li i{font-size:13px;color:#4BB8B8;flex-shrink:0}
+.pfeats li.no i{color:#DDD8CE}
+.pfeats li.no{color:#999}
+.pcta{width:100%;padding:11px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;letter-spacing:.04em;font-family:'Sora',sans-serif;transition:all .15s;border:1.5px solid;display:block;text-align:center;user-select:none}
+.pcta.pri{background:#0D3D54;color:#fff;border-color:#0D3D54}
+.pcta.pri:hover{background:#0a2f40}
+.pcta.sec{background:transparent;color:#0D3D54;border-color:#DDD8CE}
+.pcta.sec:hover{border-color:#1A6B8A;background:#e8f5fb}
+
+.su-wrap{max-width:540px;margin:0 auto}
+.su-back{display:flex;align-items:center;gap:6px;font-size:12px;color:#666;cursor:pointer;margin-bottom:1.75rem;width:fit-content}
+.su-back:hover{color:#1A6B8A}
+.prog-bar{display:flex;gap:4px;margin-bottom:.5rem}
+.prog-s{flex:1;height:2px;border-radius:2px;background:#DDD8CE;transition:background .3s}
+.prog-s.done{background:#0D3D54}.prog-s.cur{background:#4BB8B8}
+.prog-lbls{display:flex;justify-content:space-between;margin-bottom:2rem}
+.plbl{font-size:10px;color:#888;letter-spacing:.06em;text-transform:uppercase}
+.plbl.cur{color:#0D3D54;font-weight:600}
+.step{display:none}.step.active{display:block}
+.stitle{font-family:'Playfair Display',serif;font-size:28px;color:#0F1923;margin-bottom:4px}
+.ssub{font-size:13px;color:#666;margin-bottom:2rem;line-height:1.8}
+.plan-bar-su{background:#0D3D54;border-radius:12px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem}
+.pb-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff}
+.pb-price{font-size:12px;color:#4BB8B8;font-weight:500}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.frow.full{grid-template-columns:1fr}
+.fg{display:flex;flex-direction:column;gap:5px}
+.flbl{font-size:11px;font-weight:600;color:#333;letter-spacing:.04em;text-transform:uppercase}
+.finput,.fsel,.fta{padding:10px 12px;border-radius:6px;border:1px solid #DDD8CE;background:#fff;font-size:13px;color:#0F1923;font-family:'Sora',sans-serif;outline:none;transition:border-color .15s;width:100%}
+.finput:focus,.fsel:focus,.fta:focus{border-color:#1A6B8A}
+.fta{resize:vertical;min-height:76px}
+.fsel{cursor:pointer}
+.errmsg{font-size:11px;color:#C03030;margin-top:1px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:7px;margin-bottom:1.25rem}
+.cat-opt{border:1px solid #DDD8CE;border-radius:6px;padding:9px 10px;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:12px;color:#222;background:#fff;transition:all .15s;font-family:'Sora',sans-serif;user-select:none}
+.cat-opt i{font-size:14px;color:#555}
+.cat-opt:hover{border-color:#1A6B8A;color:#0D3D54}
+.cat-opt:hover i{color:#1A6B8A}
+.cat-opt.sel{border-color:#1A6B8A;background:#e8f5fb;color:#0D3D54}
+.cat-opt.sel i{color:#1A6B8A}
+.rev-sec{background:#fff;border-radius:10px;border:1px solid #DDD8CE;padding:1.1rem;margin-bottom:.9rem}
+.rev-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#888;font-weight:600;margin-bottom:.6rem}
+.sd-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #F0EDE6}
+.sd-row:last-child{border-bottom:none}
+.sdk{color:#888}.sdv{color:#0F1923;font-weight:500}
+.form-actions{display:flex;gap:8px;margin-top:1.75rem}
+.btn{padding:11px 22px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;border:1.5px solid;letter-spacing:.04em;display:inline-block;user-select:none}
+.btn-pri{background:#0D3D54;color:#fff;border-color:#0D3D54}
+.btn-pri:hover{background:#0a2f40;color:#fff}
+.btn-sec{background:#fff;color:#333;border-color:#DDD8CE}
+.btn-sec:hover{border-color:#1A6B8A;color:#0D3D54}
+.suc-wrap{text-align:center;padding:3rem 1rem;max-width:440px;margin:0 auto}
+.suc-ico{width:60px;height:60px;border-radius:50%;background:#E4F5ED;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:24px;color:#1A7A4A}
+.suc-wrap h2{font-family:'Playfair Display',serif;font-size:30px;color:#0F1923;margin-bottom:.5rem}
+.suc-wrap p{font-size:13px;color:#666;line-height:1.8;margin-bottom:1.75rem}
+.adm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
+.adm-hdr h2{font-family:'Playfair Display',serif;font-size:26px;color:#0F1923}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.5rem}
+.sc{background:#fff;border-radius:10px;border:1px solid #DDD8CE;padding:.9rem}
+.sc-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.1em;font-weight:500;margin-bottom:4px}
+.sc-num{font-size:24px;color:#0F1923;font-family:'Playfair Display',serif}
+.sc-num.o{color:#1A6B8A}
+.tbl-wrap{background:#fff;border-radius:14px;border:1px solid #DDD8CE;overflow:hidden}
+.adm-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+.adm-tbl th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#888;font-weight:600;padding:10px 12px;text-align:left;border-bottom:1px solid #DDD8CE;background:#FAF8F4}
+.adm-tbl td{font-size:12px;padding:10px 12px;border-bottom:1px solid #F0EDE6;color:#0F1923;vertical-align:middle}
+.adm-tbl tr:last-child td{border-bottom:none}
+.adm-tbl tbody tr:hover td{background:#FAF8F4}
+.tp{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:3px 8px;border-radius:100px;display:inline-block}
+.tp.spotlight{background:#0D3D54;color:#4BB8B8}
+.tp.featured{background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b}
+.tp.local{background:#F0EDE6;color:#3A4A56}
+.sdot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle}
+.sdot.active{background:#1A7A4A}.sdot.pending{background:#d4a84b}.sdot.hidden{background:#DDD8CE}
+.act-btn{background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:6px;font-size:14px;color:#888;transition:all .15s;display:inline-block;user-select:none}
+.act-btn:hover{color:#1A6B8A;background:#e8f5fb}
+.act-btn.del:hover{color:#C03030;background:#fff0f0}
+.act-btn.approve{color:#1A7A4A}
+.edit-row{display:none;background:#e8f5fb}
+.edit-row td{padding:14px 12px!important;border-bottom:2px solid #1A6B8A!important}
+.edit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;margin-bottom:10px}
+.ea{display:flex;gap:6px}
+.einput,.esel{padding:7px 9px;border-radius:6px;border:1px solid #DDD8CE;background:#fff;font-size:12px;color:#0F1923;font-family:'Sora',sans-serif;outline:none;width:100%}
+.einput:focus,.esel:focus{border-color:#1A6B8A}
+.adm-empty{text-align:center;padding:2.5rem;color:#888;font-size:13px}
+.info-note{background:#e8f5fb;border-radius:10px;border:1px solid rgba(26,107,138,.25);padding:10px 14px;font-size:12px;color:#0D3D54;line-height:1.7;margin-bottom:1.25rem;display:flex;gap:8px;align-items:flex-start}
+.info-note i{font-size:14px;flex-shrink:0;margin-top:1px;color:#1A6B8A}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="nav">
+    <div class="logo" onclick="showPage('dir')">Shore<em>Find</em></div>
+    <div class="nav-links">
+      <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
+      <span class="nb" id="nav-pricing" onclick="showPage('pricing')">Pricing</span>
+      <span class="nb" id="nav-admin" onclick="showPage('admin')">Admin</span>
+      <span class="nb solid" onclick="startSignup('featured')">List Your Business</span>
+    </div>
+  </nav>
+
+  <!-- DIRECTORY -->
+  <div id="page-dir" class="page active">
+    <div class="dir-hero">
+      <span class="hero-tag">South Jersey's Premier Local Directory</span>
+      <h1>Find the <em>best</em><br>of the shore</h1>
+      <p>Curated, verified local businesses across Ocean, Atlantic &amp; Cape May counties.</p>
+      <div class="search-bar">
+        <input type="text" id="dirSearch" placeholder="Search restaurants, services, shops…" oninput="renderDir()">
+        <button class="search-btn-el">Search</button>
+      </div>
+    </div>
+    <div class="filters-row">
+      <div>
+        <span class="filter-label">County</span>
+        <div class="filter-strip" id="county-strip">
+          <span class="ftag on" onclick="setCounty('all',this)"><span class="ficon"><i class="ti ti-map"></i></span>All Counties</span>
+          <span class="ftag" onclick="setCounty('Ocean County',this)">Ocean</span>
+          <span class="ftag" onclick="setCounty('Atlantic County',this)">Atlantic</span>
+          <span class="ftag" onclick="setCounty('Cape May County',this)">Cape May</span>
+        </div>
+      </div>
+      <div>
+        <span class="filter-label">Category</span>
+        <div class="filter-strip" id="cat-strip">
+          <span class="ftag on" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
+          <span class="ftag" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
+          <span class="ftag" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
+          <span class="ftag" onclick="setCat('health',this)"><span class="ficon"><i class="ti ti-heart"></i></span>Health</span>
+          <span class="ftag" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
+          <span class="ftag" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
+          <span class="ftag" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
+          <span class="ftag" onclick="setCat('outdoors',this)"><span class="ficon"><i class="ti ti-wave-sine"></i></span>Outdoors</span>
+          <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
+        </div>
+      </div>
+    </div>
+    <div id="dir-spotlight"></div>
+    <div id="dir-featured"></div>
+    <div id="dir-local"></div>
+    <div id="dir-empty" style="display:none" class="empty-state">No businesses match your search. <span style="cursor:pointer;color:#1A6B8A" onclick="showPage('pricing')">Want to list yours?</span></div>
+  </div>
+
+  <!-- PRICING -->
+  <div id="page-pricing" class="page">
+    <div class="pricing-hero">
+      <span class="ph-eye">South Jersey's Local Directory</span>
+      <h1>Put your business <em>on the shore</em></h1>
+      <p>Three tiers designed for every stage — from neighborhood staple to shore-wide icon.</p>
+    </div>
+    <div class="billing-row">
+      <span>Monthly</span>
+      <div class="tog" id="bilTog" onclick="toggleBilling()"><div class="tog-thumb"></div></div>
+      <span>Annual</span>
+      <span class="save-pill" id="savePill">Save 20%</span>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div><span class="ptb" style="background:#F0EDE6;color:#3A4A56">Local</span><p class="pname">Local Listing</p><p class="pdesc">Get found by neighbors with a clean, accurate listing.</p></div>
+        <div class="pprice"><span class="pamount" id="pr-local">$29</span><span class="pper">/mo</span></div>
+        <ul class="pfeats">
+          <li><i class="ti ti-check"></i>Name, address &amp; phone</li>
+          <li><i class="ti ti-check"></i>Category listing &amp; county badge</li>
+          <li><i class="ti ti-check"></i>Customer reviews</li>
+          <li class="no"><i class="ti ti-minus"></i>Priority placement</li>
+          <li class="no"><i class="ti ti-minus"></i>Business description</li>
+          <li class="no"><i class="ti ti-minus"></i>Dedicated account support</li>
+          <li class="no"><i class="ti ti-minus"></i>Advertising &amp; promotions</li>
+        </ul>
+        <span class="pcta sec" onclick="startSignup('local')">Get started</span>
+      </div>
+      <div class="plan-card pop">
+        <div class="pop-banner">Most popular</div>
+        <div><span class="ptb" style="background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b">Featured</span><p class="pname">Businesses You'll Love</p><p class="pdesc">Stand out with rich listings, ratings, and the gold Featured ribbon.</p></div>
+        <div class="pprice"><span class="pamount" id="pr-featured">$79</span><span class="pper">/mo</span></div>
+        <ul class="pfeats">
+          <li><i class="ti ti-check"></i>Everything in Local</li>
+          <li><i class="ti ti-check"></i>Business description &amp; ratings</li>
+          <li><i class="ti ti-check"></i>Gold "Featured" ribbon</li>
+          <li><i class="ti ti-check"></i>Priority placement</li>
+          <li><i class="ti ti-check"></i>Dedicated account support</li>
+          <li><i class="ti ti-check"></i>Advertising &amp; promotions</li>
+          <li class="no"><i class="ti ti-minus"></i>Full Spotlight hero card</li>
+        </ul>
+        <span class="pcta pri" onclick="startSignup('featured')">Get started</span>
+      </div>
+      <div class="plan-card">
+        <div><span class="ptb" style="background:#0D3D54;color:#4BB8B8">Spotlight</span><p class="pname">Spotlight Business</p><p class="pdesc">The premier position — unmissable hero card at the top of every search.</p></div>
+        <div class="pprice"><span class="pamount" id="pr-spotlight">$199</span><span class="pper">/mo</span></div>
+        <ul class="pfeats">
+          <li><i class="ti ti-check"></i>Everything in Featured</li>
+          <li><i class="ti ti-check"></i>Full Spotlight hero card</li>
+          <li><i class="ti ti-check"></i>Top-of-directory placement</li>
+          <li><i class="ti ti-check"></i>Hours, reviews &amp; location</li>
+          <li><i class="ti ti-check"></i>Verified star badge</li>
+          <li><i class="ti ti-check"></i>Dedicated account support</li>
+          <li><i class="ti ti-check"></i>Advertising &amp; promotions</li>
+        </ul>
+        <span class="pcta sec" onclick="startSignup('spotlight')">Get started</span>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+      <div>
+        <p style="font-family:'Playfair Display',serif;font-size:18px;color:#0F1923;margin-bottom:4px">Questions about listing?</p>
+        <p style="font-size:12px;color:#666">Email <span style="color:#1A6B8A">hello@shorefind.com</span> or call <span style="color:#1A6B8A">(609) 555-0190</span></p>
+      </div>
+      <span class="nb solid" onclick="startSignup('featured')">Start free 30-day trial</span>
+    </div>
+  </div>
+
+  <!-- SIGNUP -->
+  <div id="page-signup" class="page">
+    <div class="su-wrap">
+      <div class="su-back" onclick="showPage('pricing')"><i class="ti ti-arrow-left"></i> Back to pricing</div>
+      <div class="prog-bar"><div class="prog-s cur" id="ps1"></div><div class="prog-s" id="ps2"></div><div class="prog-s" id="ps3"></div></div>
+      <div class="prog-lbls"><span class="plbl cur" id="pl1">Business info</span><span class="plbl" id="pl2">Contact</span><span class="plbl" id="pl3">Review</span></div>
+      <div class="step active" id="su-step1">
+        <p class="stitle">Tell us about your business</p>
+        <p class="ssub">This is how you'll appear in the ShoreFind directory.</p>
+        <div id="su-planbar"></div>
+        <div class="frow full"><div class="fg"><label class="flbl">Business name *</label><input class="finput" id="su-bname" type="text" placeholder="e.g. Shore Craft Builders"><span class="errmsg" id="e-bname"></span></div></div>
+        <div class="frow">
+          <div class="fg"><label class="flbl">County *</label><select class="fsel" id="su-county"><option value="">Select…</option><option>Ocean County</option><option>Atlantic County</option><option>Cape May County</option></select><span class="errmsg" id="e-county"></span></div>
+          <div class="fg"><label class="flbl">Town *</label><input class="finput" id="su-town" type="text" placeholder="e.g. Toms River"><span class="errmsg" id="e-town"></span></div>
+        </div>
+        <div class="frow full" style="margin-bottom:6px"><label class="flbl">Category *</label></div>
+        <div class="cat-grid">
+          <span class="cat-opt" data-c="dining" onclick="pickCat(this)"><i class="ti ti-tools-kitchen-2"></i>Dining</span>
+          <span class="cat-opt" data-c="home" onclick="pickCat(this)"><i class="ti ti-home"></i>Home</span>
+          <span class="cat-opt" data-c="health" onclick="pickCat(this)"><i class="ti ti-heart"></i>Health</span>
+          <span class="cat-opt" data-c="retail" onclick="pickCat(this)"><i class="ti ti-shopping-bag"></i>Retail</span>
+          <span class="cat-opt" data-c="auto" onclick="pickCat(this)"><i class="ti ti-car"></i>Auto</span>
+          <span class="cat-opt" data-c="beauty" onclick="pickCat(this)"><i class="ti ti-scissors"></i>Beauty</span>
+          <span class="cat-opt" data-c="outdoors" onclick="pickCat(this)"><i class="ti ti-wave-sine"></i>Outdoors</span>
+          <span class="cat-opt" data-c="services" onclick="pickCat(this)"><i class="ti ti-briefcase"></i>Services</span>
+        </div>
+        <span class="errmsg" id="e-cat" style="display:block;margin-bottom:10px"></span>
+        <div class="frow full" id="su-descrow" style="display:none"><div class="fg"><label class="flbl">Business description</label><textarea class="fta" id="su-desc" placeholder="What makes your business special?"></textarea></div></div>
+        <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Website <span style="color:#888">(optional)</span></label><input class="finput" id="su-website" type="url" placeholder="https://yourbusiness.com"></div></div>
+        <div class="form-actions"><span class="btn btn-pri" onclick="su1()">Continue <i class="ti ti-arrow-right"></i></span></div>
+      </div>
+      <div class="step" id="su-step2">
+        <p class="stitle">Your contact details</p>
+        <p class="ssub">So we can activate your listing.</p>
+        <div class="frow">
+          <div class="fg"><label class="flbl">First name *</label><input class="finput" id="su-fname" type="text"><span class="errmsg" id="e-fname"></span></div>
+          <div class="fg"><label class="flbl">Last name *</label><input class="finput" id="su-lname" type="text"><span class="errmsg" id="e-lname"></span></div>
+        </div>
+        <div class="frow full"><div class="fg"><label class="flbl">Email *</label><input class="finput" id="su-email" type="email"><span class="errmsg" id="e-email"></span></div></div>
+        <div class="frow full"><div class="fg"><label class="flbl">Phone *</label><input class="finput" id="su-phone" type="tel"><span class="errmsg" id="e-phone"></span></div></div>
+        <div class="frow full" id="su-hoursrow" style="display:none"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Business hours <span style="color:#888">(Spotlight)</span></label><input class="finput" id="su-hours" type="text" placeholder="Mon–Sat 9am–8pm"></div></div>
+        <div class="form-actions">
+          <span class="btn btn-sec" onclick="goSuStep(1)"><i class="ti ti-arrow-left"></i> Back</span>
+          <span class="btn btn-pri" onclick="su2()">Continue <i class="ti ti-arrow-right"></i></span>
+        </div>
+      </div>
+      <div class="step" id="su-step3">
+        <p class="stitle">Review &amp; confirm</p>
+        <p class="ssub">Everything look right? Submit to activate your listing.</p>
+        <div class="rev-sec"><p class="rev-lbl">Plan</p><p style="font-family:'Playfair Display',serif;font-size:18px;color:#0F1923" id="rv-plan">—</p><p style="font-size:12px;color:#666" id="rv-price">—</p></div>
+        <div class="rev-sec"><p class="rev-lbl">Business</p>
+          <div class="sd-row"><span class="sdk">Name</span><span class="sdv" id="rv-bname">—</span></div>
+          <div class="sd-row"><span class="sdk">County</span><span class="sdv" id="rv-county">—</span></div>
+          <div class="sd-row"><span class="sdk">Town</span><span class="sdv" id="rv-town">—</span></div>
+          <div class="sd-row" style="border-bottom:none"><span class="sdk">Category</span><span class="sdv" id="rv-cat">—</span></div>
+        </div>
+        <div class="rev-sec"><p class="rev-lbl">Contact</p>
+          <div class="sd-row"><span class="sdk">Name</span><span class="sdv" id="rv-contact">—</span></div>
+          <div class="sd-row"><span class="sdk">Email</span><span class="sdv" id="rv-email">—</span></div>
+          <div class="sd-row" style="border-bottom:none"><span class="sdk">Phone</span><span class="sdv" id="rv-phone">—</span></div>
+        </div>
+        <div class="info-note"><i class="ti ti-shield-check"></i><span>First 30 days free. No credit card needed — we'll follow up to get you live.</span></div>
+        <div id="rv-alert"></div>
+        <div class="form-actions">
+          <span class="btn btn-sec" onclick="goSuStep(2)"><i class="ti ti-arrow-left"></i> Back</span>
+          <span class="btn btn-pri" id="su-submitBtn" onclick="submitSu()"><i class="ti ti-check"></i> Submit listing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="page-success" class="page">
+    <div class="suc-wrap">
+      <div class="suc-ico"><i class="ti ti-check"></i></div>
+      <h2>You're on the shore!</h2>
+      <p>Submitted successfully. Our team will review and activate within 1 business day.</p>
+      <div class="rev-sec" id="suc-details" style="text-align:left;margin-bottom:1.5rem"></div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <span class="btn btn-pri" onclick="showPage('admin')">Go to admin</span>
+        <span class="btn btn-sec" onclick="showPage('dir')">View directory</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="page-admin" class="page">
+    <div class="adm-hdr">
+      <h2>Admin Dashboard</h2>
+      <div style="display:flex;gap:6px">
+        <span class="nb" onclick="showPage('dir')"><i class="ti ti-eye"></i> View directory</span>
+        <span class="nb solid" onclick="startSignup('featured')">+ Add listing</span>
+      </div>
+    </div>
+    <div class="info-note"><i class="ti ti-info-circle"></i><span>Only <strong>Active</strong> listings appear in the public directory. Approve pending submissions or toggle visibility here.</span></div>
+    <div class="stats-row">
+      <div class="sc"><p class="sc-lbl">Total</p><p class="sc-num o" id="st-total">0</p></div>
+      <div class="sc"><p class="sc-lbl">Active</p><p class="sc-num" id="st-active">0</p></div>
+      <div class="sc"><p class="sc-lbl">Pending</p><p class="sc-num" id="st-pending">0</p></div>
+      <div class="sc"><p class="sc-lbl">Spotlight</p><p class="sc-num" id="st-spot">0</p></div>
+      <div class="sc"><p class="sc-lbl">Featured</p><p class="sc-num" id="st-feat">0</p></div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="adm-tbl">
+        <thead><tr>
+          <th style="width:22%">Business</th><th style="width:12%">Tier</th><th style="width:11%">Category</th>
+          <th style="width:12%">County</th><th style="width:12%">Status</th><th style="width:13%">Contact</th><th style="width:18%">Actions</th>
+        </tr></thead>
+        <tbody id="adm-tbody"></tbody>
+      </table>
+      <div class="adm-empty" id="adm-empty">No listings yet.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION — edit prices, plan names, and seed businesses here
+// ============================================================
+const PRICES = {
+  local:    { m: 29,  a: 23  },
+  featured: { m: 79,  a: 63  },
+  spotlight:{ m: 199, a: 159 }
+};
+const PNAMES = {
+  local:    'Local Listing',
+  featured: "Businesses You'll Love",
+  spotlight:'Spotlight Business'
+};
+const CATI = {
+  dining:'ti-tools-kitchen-2', home:'ti-home', health:'ti-heart',
+  retail:'ti-shopping-bag', auto:'ti-car', beauty:'ti-scissors',
+  outdoors:'ti-wave-sine', services:'ti-briefcase'
+};
+
+// ============================================================
+// SEED DATA — businesses shown on first load
+// Add more objects here to pre-populate the directory
+// ============================================================
+const SEED = [
+  {
+    id: 1,
+    bname: 'ShoreTask Co.',
+    county: 'Atlantic County',
+    town: 'Linwood',
+    cat: 'services',
+    plan: 'spotlight',
+    fname: 'Mike', lname: 'Torelli',
+    email: 'mike@shoretaskco.com',
+    phone: '(609) 555-0122',
+    website: 'https://www.shoretaskco.com',
+    desc: "South Jersey's trusted concierge service specializing in errands and rental property management. We handle the to-do list so homeowners, vacationers, and property owners can enjoy the shore.",
+    hours: 'Mon–Sat 8am–7pm',
+    billing: 'monthly', price: 199,
+    status: 'active',
+    submitted: 'May 1, 2026'
+  },
+  {
+    id: 2,
+    bname: "Rose's Garden Grill",
+    county: 'Atlantic County',
+    town: 'Egg Harbor Township',
+    cat: 'dining',
+    plan: 'featured',
+    fname: 'Rose', lname: 'Caruso',
+    email: 'rose@rosesgardengrill.com',
+    phone: '(609) 555-0188',
+    website: '',
+    desc: 'Fresh seasonal plates and garden-inspired cocktails in a warm, open-air setting. A local favorite since 2018.',
+    hours: '',
+    billing: 'monthly', price: 79,
+    status: 'active',
+    submitted: 'May 3, 2026'
+  }
+];
+
+// ============================================================
+// APP STATE
+// ============================================================
+let annual = false, selPlan = 'featured', selCat = '';
+let dirCounty = 'all', dirCat = 'all';
+let db = [];
+
+// ============================================================
+// STORAGE — uses localStorage so data persists locally
+// ============================================================
+function loadDB() {
+  try {
+    const saved = localStorage.getItem('shorefind-db');
+    if (saved) db = JSON.parse(saved);
+  } catch(e) { db = []; }
+  if (!db.length) {
+    db = JSON.parse(JSON.stringify(SEED));
+    saveDB();
+  }
+}
+function saveDB() {
+  try { localStorage.setItem('shorefind-db', JSON.stringify(db)); } catch(e) {}
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  ['dir','pricing','admin'].forEach(x => {
+    const nb = document.getElementById('nav-' + x);
+    if (nb) nb.classList.toggle('active', x === p);
+  });
+  if (p === 'dir') renderDir();
+  if (p === 'admin') renderAdmin();
+}
+
+// ============================================================
+// DIRECTORY FILTERS
+// ============================================================
+function setCounty(v, el) {
+  dirCounty = v;
+  document.querySelectorAll('#county-strip .ftag').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+  renderDir();
+}
+function setCat(v, el) {
+  dirCat = v;
+  document.querySelectorAll('#cat-strip .ftag').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+  renderDir();
+}
+
+// ============================================================
+// RENDER DIRECTORY
+// ============================================================
+function renderDir() {
+  const q = document.getElementById('dirSearch').value.toLowerCase();
+  const all = db.filter(e => {
+    if (e.status !== 'active') return false;
+    if (dirCounty !== 'all' && e.county !== dirCounty) return false;
+    if (dirCat !== 'all' && e.cat !== dirCat) return false;
+    if (q && !e.bname.toLowerCase().includes(q) && !e.cat.includes(q) && !e.town.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const spots  = all.filter(e => e.plan === 'spotlight');
+  const feats  = all.filter(e => e.plan === 'featured');
+  const locals = all.filter(e => e.plan === 'local');
+  const sd = document.getElementById('dir-spotlight');
+  const fd = document.getElementById('dir-featured');
+  const ld = document.getElementById('dir-local');
+  const ed = document.getElementById('dir-empty');
+  if (!all.length) { sd.innerHTML=''; fd.innerHTML=''; ld.innerHTML=''; ed.style.display='block'; return; }
+  ed.style.display = 'none';
+  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card"><div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2><p class="sc-desc">${e.desc||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div></div>${e.website?`<a href="${e.website}" class="sc-cta" style="text-decoration:none;color:#4BB8B8" target="_blank">Visit site</a>`:'<span class="sc-cta">View</span>'}</div>`).join('')}</div>` : '';
+  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card"><div class="fc-top"><div class="fc-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div><span class="fc-ribbon">Featured</span></div><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}</p><div class="fc-rating"><span class="stars">★★★★★</span>&nbsp;4.8</div>${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" style="color:#1A6B8A;font-size:11px;text-decoration:none" target="_blank">${e.website.replace('https://','')}</a></div>`:''}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div></div>`).join('')}</div>` : '';
+  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card"><div class="li-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div><div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p></div></div>`).join('')}</div>` : '';
+}
+
+function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+// ============================================================
+// BILLING TOGGLE
+// ============================================================
+function toggleBilling() {
+  annual = !annual;
+  document.getElementById('bilTog').classList.toggle('on', annual);
+  document.getElementById('savePill').classList.toggle('show', annual);
+  ['local','featured','spotlight'].forEach(t => {
+    document.getElementById('pr-' + t).textContent = '$' + (annual ? PRICES[t].a : PRICES[t].m);
+  });
+}
+
+// ============================================================
+// SIGNUP FLOW
+// ============================================================
+function startSignup(plan) {
+  selPlan = plan; selCat = '';
+  document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
+  ['su-bname','su-county','su-town','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
+  document.getElementById('rv-alert').innerHTML = '';
+  document.getElementById('su-descrow').style.display = (plan !== 'local') ? 'grid' : 'none';
+  document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
+  const price = annual ? PRICES[plan].a : PRICES[plan].m;
+  document.getElementById('su-planbar').innerHTML = `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price">$${price}/mo${annual?' · annual':''}</span></div>`;
+  goSuStep(1);
+  showPage('signup');
+}
+
+function goSuStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('su-step' + i).classList.toggle('active', i === n);
+    const ps = document.getElementById('ps' + i), pl = document.getElementById('pl' + i);
+    if (i < n)      { ps.className = 'prog-s done'; pl.classList.remove('cur'); }
+    else if (i === n){ ps.className = 'prog-s cur';  pl.classList.add('cur'); }
+    else             { ps.className = 'prog-s';       pl.classList.remove('cur'); }
+  });
+}
+
+function pickCat(el) {
+  document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel'); selCat = el.dataset.c;
+  document.getElementById('e-cat').textContent = '';
+}
+
+function setErr(id, msg) {
+  const em = document.getElementById('e-' + id); if (em) em.textContent = msg;
+}
+
+function su1() {
+  let ok = true;
+  if (!document.getElementById('su-bname').value.trim()) { setErr('bname','Required'); ok=false; } else setErr('bname','');
+  if (!document.getElementById('su-county').value)       { setErr('county','Required'); ok=false; } else setErr('county','');
+  if (!document.getElementById('su-town').value.trim())  { setErr('town','Required'); ok=false; }  else setErr('town','');
+  if (!selCat) { document.getElementById('e-cat').textContent = 'Please select a category'; ok=false; }
+  if (ok) goSuStep(2);
+}
+
+function su2() {
+  let ok = true;
+  if (!document.getElementById('su-fname').value.trim()) { setErr('fname','Required'); ok=false; } else setErr('fname','');
+  if (!document.getElementById('su-lname').value.trim()) { setErr('lname','Required'); ok=false; } else setErr('lname','');
+  const em = document.getElementById('su-email').value.trim();
+  if (!em || !em.includes('@')) { setErr('email','Valid email required'); ok=false; } else setErr('email','');
+  if (!document.getElementById('su-phone').value.trim()) { setErr('phone','Required'); ok=false; } else setErr('phone','');
+  if (!ok) return;
+  const price = annual ? PRICES[selPlan].a : PRICES[selPlan].m;
+  document.getElementById('rv-plan').textContent    = PNAMES[selPlan];
+  document.getElementById('rv-price').textContent   = '$' + price + '/mo';
+  document.getElementById('rv-bname').textContent   = document.getElementById('su-bname').value.trim();
+  document.getElementById('rv-county').textContent  = document.getElementById('su-county').value;
+  document.getElementById('rv-town').textContent    = document.getElementById('su-town').value.trim();
+  document.getElementById('rv-cat').textContent     = cap(selCat);
+  document.getElementById('rv-contact').textContent = document.getElementById('su-fname').value.trim() + ' ' + document.getElementById('su-lname').value.trim();
+  document.getElementById('rv-email').textContent   = em;
+  document.getElementById('rv-phone').textContent   = document.getElementById('su-phone').value.trim();
+  goSuStep(3);
+}
+
+function submitSu() {
+  const btn = document.getElementById('su-submitBtn');
+  btn.textContent = 'Submitting…';
+  setTimeout(() => {
+    const entry = {
+      id: Date.now(),
+      bname:   document.getElementById('su-bname').value.trim(),
+      county:  document.getElementById('su-county').value,
+      town:    document.getElementById('su-town').value.trim(),
+      cat:     selCat, plan: selPlan,
+      fname:   document.getElementById('su-fname').value.trim(),
+      lname:   document.getElementById('su-lname').value.trim(),
+      email:   document.getElementById('su-email').value.trim(),
+      phone:   document.getElementById('su-phone').value.trim(),
+      website: document.getElementById('su-website').value.trim(),
+      desc:    document.getElementById('su-desc').value.trim(),
+      hours:   document.getElementById('su-hours').value.trim(),
+      billing: annual ? 'annual' : 'monthly',
+      price:   annual ? PRICES[selPlan].a : PRICES[selPlan].m,
+      status:  'pending',
+      submitted: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+    };
+    db.push(entry); saveDB();
+    document.getElementById('suc-details').innerHTML = `<div class="sd-row"><span class="sdk">Business</span><span class="sdv">${entry.bname}</span></div><div class="sd-row"><span class="sdk">Plan</span><span class="sdv">${PNAMES[entry.plan]}</span></div><div class="sd-row"><span class="sdk">Status</span><span class="sdv" style="color:#8a6520">Pending review</span></div><div class="sd-row" style="border-bottom:none"><span class="sdk">Email</span><span class="sdv">${entry.email}</span></div>`;
+    btn.innerHTML = '<i class="ti ti-check"></i> Submit listing';
+    showPage('success');
+  }, 800);
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function renderAdmin() {
+  const tbody = document.getElementById('adm-tbody');
+  const empty = document.getElementById('adm-empty');
+  tbody.innerHTML = '';
+  if (!db.length) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  let s = { total: db.length, active: 0, pending: 0, spot: 0, feat: 0 };
+  db.forEach(e => {
+    if (e.status === 'active')  s.active++;
+    if (e.status === 'pending') s.pending++;
+    if (e.plan === 'spotlight') s.spot++;
+    if (e.plan === 'featured')  s.feat++;
+  });
+  ['total','active','pending','spot','feat'].forEach(k => {
+    document.getElementById('st-' + k).textContent = s[k];
+  });
+  db.slice().reverse().forEach(e => {
+    const dc = e.status==='active' ? 'active' : e.status==='pending' ? 'pending' : 'hidden';
+    const sl = e.status==='active' ? 'Active' : e.status==='pending' ? 'Pending' : 'Hidden';
+    const tr = document.createElement('tr'); tr.id = 'row-' + e.id;
+    tr.innerHTML = `<td><strong style="font-size:12px;color:#0F1923">${e.bname}</strong><br><span style="color:#888;font-size:11px">${e.town}</span></td><td><span class="tp ${e.plan}">${cap(e.plan)}</span></td><td style="text-transform:capitalize;color:#333;font-size:11px">${e.cat}</td><td style="font-size:11px;color:#333">${e.county.replace(' County','')}</td><td style="font-size:12px;color:#0F1923"><span class="sdot ${dc}"></span>${sl}</td><td style="font-size:11px;color:#333">${e.fname} ${e.lname}</td><td style="white-space:nowrap">${e.status==='pending'?`<span class="act-btn approve" title="Approve" onclick="appEnt(${e.id})"><i class="ti ti-check"></i></span>`:''} ${e.status==='active'?`<span class="act-btn" title="Hide" onclick="togSt(${e.id},'hidden')"><i class="ti ti-eye-off"></i></span>`:''} ${e.status==='hidden'?`<span class="act-btn approve" title="Show" onclick="togSt(${e.id},'active')"><i class="ti ti-eye"></i></span>`:''} <span class="act-btn" title="Edit" onclick="togEdit(${e.id})"><i class="ti ti-edit"></i></span> <span class="act-btn del" title="Delete" onclick="delEnt(${e.id})"><i class="ti ti-trash"></i></span></td>`;
+    tbody.appendChild(tr);
+    const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
+    const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
+    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Ocean County'?'selected':''}>Ocean County</option><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.desc||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
+    tbody.appendChild(etr);
+  });
+}
+
+function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function togEdit(id) { const er = document.getElementById('editrow-'+id); const show = er.style.display==='table-row'; document.querySelectorAll('.edit-row').forEach(r=>r.style.display='none'); if(!show) er.style.display='table-row'; }
+function saveEd(id) { const e=db.find(x=>x.id===id); if(!e) return; e.bname=document.getElementById('ei-bname-'+id).value.trim()||e.bname; e.town=document.getElementById('ei-town-'+id).value.trim()||e.town; e.county=document.getElementById('ei-county-'+id).value; e.cat=document.getElementById('ei-cat-'+id).value; e.plan=document.getElementById('ei-plan-'+id).value; e.status=document.getElementById('ei-status-'+id).value; e.desc=document.getElementById('ei-desc-'+id).value.trim(); e.website=document.getElementById('ei-website-'+id).value.trim(); e.hours=document.getElementById('ei-hours-'+id).value.trim(); e.phone=document.getElementById('ei-phone-'+id).value.trim(); e.email=document.getElementById('ei-email-'+id).value.trim(); saveDB(); renderAdmin(); }
+function appEnt(id) { const e=db.find(x=>x.id===id); if(e){ e.status='active'; saveDB(); renderAdmin(); } }
+function togSt(id,st) { const e=db.find(x=>x.id===id); if(e){ e.status=st; saveDB(); renderAdmin(); } }
+function delEnt(id) { db=db.filter(x=>x.id!==id); saveDB(); renderAdmin(); }
+
+// ============================================================
+// INIT
+// ============================================================
+loadDB();
+renderDir();
+renderAdmin();
+</script>
+</body>
+</html>
