@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShoreFind — South Jersey's Premier Local Directory</title>
+<title>Shoreworks — South Jersey's Premier Local Directory</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
@@ -204,7 +204,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 <body>
 <div class="app">
   <nav class="nav">
-    <div class="logo" onclick="showPage('dir')">Shore<em>Find</em></div>
+    <div class="logo" onclick="showPage('dir')">Shore<em>works</em></div>
     <div class="nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
       <span class="nb" id="nav-pricing" onclick="showPage('pricing')">Pricing</span>
@@ -316,7 +316,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div style="background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
       <div>
         <p style="font-family:'Playfair Display',serif;font-size:18px;color:#0F1923;margin-bottom:4px">Questions about listing?</p>
-        <p style="font-size:12px;color:#666">Email <span style="color:#1A6B8A">hello@shorefind.com</span> or call <span style="color:#1A6B8A">(609) 555-0190</span></p>
+        <p style="font-size:12px;color:#666">Email <span style="color:#1A6B8A">hello@shoreworks.com</span> or call <span style="color:#1A6B8A">(609) 555-0190</span></p>
       </div>
       <span class="nb solid" onclick="startSignup('featured')">Start free 30-day trial</span>
     </div>
@@ -330,7 +330,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <div class="prog-lbls"><span class="plbl cur" id="pl1">Business info</span><span class="plbl" id="pl2">Contact</span><span class="plbl" id="pl3">Review</span></div>
       <div class="step active" id="su-step1">
         <p class="stitle">Tell us about your business</p>
-        <p class="ssub">This is how you'll appear in the ShoreFind directory.</p>
+        <p class="ssub">This is how you'll appear in the Shoreworks directory.</p>
         <div id="su-planbar"></div>
         <div class="frow full"><div class="fg"><label class="flbl">Business name *</label><input class="finput" id="su-bname" type="text" placeholder="e.g. Shore Craft Builders"><span class="errmsg" id="e-bname"></span></div></div>
         <div class="frow">
@@ -715,14 +715,14 @@ function renderAdmin() {
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
-    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Ocean County'?'selected':''}>Ocean County</option><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.desc||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
+    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Ocean County'?'selected':''}>Ocean County</option><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.desc||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
     tbody.appendChild(etr);
   });
 }
 
 function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 function togEdit(id) { const er = document.getElementById('editrow-'+id); const show = er.style.display==='table-row'; document.querySelectorAll('.edit-row').forEach(r=>r.style.display='none'); if(!show) er.style.display='table-row'; }
-function saveEd(id) { const e=db.find(x=>x.id===id); if(!e) return; e.bname=document.getElementById('ei-bname-'+id).value.trim()||e.bname; e.town=document.getElementById('ei-town-'+id).value.trim()||e.town; e.county=document.getElementById('ei-county-'+id).value; e.cat=document.getElementById('ei-cat-'+id).value; e.plan=document.getElementById('ei-plan-'+id).value; e.status=document.getElementById('ei-status-'+id).value; e.desc=document.getElementById('ei-desc-'+id).value.trim(); e.website=document.getElementById('ei-website-'+id).value.trim(); e.hours=document.getElementById('ei-hours-'+id).value.trim(); e.phone=document.getElementById('ei-phone-'+id).value.trim(); e.email=document.getElementById('ei-email-'+id).value.trim(); saveDB(); renderAdmin(); }
+function saveEd(id) { const e=db.find(x=>x.id===id); if(!e) return; e.bname=document.getElementById('ei-bname-'+id).value.trim()||e.bname; e.town=document.getElementById('ei-town-'+id).value.trim()||e.town; e.county=document.getElementById('ei-county-'+id).value; e.cat=document.getElementById('ei-cat-'+id).value; e.plan=document.getElementById('ei-plan-'+id).value; e.status=document.getElementById('ei-status-'+id).value; e.desc=document.getElementById('ei-desc-'+id).value.trim(); e.website=document.getElementById('ei-website-'+id).value.trim(); e.hours=document.getElementById('ei-hours-'+id).value.trim(); e.fname=document.getElementById('ei-fname-'+id).value.trim()||e.fname; e.lname=document.getElementById('ei-lname-'+id).value.trim()||e.lname; e.phone=document.getElementById('ei-phone-'+id).value.trim(); e.email=document.getElementById('ei-email-'+id).value.trim(); saveDB(); renderAdmin(); }
 function appEnt(id) { const e=db.find(x=>x.id===id); if(e){ e.status='active'; saveDB(); renderAdmin(); } }
 function togSt(id,st) { const e=db.find(x=>x.id===id); if(e){ e.status=st; saveDB(); renderAdmin(); } }
 function delEnt(id) { db=db.filter(x=>x.id!==id); saveDB(); renderAdmin(); }
