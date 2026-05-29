@@ -359,19 +359,20 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <span class="save-pill" id="savePill">Save 20%</span>
     </div>
     <div class="plans-grid">
-      <div class="plan-card">
-        <div><span class="ptb" style="background:#F0EDE6;color:#3A4A56">Local</span><p class="pname">Local Listing</p><p class="pdesc">Get found by neighbors with a clean, accurate listing.</p></div>
-        <div class="pprice"><span class="pamount" id="pr-local">$29</span><span class="pper">/mo</span></div>
+      <div class="plan-card" style="background:#F7F5F2;border-color:#C8C4BB;border-style:dashed">
+        <div><span class="ptb" style="background:#EDEAE4;color:#666;border:1px solid #C8C4BB">Free</span><p class="pname" style="color:#555">Local Listing</p><p class="pdesc">Get your business in front of local searchers — no cost, no commitment.</p></div>
+        <div class="pprice" style="margin-bottom:.75rem"><span style="font-family:'Playfair Display',serif;font-size:36px;color:#666;line-height:1">Free</span></div>
         <ul class="pfeats">
-          <li><i class="ti ti-check"></i>Name, address &amp; phone</li>
-          <li><i class="ti ti-check"></i>Category listing &amp; county badge</li>
-          <li><i class="ti ti-check"></i>Customer reviews</li>
+          <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Name, address &amp; phone</li>
+          <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Category listing &amp; county badge</li>
+          <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Customer reviews</li>
           <li class="no"><i class="ti ti-minus"></i>Priority placement</li>
           <li class="no"><i class="ti ti-minus"></i>Business description</li>
           <li class="no"><i class="ti ti-minus"></i>Dedicated account support</li>
           <li class="no"><i class="ti ti-minus"></i>Advertising &amp; promotions</li>
         </ul>
-        <span class="pcta sec" onclick="startSignup('local')">Get started</span>
+        <span class="pcta sec" style="border-color:#C8C4BB;color:#666" onclick="startSignup('local')">Get listed free</span>
+        <p style="font-size:11px;color:#aaa;text-align:center;margin-top:10px">No credit card required</p>
       </div>
       <div class="plan-card pop">
         <div class="pop-banner">Most popular</div>
@@ -607,7 +608,7 @@ const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // CONFIGURATION — edit prices, plan names, and seed businesses here
 // ============================================================
 const PRICES = {
-  local:    { m: 29,  a: 23  },
+  local:    { m: 0,   a: 0   },
   featured: { m: 79,  a: 63  },
   spotlight:{ m: 199, a: 159 }
 };
@@ -749,7 +750,7 @@ function toggleBilling() {
   annual = !annual;
   document.getElementById('bilTog').classList.toggle('on', annual);
   document.getElementById('savePill').classList.toggle('show', annual);
-  ['local','featured','spotlight'].forEach(t => {
+  ['featured','spotlight'].forEach(t => {
     document.getElementById('pr-' + t).textContent = '$' + (annual ? PRICES[t].a : PRICES[t].m);
   });
 }
@@ -766,9 +767,9 @@ function startSignup(plan, isAdmin) {
   document.getElementById('su-descrow').style.display = (plan !== 'local') ? 'grid' : 'none';
   document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
   const price = annual ? PRICES[plan].a : PRICES[plan].m;
-  document.getElementById('su-planbar').innerHTML = fromAdmin
-    ? `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price" style="color:#4BB8B8">Complimentary</span></div>`
-    : `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price">$${price}/mo${annual?' · annual':''}</span></div>`;
+  const priceLabel = fromAdmin ? 'Complimentary' : (price === 0 ? 'Free' : `$${price}/mo${annual?' · annual':''}`);
+  const priceColor = fromAdmin ? '#4BB8B8' : (price === 0 ? '#888' : '#4BB8B8');
+  document.getElementById('su-planbar').innerHTML = `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price" style="color:${priceColor}">${priceLabel}</span></div>`;
   const back = document.querySelector('.su-back');
   if (back) { back.onclick = () => showPage(fromAdmin ? 'admin' : 'pricing'); back.innerHTML = `<i class="ti ti-arrow-left"></i> Back to ${fromAdmin ? 'admin' : 'pricing'}`; }
   goSuStep(1);
@@ -814,7 +815,7 @@ function su2() {
   if (!ok) return;
   const price = annual ? PRICES[selPlan].a : PRICES[selPlan].m;
   document.getElementById('rv-plan').textContent    = PNAMES[selPlan];
-  document.getElementById('rv-price').textContent   = fromAdmin ? 'Complimentary' : '$' + price + '/mo';
+  document.getElementById('rv-price').textContent   = fromAdmin ? 'Complimentary' : (price === 0 ? 'Free' : '$' + price + '/mo');
   document.getElementById('rv-bname').textContent   = document.getElementById('su-bname').value.trim();
   document.getElementById('rv-county').textContent  = document.getElementById('su-county').value;
   document.getElementById('rv-town').textContent    = document.getElementById('su-town').value.trim();
@@ -842,7 +843,7 @@ async function submitSu() {
     website:     document.getElementById('su-website').value.trim(),
     description: document.getElementById('su-desc').value.trim(),
     hours:       document.getElementById('su-hours').value.trim(),
-    billing:     fromAdmin ? 'comp' : (annual ? 'annual' : 'monthly'),
+    billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
     price:       fromAdmin ? 0 : (annual ? PRICES[selPlan].a : PRICES[selPlan].m),
     status:      fromAdmin ? 'active' : 'pending',
     submitted:   new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
