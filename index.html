@@ -73,7 +73,10 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .feat-card{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.25rem;cursor:pointer;transition:all .18s}
 .feat-card:hover{border-color:#1A6B8A;transform:translateY(-2px)}
 .fc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.fc-icon{width:40px;height:40px;border-radius:10px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:17px}
+.fc-icon{width:44px;height:44px;border-radius:10px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:17px;overflow:hidden;flex-shrink:0}
+.fc-icon img{width:100%;height:100%;object-fit:contain;padding:4px}
+.li-icon{width:38px;height:38px;border-radius:9px;background:#F0EDE6;display:flex;align-items:center;justify-content:center;color:#3A4A56;font-size:15px;flex-shrink:0;overflow:hidden}
+.li-icon img{width:100%;height:100%;object-fit:contain;padding:3px}
 .fc-ribbon{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8a6520;background:#FBF3E2;border:1px solid #d4a84b;padding:3px 8px;border-radius:100px;font-weight:600}
 .fc-name{font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;line-height:1.2;margin-bottom:3px}
 .fc-cat{font-size:11px;color:#7A8A96;margin-bottom:8px}
@@ -84,7 +87,6 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .local-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-bottom:2.5rem}
 .local-card{background:#fff;border-radius:10px;border:1px solid #DDD8CE;padding:1rem;cursor:pointer;transition:border-color .15s;display:flex;gap:10px;align-items:flex-start}
 .local-card:hover{border-color:#4BB8B8}
-.li-icon{width:34px;height:34px;border-radius:8px;background:#F0EDE6;display:flex;align-items:center;justify-content:center;color:#3A4A56;font-size:15px;flex-shrink:0}
 .li-name{font-size:13px;font-weight:500;color:#0F1923;line-height:1.3}
 .li-cat{font-size:11px;color:#7A8A96;margin-top:2px}
 .empty-state{text-align:center;padding:3rem;color:#7A8A96;font-size:13px;background:#fff;border-radius:14px;border:1px solid #DDD8CE;margin-bottom:2rem}
@@ -269,6 +271,39 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .cf-success h3{font-family:'Playfair Display',serif;font-size:24px;color:#0F1923;margin-bottom:.5rem}
 .cf-success p{font-size:13px;color:#666;line-height:1.8}
 
+.about-hero{background:linear-gradient(135deg,#0D3D54 0%,#082737 100%);border-radius:20px;padding:3.5rem 3rem;margin-bottom:2.5rem;position:relative;overflow:hidden;border:1px solid rgba(75,184,184,.15);box-shadow:0 6px 32px rgba(0,0,0,.15)}
+.about-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4BB8B8,#d4a84b,#4BB8B8);opacity:.8}
+.about-hero::after{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(75,184,184,.07)}
+.about-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.about-eyebrow::before{content:'★';color:#d4a84b}
+.about-hero h1{font-family:'Playfair Display',serif;font-size:42px;font-weight:400;color:#fff;line-height:1.1;margin-bottom:1rem;max-width:580px}
+.about-hero h1 em{font-style:italic;color:#4BB8B8}
+.about-hero p{font-size:14px;color:rgba(255,255,255,.72);line-height:1.9;max-width:520px}
+.about-body{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;margin-bottom:2.5rem;align-items:start}
+.about-mission h2{font-family:'Playfair Display',serif;font-size:28px;color:#0F1923;margin-bottom:1rem;line-height:1.2}
+.about-mission h2 em{font-style:italic;color:#1A6B8A}
+.about-mission p{font-size:13px;color:#444;line-height:1.9;margin-bottom:1rem}
+.about-pillars{display:flex;flex-direction:column;gap:16px}
+.about-pillar{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.25rem 1.5rem;display:flex;gap:14px;align-items:flex-start}
+.about-pillar-icon{width:42px;height:42px;border-radius:10px;background:#0D3D54;display:flex;align-items:center;justify-content:center;color:#4BB8B8;font-size:18px;flex-shrink:0}
+.about-pillar h3{font-family:'Playfair Display',serif;font-size:15px;color:#0F1923;margin-bottom:4px}
+.about-pillar p{font-size:12px;color:#666;line-height:1.7}
+.about-counties{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:center;margin-bottom:2.5rem}
+.about-county-badge{display:flex;flex-direction:column;align-items:center;gap:10px}
+.about-county-icon{width:50px;height:50px;border-radius:12px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:22px}
+.about-county-name{font-family:'Playfair Display',serif;font-size:16px;color:#0F1923}
+.about-county-sub{font-size:11px;color:#888;line-height:1.6}
+.about-cta{background:linear-gradient(135deg,#0D3D54,#082737);border-radius:16px;padding:2.5rem;text-align:center;border:1px solid rgba(75,184,184,.15)}
+.about-cta h2{font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:.75rem}
+.about-cta p{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:1.75rem;line-height:1.8}
+
+@media(max-width:600px){
+  .about-hero{padding:2rem 1.5rem}
+  .about-hero h1{font-size:28px}
+  .about-body{grid-template-columns:1fr;gap:1.75rem}
+  .about-counties{grid-template-columns:1fr;gap:1.25rem}
+}
+
 @media(max-width:600px){
   .contact-wrap{grid-template-columns:1fr;gap:2rem;padding:1.5rem 0 2rem}
   .contact-info{position:static}
@@ -324,6 +359,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div class="nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
       <span class="nb" id="nav-pricing" onclick="showPage('pricing')">Pricing</span>
+      <span class="nb" id="nav-about" onclick="showPage('about')">About</span>
       <span class="nb" id="nav-contact" onclick="showPage('contact')">Contact</span>
       <span class="nb" id="nav-admin" onclick="showPage('admin')" style="display:none">Admin</span>
       <span class="nb solid" onclick="startSignup('featured')">List Your Business</span>
@@ -563,6 +599,71 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div id="det-content"></div>
   </div>
 
+  <!-- ABOUT -->
+  <div id="page-about" class="page">
+    <div class="about-hero">
+      <p class="about-eyebrow">South Jersey's Premier Local Catalog</p>
+      <h1>Built for the shore's <em>hardest workers</em></h1>
+      <p>Shoreworks Catalog is a niche spotlight advertising catalog purpose-built for the businesses that make Atlantic, Ocean, and Cape May counties what they are — places people love, return to, and call home.</p>
+    </div>
+    <div class="about-body">
+      <div class="about-mission">
+        <h2>Our <em>mission</em></h2>
+        <p>We created Shoreworks because we believe the businesses driving South Jersey's communities deserve more than a generic listing buried in a search engine. The family restaurants, the trusted service companies, the local shops, the outdoor outfitters — they've earned real visibility.</p>
+        <p>This is a curated, hand-selected catalog. Every business in Shoreworks represents the best of what these three counties have to offer. Our Spotlight tier puts exceptional businesses front and center, giving them the premium presence they've worked hard for.</p>
+        <p>Our passion is simple: build a platform that showcases the incredible work being done across the Jersey Shore. When someone visits the region or searches for a local service, we want them to find the real gems — the places locals love and newcomers discover and never forget.</p>
+      </div>
+      <div class="about-pillars">
+        <div class="about-pillar">
+          <div class="about-pillar-icon"><i class="ti ti-award"></i></div>
+          <div>
+            <h3>Curated, not crowded</h3>
+            <p>We hand-select businesses that represent genuine excellence. Every listing reflects the quality and character of the South Jersey shore.</p>
+          </div>
+        </div>
+        <div class="about-pillar">
+          <div class="about-pillar-icon"><i class="ti ti-map-pin"></i></div>
+          <div>
+            <h3>Shore-focused, not generic</h3>
+            <p>We serve three counties and three counties only. That focus is what makes us useful — for locals, for visitors, and for the businesses themselves.</p>
+          </div>
+        </div>
+        <div class="about-pillar">
+          <div class="about-pillar-icon"><i class="ti ti-sparkles"></i></div>
+          <div>
+            <h3>Built to spotlight excellence</h3>
+            <p>Our Spotlight tier exists to give the region's best businesses the premium presence they deserve — not just a name in a list, but a stage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-counties">
+      <div class="about-county-badge">
+        <div class="about-county-icon"><i class="ti ti-wave-sine"></i></div>
+        <p class="about-county-name">Ocean County</p>
+        <p class="about-county-sub">Toms River, Seaside Heights, Brick & more</p>
+      </div>
+      <div class="about-county-badge">
+        <div class="about-county-icon"><i class="ti ti-building"></i></div>
+        <p class="about-county-name">Atlantic County</p>
+        <p class="about-county-sub">Atlantic City, Egg Harbor, Linwood & more</p>
+      </div>
+      <div class="about-county-badge">
+        <div class="about-county-icon"><i class="ti ti-anchor"></i></div>
+        <p class="about-county-name">Cape May County</p>
+        <p class="about-county-sub">Cape May, Wildwood, Ocean City & more</p>
+      </div>
+    </div>
+    <div class="about-cta">
+      <h2>Ready to get your business on the shore?</h2>
+      <p>Join the catalog that South Jersey's best businesses call home.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <span class="btn btn-pri" style="background:#4BB8B8;border-color:#4BB8B8;color:#0D3D54" onclick="showPage('pricing')">View plans</span>
+        <span class="btn btn-sec" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.8)" onclick="showPage('contact')">Get in touch</span>
+      </div>
+    </div>
+  </div>
+
   <!-- CONTACT -->
   <div id="page-contact" class="page">
     <div class="contact-wrap">
@@ -770,7 +871,7 @@ function showPage(p) {
   if (p === 'admin' && !isAdmin) { openAuthModal(); return; }
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
-  ['dir','pricing','contact','admin'].forEach(x => {
+  ['dir','pricing','about','contact','admin'].forEach(x => {
     const nb = document.getElementById('nav-' + x);
     if (nb) nb.classList.toggle('active', x === p);
   });
@@ -817,8 +918,9 @@ function renderDir() {
   ed.style.display = 'none';
   const orderLinks = e => (e.cat==='dining'||e.cat==='cafe')&&(e.doordash||e.ubereats||e.toast) ? `<div class="order-links">${e.doordash?`<a href="${e.doordash}" class="order-link dd" target="_blank" onclick="event.stopPropagation()">DoorDash</a>`:''}${e.ubereats?`<a href="${e.ubereats}" class="order-link ue" target="_blank" onclick="event.stopPropagation()">UberEats</a>`:''}${e.toast?`<a href="${e.toast}" class="order-link ts" target="_blank" onclick="event.stopPropagation()">Toast</a>`:''}</div>` : '';
   sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2><p class="sc-desc">${e.description||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${orderLinks(e)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
-  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card"><div class="fc-top"><div class="fc-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div><span class="fc-ribbon">Featured</span></div><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}</p><div class="fc-rating"><span class="stars">★★★★★</span>&nbsp;4.8</div>${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" style="color:#1A6B8A;font-size:11px;text-decoration:none" target="_blank">${e.website.replace('https://','')}</a></div>`:''}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div>${orderLinks(e)}</div>`).join('')}</div>` : '';
-  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card"><div class="li-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div><div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p></div></div>`).join('')}</div>` : '';
+  const bizIcon = (e, cls) => e.logo ? `<div class="${cls}"><img src="${e.logo}" alt="${e.bname} logo"></div>` : `<div class="${cls}"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
+  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card"><div class="fc-top">${bizIcon(e,'fc-icon')}<span class="fc-ribbon">Featured</span></div><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}</p><div class="fc-rating"><span class="stars">★★★★★</span>&nbsp;4.8</div>${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" style="color:#1A6B8A;font-size:11px;text-decoration:none" target="_blank">${e.website.replace('https://','')}</a></div>`:''}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div>${orderLinks(e)}</div>`).join('')}</div>` : '';
+  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p></div></div>`).join('')}</div>` : '';
 }
 
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
@@ -974,7 +1076,7 @@ function renderAdmin() {
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
-    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Ocean County'?'selected':''}>Ocean County</option><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.description||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div>${(e.cat==='dining'||e.cat==='cafe')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
+    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Ocean County'?'selected':''}>Ocean County</option><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.description||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div>${(e.cat==='dining'||e.cat==='cafe')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
     tbody.appendChild(etr);
   });
 }
@@ -990,6 +1092,7 @@ async function saveEd(id) {
     cat:         document.getElementById('ei-cat-'+id).value,
     plan:        document.getElementById('ei-plan-'+id).value,
     status:      document.getElementById('ei-status-'+id).value,
+    logo:        document.getElementById('ei-logo-'+id)?.value.trim() || '',
     description: document.getElementById('ei-desc-'+id).value.trim(),
     website:     document.getElementById('ei-website-'+id).value.trim(),
     hours:       document.getElementById('ei-hours-'+id).value.trim(),
