@@ -245,6 +245,49 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .order-link.dd{background:#fff0ee;color:#FF3008;border:1px solid rgba(255,48,8,.2)}
 .order-link.ue{background:#f0faf5;color:#06C167;border:1px solid rgba(6,193,103,.2)}
 .order-link.ts{background:#fff5f0;color:#FF4C00;border:1px solid rgba(255,76,0,.2)}
+
+@media(max-width:600px){
+  /* Layout */
+  .app{padding:0 1rem 3rem}
+
+  /* Nav */
+  .nav{margin-bottom:1.25rem}
+  .nb{font-size:11px;padding:6px 11px}
+  .nb.solid{padding:6px 13px}
+
+  /* Hero */
+  .dir-hero{padding:1.6rem 1.25rem 2rem;border-radius:16px}
+  .hero-tag{font-size:9px;letter-spacing:.12em;white-space:nowrap}
+  .dir-hero h1{font-size:30px}
+  .dir-hero p{font-size:12px;margin-bottom:1.25rem}
+  .search-bar{max-width:100%}
+  .search-btn-el{padding:0 14px;font-size:11px;white-space:nowrap}
+
+  /* Spotlight card — stack vertically on mobile */
+  .spot-card{grid-template-columns:1fr}
+  .sc-name{font-size:22px}
+  .sc-cta{align-self:flex-start;margin-top:.75rem;display:inline-block}
+
+  /* Pricing */
+  .pricing-hero h1{font-size:28px}
+  .plans-grid{grid-template-columns:1fr}
+
+  /* Signup — collapse 2-col rows to single column */
+  .frow{grid-template-columns:1fr}
+
+  /* Detail page */
+  .det-name{font-size:32px}
+  .det-gallery{height:220px}
+  .det-hero{padding:1.75rem 1.25rem 2.25rem;border-radius:16px}
+
+  /* Admin table — hide County + Contact on small screens */
+  .adm-tbl th:nth-child(4),.adm-tbl td:nth-child(4),
+  .adm-tbl th:nth-child(6),.adm-tbl td:nth-child(6){display:none}
+  .adm-tbl{table-layout:auto}
+
+  /* Page editor */
+  .ped-sec{padding:1rem}
+}
 </style>
 </head>
 <body>
