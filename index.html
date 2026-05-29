@@ -366,8 +366,8 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Name, address &amp; phone</li>
           <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Category listing &amp; county badge</li>
           <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Customer reviews</li>
+          <li style="color:#555"><i class="ti ti-check" style="color:#888"></i>Business description</li>
           <li class="no"><i class="ti ti-minus"></i>Priority placement</li>
-          <li class="no"><i class="ti ti-minus"></i>Business description</li>
           <li class="no"><i class="ti ti-minus"></i>Dedicated account support</li>
           <li class="no"><i class="ti ti-minus"></i>Advertising &amp; promotions</li>
         </ul>
@@ -764,7 +764,7 @@ function startSignup(plan, isAdmin) {
   ['su-bname','su-county','su-town','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('rv-alert').innerHTML = '';
-  document.getElementById('su-descrow').style.display = (plan !== 'local') ? 'grid' : 'none';
+  document.getElementById('su-descrow').style.display = 'grid';
   document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
   const price = annual ? PRICES[plan].a : PRICES[plan].m;
   const priceLabel = fromAdmin ? 'Complimentary' : (price === 0 ? 'Free' : `$${price}/mo${annual?' · annual':''}`);
