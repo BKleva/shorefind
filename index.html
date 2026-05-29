@@ -250,7 +250,30 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .order-link.ue{background:#f0faf5;color:#06C167;border:1px solid rgba(6,193,103,.2)}
 .order-link.ts{background:#fff5f0;color:#FF4C00;border:1px solid rgba(255,76,0,.2)}
 
+.contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start;padding:2rem 0 3rem}
+.contact-info{position:sticky;top:2rem}
+.contact-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.contact-eyebrow::before{content:'';width:24px;height:1px;background:#4BB8B8;display:inline-block}
+.contact-info h2{font-family:'Playfair Display',serif;font-size:36px;font-weight:400;color:#0F1923;line-height:1.15;margin-bottom:1rem}
+.contact-info h2 em{font-style:italic;color:#1A6B8A}
+.contact-tagline{font-size:13px;color:#555;line-height:1.85;margin-bottom:2rem;max-width:340px}
+.contact-detail{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.contact-detail-icon{width:40px;height:40px;border-radius:10px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:17px;flex-shrink:0}
+.contact-detail-text{font-size:13px;color:#0F1923;font-weight:500}
+.contact-detail-sub{font-size:11px;color:#888;margin-top:1px}
+.contact-form-card{background:#fff;border-radius:20px;border:1px solid #DDD8CE;padding:2rem}
+.contact-form-card h3{font-family:'Playfair Display',serif;font-size:22px;color:#0F1923;margin-bottom:.4rem}
+.contact-form-card p{font-size:12px;color:#888;margin-bottom:1.75rem;line-height:1.7}
+.cf-success{text-align:center;padding:2.5rem 1rem;display:none}
+.cf-success i{font-size:36px;color:#1A7A4A;display:block;margin-bottom:1rem}
+.cf-success h3{font-family:'Playfair Display',serif;font-size:24px;color:#0F1923;margin-bottom:.5rem}
+.cf-success p{font-size:13px;color:#666;line-height:1.8}
+
 @media(max-width:600px){
+  .contact-wrap{grid-template-columns:1fr;gap:2rem;padding:1.5rem 0 2rem}
+  .contact-info{position:static}
+  .contact-info h2{font-size:28px}
+}
   /* Layout */
   .app{padding:0 1rem 3rem}
 
@@ -301,6 +324,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div class="nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
       <span class="nb" id="nav-pricing" onclick="showPage('pricing')">Pricing</span>
+      <span class="nb" id="nav-contact" onclick="showPage('contact')">Contact</span>
       <span class="nb" id="nav-admin" onclick="showPage('admin')" style="display:none">Admin</span>
       <span class="nb solid" onclick="startSignup('featured')">List Your Business</span>
     </div>
@@ -539,6 +563,58 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div id="det-content"></div>
   </div>
 
+  <!-- CONTACT -->
+  <div id="page-contact" class="page">
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <p class="contact-eyebrow">Get in touch</p>
+        <h2>Let's build the shore <em>together</em></h2>
+        <p class="contact-tagline">Whether you're a business owner looking to get listed, exploring a partnership, or just have a question about Shoreworks Catalog — we'd love to hear from you.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon"><i class="ti ti-mail"></i></div>
+          <div><p class="contact-detail-text">ben@shoreworksnj.com</p><p class="contact-detail-sub">Email us directly</p></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon"><i class="ti ti-phone"></i></div>
+          <div><p class="contact-detail-text">(609) 525-4536</p><p class="contact-detail-sub">Mon–Fri, 9am–6pm</p></div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon"><i class="ti ti-map-pin"></i></div>
+          <div><p class="contact-detail-text">South Jersey</p><p class="contact-detail-sub">Ocean, Atlantic &amp; Cape May counties</p></div>
+        </div>
+      </div>
+      <div class="contact-form-card">
+        <div id="cf-form-wrap">
+          <h3>Send us a message</h3>
+          <p>Tell us a bit about yourself and what you have in mind — we'll get back to you within one business day.</p>
+          <div class="frow">
+            <div class="fg"><label class="flbl">First name *</label><input class="finput" id="cf-fname" type="text" placeholder="Jane"><span class="errmsg" id="cfe-fname"></span></div>
+            <div class="fg"><label class="flbl">Last name *</label><input class="finput" id="cf-lname" type="text" placeholder="Smith"><span class="errmsg" id="cfe-lname"></span></div>
+          </div>
+          <div class="frow full" style="margin-bottom:10px"><div class="fg"><label class="flbl">Email *</label><input class="finput" id="cf-email" type="email" placeholder="you@example.com"><span class="errmsg" id="cfe-email"></span></div></div>
+          <div class="frow full" style="margin-bottom:10px"><div class="fg"><label class="flbl">Phone <span style="color:#888;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="cf-phone" type="tel" placeholder="(609) 555-0000"></div></div>
+          <div class="frow full" style="margin-bottom:10px"><div class="fg"><label class="flbl">Inquiry type *</label>
+            <select class="fsel" id="cf-type">
+              <option value="">Select…</option>
+              <option value="Partnership">Partnership opportunity</option>
+              <option value="Listing">Listing my business</option>
+              <option value="General">General question</option>
+              <option value="Other">Other</option>
+            </select><span class="errmsg" id="cfe-type"></span></div></div>
+          <div class="frow full" style="margin-bottom:10px"><div class="fg"><label class="flbl">Message *</label><textarea class="fta" id="cf-message" placeholder="Tell us what's on your mind…" style="min-height:100px"></textarea><span class="errmsg" id="cfe-message"></span></div></div>
+          <div id="cf-alert"></div>
+          <div class="form-actions"><span class="btn btn-pri" id="cf-submit-btn" onclick="submitContact()"><i class="ti ti-send"></i> Send message</span></div>
+        </div>
+        <div class="cf-success" id="cf-success">
+          <i class="ti ti-circle-check"></i>
+          <h3>Message sent!</h3>
+          <p>Thanks for reaching out. We'll get back to you at your email within one business day.</p>
+          <span class="btn btn-sec" style="margin-top:1rem" onclick="showPage('dir')">Back to directory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer style="margin-top:4rem;padding:1.5rem 0;border-top:1px solid #DDD8CE;display:flex;align-items:center;justify-content:space-between">
     <span style="font-size:11px;color:#999">© 2026 Shoreworks Catalog</span>
@@ -694,7 +770,7 @@ function showPage(p) {
   if (p === 'admin' && !isAdmin) { openAuthModal(); return; }
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
-  ['dir','pricing','admin'].forEach(x => {
+  ['dir','pricing','contact','admin'].forEach(x => {
     const nb = document.getElementById('nav-' + x);
     if (nb) nb.classList.toggle('active', x === p);
   });
@@ -1063,6 +1139,40 @@ async function savePage() {
   if (error) { alert('Save failed: ' + error.message); return; }
   Object.assign(e, updates);
   showPage('admin');
+}
+
+// ============================================================
+// CONTACT FORM
+// ============================================================
+async function submitContact() {
+  const fname   = document.getElementById('cf-fname').value.trim();
+  const lname   = document.getElementById('cf-lname').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const phone   = document.getElementById('cf-phone').value.trim();
+  const type    = document.getElementById('cf-type').value;
+  const message = document.getElementById('cf-message').value.trim();
+  let ok = true;
+  [['fname',fname],['lname',lname],['type',type],['message',message]].forEach(([k,v])=>{
+    const el = document.getElementById('cfe-'+k);
+    if (!v) { if(el) el.textContent='Required'; ok=false; } else { if(el) el.textContent=''; }
+  });
+  if (!email||!email.includes('@')) { document.getElementById('cfe-email').textContent='Valid email required'; ok=false; }
+  else document.getElementById('cfe-email').textContent='';
+  if (!ok) return;
+  const btn = document.getElementById('cf-submit-btn');
+  btn.textContent='Sending…'; btn.style.pointerEvents='none';
+  try {
+    const res = await fetch('/.netlify/functions/contact', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ fname, lname, email, phone, type, message })
+    });
+    if (!res.ok) throw new Error('Server error');
+    document.getElementById('cf-form-wrap').style.display = 'none';
+    document.getElementById('cf-success').style.display   = 'block';
+  } catch(e) {
+    document.getElementById('cf-alert').innerHTML = '<p style="color:#C03030;font-size:12px;margin-top:8px"><i class="ti ti-alert-circle"></i> Something went wrong — please email us directly at ben@shoreworksnj.com</p>';
+    btn.innerHTML='<i class="ti ti-send"></i> Send message'; btn.style.pointerEvents='';
+  }
 }
 
 // ============================================================
