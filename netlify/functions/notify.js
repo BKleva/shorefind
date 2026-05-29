@@ -17,7 +17,7 @@ exports.handler = async function (event) {
     },
     body: JSON.stringify({
       from: 'Shoreworks Catalog <onboarding@resend.dev>',
-      to: ['bkleva96@gmail.com'],
+      to: ['ben@shoreworksnj.com'],
       subject: `New listing submitted: ${bname}`,
       html: `
         <div style="font-family:sans-serif;max-width:520px;color:#1a1a1a">
