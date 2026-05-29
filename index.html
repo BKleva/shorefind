@@ -812,6 +812,12 @@ async function submitSu() {
     return;
   }
   db.push(data);
+  // Fire-and-forget email notification — don't block the success page
+  fetch('/.netlify/functions/notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bname: data.bname, plan: data.plan, email: data.email, fname: data.fname, lname: data.lname, town: data.town, county: data.county, status: data.status })
+  }).catch(() => {});
   const statusLabel = data.status === 'active' ? `<span class="sdv" style="color:#1A7A4A">Active</span>` : `<span class="sdv" style="color:#8a6520">Pending review</span>`;
   document.getElementById('suc-details').innerHTML = `<div class="sd-row"><span class="sdk">Business</span><span class="sdv">${data.bname}</span></div><div class="sd-row"><span class="sdk">Plan</span><span class="sdv">${PNAMES[data.plan]}</span></div><div class="sd-row"><span class="sdk">Status</span>${statusLabel}</div><div class="sd-row" style="border-bottom:none"><span class="sdk">Email</span><span class="sdv">${data.email}</span></div>`;
   showPage('success');
