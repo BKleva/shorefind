@@ -288,7 +288,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .about-pillar-icon{width:42px;height:42px;border-radius:10px;background:#0D3D54;display:flex;align-items:center;justify-content:center;color:#4BB8B8;font-size:18px;flex-shrink:0}
 .about-pillar h3{font-family:'Playfair Display',serif;font-size:15px;color:#0F1923;margin-bottom:4px}
 .about-pillar p{font-size:12px;color:#666;line-height:1.7}
-.about-counties{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:center;margin-bottom:2.5rem}
+.about-counties{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:2rem;display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;text-align:center;margin-bottom:2.5rem}
 .about-county-badge{display:flex;flex-direction:column;align-items:center;gap:10px}
 .about-county-icon{width:50px;height:50px;border-radius:12px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:22px}
 .about-county-name{font-family:'Playfair Display',serif;font-size:16px;color:#0F1923}
@@ -371,7 +371,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div class="dir-hero">
       <span class="hero-tag">South Jersey's Premier Local Directory</span>
       <h1>Find the <em>best</em><br>of the shore</h1>
-      <p>Curated, verified local businesses across Ocean, Atlantic &amp; Cape May counties.</p>
+      <p>Curated, verified local businesses across Atlantic &amp; Cape May counties.</p>
       <div class="search-bar">
         <input type="text" id="dirSearch" placeholder="Search restaurants, services, shops…" oninput="renderDir()">
         <button class="search-btn-el">Search</button>
@@ -382,7 +382,6 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
         <span class="filter-label">County</span>
         <div class="filter-strip" id="county-strip">
           <span class="ftag on" onclick="setCounty('all',this)"><span class="ficon"><i class="ti ti-map"></i></span>All Counties</span>
-          <span class="ftag" onclick="setCounty('Ocean County',this)">Ocean</span>
           <span class="ftag" onclick="setCounty('Atlantic County',this)">Atlantic</span>
           <span class="ftag" onclick="setCounty('Cape May County',this)">Cape May</span>
         </div>
@@ -489,7 +488,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
         <div id="su-planbar"></div>
         <div class="frow full"><div class="fg"><label class="flbl">Business name *</label><input class="finput" id="su-bname" type="text" placeholder="e.g. Shore Craft Builders"><span class="errmsg" id="e-bname"></span></div></div>
         <div class="frow">
-          <div class="fg"><label class="flbl">County *</label><select class="fsel" id="su-county"><option value="">Select…</option><option>Ocean County</option><option>Atlantic County</option><option>Cape May County</option></select><span class="errmsg" id="e-county"></span></div>
+          <div class="fg"><label class="flbl">County *</label><select class="fsel" id="su-county"><option value="">Select…</option><option>Atlantic County</option><option>Cape May County</option></select><span class="errmsg" id="e-county"></span></div>
           <div class="fg"><label class="flbl">Town *</label><input class="finput" id="su-town" type="text" placeholder="e.g. Toms River"><span class="errmsg" id="e-town"></span></div>
         </div>
         <div class="frow full" style="margin-bottom:6px"><label class="flbl">Category *</label></div>
@@ -604,7 +603,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div class="about-hero">
       <p class="about-eyebrow">South Jersey's Premier Local Catalog</p>
       <h1>Built for the shore's <em>hardest workers</em></h1>
-      <p>Shoreworks Catalog is a niche spotlight advertising catalog purpose-built for the businesses that make Atlantic, Ocean, and Cape May counties what they are — places people love, return to, and call home.</p>
+      <p>Shoreworks Catalog is a niche spotlight advertising catalog purpose-built for the businesses that make Atlantic and Cape May counties what they are — places people love, return to, and call home.</p>
     </div>
     <div class="about-body">
       <div class="about-mission">
@@ -638,11 +637,6 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       </div>
     </div>
     <div class="about-counties">
-      <div class="about-county-badge">
-        <div class="about-county-icon"><i class="ti ti-wave-sine"></i></div>
-        <p class="about-county-name">Ocean County</p>
-        <p class="about-county-sub">Toms River, Seaside Heights, Brick & more</p>
-      </div>
       <div class="about-county-badge">
         <div class="about-county-icon"><i class="ti ti-building"></i></div>
         <p class="about-county-name">Atlantic County</p>
@@ -681,7 +675,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
         </div>
         <div class="contact-detail">
           <div class="contact-detail-icon"><i class="ti ti-map-pin"></i></div>
-          <div><p class="contact-detail-text">South Jersey</p><p class="contact-detail-sub">Ocean, Atlantic &amp; Cape May counties</p></div>
+          <div><p class="contact-detail-text">South Jersey</p><p class="contact-detail-sub">Atlantic &amp; Cape May counties</p></div>
         </div>
       </div>
       <div class="contact-form-card">
@@ -1076,7 +1070,7 @@ function renderAdmin() {
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
-    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Ocean County'?'selected':''}>Ocean County</option><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.description||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div>${(e.cat==='dining'||e.cat==='cafe')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
+    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','health','retail','auto','beauty','outdoors','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.description||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div></div>${(e.cat==='dining'||e.cat==='cafe')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
     tbody.appendChild(etr);
   });
 }
