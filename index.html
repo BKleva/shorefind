@@ -63,16 +63,21 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .tier-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:#0F1923}
 .tier-count{font-size:11px;color:#7A8A96;margin-left:auto}
 
-.spot-grid{display:grid;gap:14px;margin-bottom:2.5rem}
-.spot-card{background:linear-gradient(135deg,#0D3D54 0%,#082737 100%);border-radius:20px;padding:2.25rem 2rem;display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:center;cursor:pointer;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;border:1px solid rgba(75,184,184,.18);box-shadow:0 6px 32px rgba(0,0,0,.18)}
+.spot-grid{display:grid;gap:10px;margin-bottom:2.5rem}
+.spot-card{background:linear-gradient(135deg,#0D3D54 0%,#082737 100%);border-radius:16px;padding:1.4rem 1.75rem;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;cursor:pointer;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;border:1px solid rgba(75,184,184,.18);box-shadow:0 6px 32px rgba(0,0,0,.18)}
+.sc-body{flex:1;min-width:0}
+.sc-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.sc-logo-sm{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-logo-sm img{width:100%;height:100%;object-fit:contain;padding:5px}
+.sc-logo-sm i{font-size:18px;color:#4BB8B8}
 .spot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4BB8B8,#d4a84b,#4BB8B8);opacity:.8}
 .spot-card::after{content:'';position:absolute;top:-120px;right:-120px;width:380px;height:380px;border-radius:50%;border:1px solid rgba(75,184,184,.07)}
 .spot-card:hover{transform:translateY(-5px);box-shadow:0 16px 52px rgba(0,0,0,.28)}
-.sc-eye{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#4BB8B8;margin-bottom:10px;font-weight:600;display:flex;align-items:center;gap:7px}
-.sc-eye::before{content:'★';color:#d4a84b;font-size:10px}
-.sc-name{font-family:'Playfair Display',serif;font-size:32px;font-weight:400;color:#fff;line-height:1.1;margin-bottom:10px}
-.sc-desc{font-size:13px;color:rgba(255,255,255,.72);line-height:1.85;max-width:420px}
-.sc-meta{display:flex;gap:16px;margin-top:1.25rem;flex-wrap:wrap}
+.sc-eye{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#4BB8B8;font-weight:600;display:flex;align-items:center;gap:6px}
+.sc-eye::before{content:'★';color:#d4a84b;font-size:9px}
+.sc-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:#fff;line-height:1.1}
+.sc-desc{font-size:12px;color:rgba(255,255,255,.65);line-height:1.75;max-width:560px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-meta{display:flex;gap:14px;margin-top:.6rem;flex-wrap:wrap}
 .sc-tag{font-size:11px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:5px}
 .sc-tag i{font-size:12px;color:#4BB8B8}
 .sc-right{display:flex;flex-direction:column;align-items:center;gap:14px;align-self:center;flex-shrink:0;justify-self:end;margin-left:auto}
@@ -338,9 +343,8 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   .search-btn-el{padding:0 16px;font-size:12px}
 
   /* Spotlight card — stack vertically on mobile */
-  .spot-card{grid-template-columns:1fr}
-  .sc-name{font-size:22px}
-  .sc-cta{align-self:flex-start;margin-top:.75rem;display:inline-block;justify-self:start}
+  .spot-card{flex-wrap:wrap}
+  .sc-cta{align-self:center}
 
   /* Pricing */
   .pricing-hero h1{font-size:28px}
@@ -926,7 +930,7 @@ function renderDir() {
   if (!all.length) { sd.innerHTML=''; fd.innerHTML=''; ld.innerHTML=''; ed.style.display='block'; return; }
   ed.style.display = 'none';
   const orderLinks = e => (e.cat==='dining')&&(e.doordash||e.ubereats||e.toast) ? `<div class="order-links">${e.doordash?`<a href="${e.doordash}" class="order-link dd" target="_blank" onclick="event.stopPropagation()">DoorDash</a>`:''}${e.ubereats?`<a href="${e.ubereats}" class="order-link ue" target="_blank" onclick="event.stopPropagation()">UberEats</a>`:''}${e.toast?`<a href="${e.toast}" class="order-link ts" target="_blank" onclick="event.stopPropagation()">Toast</a>`:''}</div>` : '';
-  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2><p class="sc-desc">${e.description||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${orderLinks(e)}</div><div class="sc-right">${e.logo?`<div class="sc-logo-box"><img src="${e.logo}" alt="${e.bname} logo"></div>`:''}<span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div></div>`).join('')}</div>` : '';
+  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div class="sc-body"><div class="sc-head">${e.logo?`<div class="sc-logo-sm"><img src="${e.logo}" alt="${e.bname}"></div>`:`<div class="sc-logo-sm"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`}<div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2></div></div><p class="sc-desc">${e.description||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${orderLinks(e)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
   const bizIcon = (e, cls) => e.logo ? `<div class="${cls}"><img src="${e.logo}" alt="${e.bname} logo"></div>` : `<div class="${cls}"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
   fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card"><div class="fc-top">${bizIcon(e,'fc-icon')}<span class="fc-ribbon">Featured</span></div><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}</p><div class="fc-rating"><span class="stars">★★★★★</span>&nbsp;4.8</div>${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" style="color:#1A6B8A;font-size:11px;text-decoration:none" target="_blank">${e.website.replace('https://','')}</a></div>`:''}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div>${orderLinks(e)}</div>`).join('')}</div>` : '';
   ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p></div></div>`).join('')}</div>` : '';
