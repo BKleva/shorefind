@@ -536,7 +536,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           <div class="fg"><label class="flbl">Last name *</label><input class="finput" id="su-lname" type="text"><span class="errmsg" id="e-lname"></span></div>
         </div>
         <div class="frow full"><div class="fg"><label class="flbl">Email <span style="color:#888;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="su-email" type="email"><span class="errmsg" id="e-email"></span></div></div>
-        <div class="frow full"><div class="fg"><label class="flbl">Phone *</label><input class="finput" id="su-phone" type="tel"><span class="errmsg" id="e-phone"></span></div></div>
+        <div class="frow full"><div class="fg"><label class="flbl">Phone <span style="color:#888;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="su-phone" type="tel"><span class="errmsg" id="e-phone"></span></div></div>
         <div class="frow full" id="su-hoursrow" style="display:none"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Business hours <span style="color:#888">(Spotlight)</span></label><input class="finput" id="su-hours" type="text" placeholder="Mon–Sat 9am–8pm"></div></div>
         <div class="form-actions">
           <span class="btn btn-sec" onclick="goSuStep(1)"><i class="ti ti-arrow-left"></i> Back</span>
@@ -1009,7 +1009,7 @@ function su2() {
   if (!document.getElementById('su-lname').value.trim()) { setErr('lname','Required'); ok=false; } else setErr('lname','');
   const em = document.getElementById('su-email').value.trim();
   if (em && !em.includes('@')) { setErr('email','Enter a valid email'); ok=false; } else setErr('email','');
-  if (!document.getElementById('su-phone').value.trim()) { setErr('phone','Required'); ok=false; } else setErr('phone','');
+  setErr('phone','');
   if (!ok) return;
   const price = annual ? PRICES[selPlan].a : PRICES[selPlan].m;
   document.getElementById('rv-plan').textContent    = PNAMES[selPlan];
