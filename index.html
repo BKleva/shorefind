@@ -1215,9 +1215,13 @@ function editPage(id) {
 function previewPhoto(i) {
   const url = document.getElementById('ped-p'+i).value.trim();
   const box = document.getElementById('pp-'+i);
-  box.innerHTML = url
-    ? `<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=ti></i>'">`
-    : `<i class="ti ti-photo"></i>`;
+  box.innerHTML = '';
+  if (!url) { box.innerHTML = '<i class="ti ti-photo"></i>'; return; }
+  const img = document.createElement('img');
+  img.style.cssText = 'width:100%;height:100%;object-fit:cover';
+  img.onerror = () => { box.innerHTML = '<i class="ti ti-alert-circle" style="color:#C03030"></i>'; };
+  img.src = url;
+  box.appendChild(img);
 }
 
 function getHlData() {
@@ -1248,14 +1252,22 @@ function addHl()     { const d = getHlData(); if (d.length < 3) { d.push({icon:'
 function removeHl(i) { const d = getHlData(); d.splice(i,1); renderHlEditors(d); }
 
 async function savePage() {
-  const e = db.find(x => x.id === selPageId); if (!e) return;
+  if (!selPageId) { alert('No listing selected'); return; }
+  const e = db.find(x => x.id === selPageId);
+  if (!e) { alert('Listing not found in local data (id: ' + selPageId + ')'); return; }
+  // Refresh session before writing to avoid stale-token RLS block
+  await sb.auth.getSession();
   const updates = {
     tagline:    document.getElementById('ped-tagline').value.trim(),
     photos:     [0,1,2].map(i => document.getElementById('ped-p'+i).value.trim()),
     highlights: getHlData().filter(h => h.title || h.text)
   };
-  const { error } = await sb.from('listings').update(updates).eq('id', selPageId);
+  const { data, error } = await sb.from('listings').update(updates).eq('id', selPageId).select();
   if (error) { alert('Save failed: ' + error.message); return; }
+  if (!data || data.length === 0) {
+    alert('Save failed — no matching row updated.\nCheck that you are signed in and the listing exists in Supabase.');
+    return;
+  }
   Object.assign(e, updates);
   showPage('admin');
 }
