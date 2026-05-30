@@ -25,19 +25,26 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .nb.solid{background:#0D3D54;color:#fff;border-color:#0D3D54}
 .nb.solid:hover{background:#0a2f40;color:#fff}
 
-.dir-hero{background:#0D3D54;border-radius:24px;padding:5rem 4rem 5.5rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.dir-hero{background:#0D3D54;border-radius:24px;padding:3.5rem 3.5rem;margin-bottom:3rem;position:relative;overflow:hidden;display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center}
 .dir-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(75,184,184,.12)}
 .hero-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
 .hero-tag::before{content:'';width:32px;height:1px;background:#4BB8B8;display:inline-block}
-.dir-hero h1{font-family:'Playfair Display',serif;font-size:82px;font-weight:400;color:#fff;line-height:1.02;margin-bottom:1rem;max-width:760px}
+.dir-hero h1{font-family:'Playfair Display',serif;font-size:72px;font-weight:400;color:#fff;line-height:1.02;margin-bottom:.75rem}
 .dir-hero h1 em{font-style:italic;color:#4BB8B8}
-.dir-hero p{font-size:15px;color:rgba(255,255,255,.65);margin-bottom:2.5rem;max-width:480px;line-height:1.9}
-.search-bar{display:flex;max-width:580px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:100px;overflow:hidden}
-.search-bar input{flex:1;background:transparent;border:none;padding:16px 24px;color:#fff;font-size:14px;font-family:'Sora',sans-serif;outline:none}
+.dir-hero p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.85}
+.hero-right{position:relative;z-index:1}
+.search-bar{display:flex;width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:100px;overflow:hidden;margin-bottom:1.25rem}
+.search-bar input{flex:1;background:transparent;border:none;padding:14px 20px;color:#fff;font-size:13px;font-family:'Sora',sans-serif;outline:none}
 .search-bar input::placeholder{color:rgba(255,255,255,.35)}
-.search-btn-el{background:#4BB8B8;border:none;padding:0 28px;color:#0D3D54;font-size:13px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif}
-
-.filters-row{display:flex;gap:1.25rem;flex-direction:column;margin-bottom:3rem}
+.search-btn-el{background:#4BB8B8;border:none;padding:0 22px;color:#0D3D54;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap}
+.hero-filter-lbl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600;margin-bottom:7px;display:block}
+.hero-filter-group{margin-bottom:10px}
+.hero-strip .ftag{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:rgba(255,255,255,.75)}
+.hero-strip .ftag .ficon{color:rgba(255,255,255,.5)}
+.hero-strip .ftag:hover{border-color:#4BB8B8;color:#4BB8B8;background:rgba(75,184,184,.12)}
+.hero-strip .ftag:hover .ficon{color:#4BB8B8}
+.hero-strip .ftag.on{background:rgba(75,184,184,.18);color:#4BB8B8;border-color:#4BB8B8;font-weight:600}
+.hero-strip .ftag.on .ficon{color:#4BB8B8}
 .filter-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#555;font-weight:600;margin-bottom:6px;display:block}
 .filter-strip{display:flex;gap:6px;flex-wrap:wrap}
 .ftag{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:100px;font-size:12px;font-weight:500;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid #C8C4BB;background:#ffffff;color:#222222;line-height:1;user-select:none;transition:border-color .15s,background .15s,color .15s}
@@ -320,12 +327,11 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   .nb.solid{padding:6px 13px}
 
   /* Hero */
-  .dir-hero{padding:2rem 1.5rem 2.5rem;border-radius:18px}
+  .dir-hero{padding:2rem 1.5rem 2rem;border-radius:18px;grid-template-columns:1fr;gap:1.75rem}
   .hero-tag{font-size:9px;letter-spacing:.12em;white-space:nowrap}
-  .dir-hero h1{font-size:32px}
-  .dir-hero p{font-size:13px;margin-bottom:1.5rem}
-  .search-bar{max-width:100%}
-  .search-btn-el{padding:0 16px;font-size:12px;white-space:nowrap}
+  .dir-hero h1{font-size:34px}
+  .dir-hero p{font-size:13px}
+  .search-btn-el{padding:0 16px;font-size:12px}
 
   /* Spotlight card — stack vertically on mobile */
   .spot-card{grid-template-columns:1fr}
@@ -371,36 +377,37 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   <!-- DIRECTORY -->
   <div id="page-dir" class="page active">
     <div class="dir-hero">
-      <span class="hero-tag">South Jersey's Premier Local Directory</span>
-      <h1>Find the <em>best</em><br>of the shore</h1>
-      <p>Curated, verified local businesses across Atlantic &amp; Cape May counties.</p>
-      <div class="search-bar">
-        <input type="text" id="dirSearch" placeholder="Search restaurants, services, shops…" oninput="renderDir()">
-        <button class="search-btn-el">Search</button>
+      <div class="hero-left">
+        <span class="hero-tag">South Jersey's Premier Local Directory</span>
+        <h1>Find the <em>best</em><br>of the shore</h1>
+        <p>Curated, verified local businesses across Atlantic &amp; Cape May counties.</p>
       </div>
-    </div>
-    <div class="filters-row">
-      <div>
-        <span class="filter-label">County</span>
-        <div class="filter-strip" id="county-strip">
-          <span class="ftag on" onclick="setCounty('all',this)"><span class="ficon"><i class="ti ti-map"></i></span>All Counties</span>
-          <span class="ftag" onclick="setCounty('Atlantic County',this)">Atlantic</span>
-          <span class="ftag" onclick="setCounty('Cape May County',this)">Cape May</span>
+      <div class="hero-right">
+        <div class="search-bar">
+          <input type="text" id="dirSearch" placeholder="Search businesses…" oninput="renderDir()">
+          <button class="search-btn-el">Search</button>
         </div>
-      </div>
-      <div>
-        <span class="filter-label">Category</span>
-        <div class="filter-strip" id="cat-strip">
-          <span class="ftag on" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
-          <span class="ftag" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
-
-          <span class="ftag" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
-          <span class="ftag" onclick="setCat('health',this)"><span class="ficon"><i class="ti ti-heart"></i></span>Health</span>
-          <span class="ftag" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
-          <span class="ftag" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
-          <span class="ftag" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
-          <span class="ftag" onclick="setCat('outdoors',this)"><span class="ficon"><i class="ti ti-wave-sine"></i></span>Outdoors</span>
-          <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
+        <div class="hero-filter-group">
+          <span class="hero-filter-lbl">County</span>
+          <div class="filter-strip hero-strip" id="county-strip">
+            <span class="ftag on" onclick="setCounty('all',this)"><span class="ficon"><i class="ti ti-map"></i></span>All</span>
+            <span class="ftag" onclick="setCounty('Atlantic County',this)">Atlantic</span>
+            <span class="ftag" onclick="setCounty('Cape May County',this)">Cape May</span>
+          </div>
+        </div>
+        <div class="hero-filter-group">
+          <span class="hero-filter-lbl">Category</span>
+          <div class="filter-strip hero-strip" id="cat-strip">
+            <span class="ftag on" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
+            <span class="ftag" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
+            <span class="ftag" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
+            <span class="ftag" onclick="setCat('health',this)"><span class="ficon"><i class="ti ti-heart"></i></span>Health</span>
+            <span class="ftag" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
+            <span class="ftag" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
+            <span class="ftag" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
+            <span class="ftag" onclick="setCat('outdoors',this)"><span class="ficon"><i class="ti ti-wave-sine"></i></span>Outdoors</span>
+            <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
+          </div>
         </div>
       </div>
     </div>
