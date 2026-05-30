@@ -1162,7 +1162,7 @@ function showDetail(id) {
     gallery = `<div class="det-gallery g3"><div class="det-photo main"><img src="${photos[0]}" alt=""></div>${img(photos[1])}${img(photos[2])}</div>`;
   }
   const infoItems = [
-    e.town    ? `<div class="det-info-item"><span class="det-info-lbl">Location</span><span class="det-info-val">${e.town}, ${e.county.replace(' County','')}</span></div>` : '',
+    e.town    ? `<div class="det-info-item"><span class="det-info-lbl">Location</span><span class="det-info-val">${e.town} — ${e.county}</span></div>` : '',
     e.hours   ? `<div class="det-info-item"><span class="det-info-lbl">Hours</span><span class="det-info-val">${e.hours}</span></div>` : '',
     e.phone   ? `<div class="det-info-item"><span class="det-info-lbl">Phone</span><span class="det-info-val">${e.phone}</span></div>` : '',
     e.website ? `<div class="det-info-item"><span class="det-info-lbl">Website</span><span class="det-info-val"><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></span></div>` : '',
@@ -1174,7 +1174,7 @@ function showDetail(id) {
       <h1 class="det-name">${e.bname}</h1>
       ${e.tagline ? `<p class="det-tagline">${e.tagline}</p>` : ''}
       <div class="det-badges">
-        <span class="det-badge"><i class="ti ti-map-pin"></i>${e.town}, ${e.county.replace(' County','')}</span>
+        <span class="det-badge"><i class="ti ti-map-pin"></i>${e.town} — ${e.county}</span>
         ${e.hours ? `<span class="det-badge"><i class="ti ti-clock"></i>${e.hours}</span>` : ''}
         <span class="det-badge"><i class="ti ${CATI[e.cat]||'ti-building'}"></i>${cap(e.cat)}</span>
       </div>
