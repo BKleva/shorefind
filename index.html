@@ -25,11 +25,12 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .nb.solid{background:#0D3D54;color:#fff;border-color:#0D3D54}
 .nb.solid:hover{background:#0a2f40;color:#fff}
 
-.dir-hero{background:#0D3D54;border-radius:24px;padding:3.5rem 3.5rem;margin-bottom:3rem;position:relative;overflow:hidden;display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center}
+.dir-hero{background:#0D3D54;border-radius:24px;padding:3.5rem 3.5rem 3rem;margin-bottom:3rem;position:relative;overflow:hidden;display:grid;grid-template-columns:1.1fr 1fr;grid-template-rows:auto auto;gap:1rem 3rem}
 .dir-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(75,184,184,.12)}
-.hero-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
+.hero-heading{grid-column:1/-1;margin-bottom:.5rem}
+.hero-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:10px}
 .hero-tag::before{content:'';width:32px;height:1px;background:#4BB8B8;display:inline-block}
-.dir-hero h1{font-family:'Playfair Display',serif;font-size:72px;font-weight:400;color:#fff;line-height:1.02;margin-bottom:.75rem}
+.dir-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,92px);font-weight:400;color:#fff;line-height:1.02;white-space:nowrap}
 .dir-hero h1 em{font-style:italic;color:#4BB8B8}
 .dir-hero p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.85}
 .hero-right{position:relative;z-index:1}
@@ -327,9 +328,9 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   .nb.solid{padding:6px 13px}
 
   /* Hero */
-  .dir-hero{padding:2rem 1.5rem 2rem;border-radius:18px;grid-template-columns:1fr;gap:1.75rem}
-  .hero-tag{font-size:9px;letter-spacing:.12em;white-space:nowrap}
-  .dir-hero h1{font-size:34px}
+  .dir-hero{padding:2rem 1.5rem 2rem;border-radius:18px;grid-template-columns:1fr;gap:1rem}
+  .hero-tag{font-size:9px;letter-spacing:.12em}
+  .dir-hero h1{font-size:clamp(1.75rem,10vw,2.5rem);white-space:normal}
   .dir-hero p{font-size:13px}
   .search-btn-el{padding:0 16px;font-size:12px}
 
@@ -377,9 +378,11 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   <!-- DIRECTORY -->
   <div id="page-dir" class="page active">
     <div class="dir-hero">
-      <div class="hero-left">
+      <div class="hero-heading">
         <span class="hero-tag">South Jersey's Premier Local Directory</span>
-        <h1>Find the <em>best</em><br>of the shore</h1>
+        <h1>Find the <em>best</em> of the shore</h1>
+      </div>
+      <div class="hero-left">
         <p>Curated, verified local businesses across Atlantic &amp; Cape May counties.</p>
       </div>
       <div class="hero-right">
