@@ -39,8 +39,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .search-bar input::placeholder{color:rgba(255,255,255,.35)}
 .search-btn-el{background:#4BB8B8;border:none;padding:0 22px;color:#0D3D54;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap}
 .hero-filter-lbl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:600;margin-bottom:7px;display:block}
-.hero-filter-row{display:flex;gap:1.5rem;flex-wrap:wrap}
-.hero-filter-group{}
+.hero-filters-full{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:1rem;border-top:1px solid rgba(255,255,255,.1)}
 .hero-strip .ftag{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:rgba(255,255,255,.95)}
 .hero-strip .ftag .ficon{color:rgba(255,255,255,.8)}
 .hero-strip .ftag:hover{border-color:#4BB8B8;color:#4BB8B8;background:rgba(75,184,184,.12)}
@@ -423,30 +422,24 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           <input type="text" id="dirSearch" placeholder="Search businesses…" oninput="renderDir()">
           <button class="search-btn-el">Search</button>
         </div>
-        <div class="hero-filter-row">
-        <div class="hero-filter-group">
-          <span class="hero-filter-lbl">County</span>
-          <div class="filter-strip hero-strip" id="county-strip">
-            <span class="ftag on" onclick="setCounty('all',this)"><span class="ficon"><i class="ti ti-map"></i></span>All</span>
-            <span class="ftag" onclick="setCounty('Atlantic County',this)">Atlantic County</span>
-            <span class="ftag" onclick="setCounty('Cape May County',this)">Cape May County</span>
-          </div>
+      </div>
+      <div class="hero-filters-full">
+        <div class="filter-strip hero-strip" id="county-strip">
+          <span class="ftag on" onclick="setCounty('all',this)"><span class="ficon"><i class="ti ti-map"></i></span>All</span>
+          <span class="ftag" onclick="setCounty('Atlantic County',this)">Atlantic County</span>
+          <span class="ftag" onclick="setCounty('Cape May County',this)">Cape May County</span>
         </div>
-        <div class="hero-filter-group">
-          <span class="hero-filter-lbl">Category</span>
-
-          <div class="filter-strip hero-strip" id="cat-strip">
-            <span class="ftag on" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
-            <span class="ftag" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
-            <span class="ftag" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
-            <span class="ftag" onclick="setCat('health',this)"><span class="ficon"><i class="ti ti-heart"></i></span>Health</span>
-            <span class="ftag" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
-            <span class="ftag" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
-            <span class="ftag" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
-            <span class="ftag" onclick="setCat('outdoors',this)"><span class="ficon"><i class="ti ti-wave-sine"></i></span>Outdoors</span>
-            <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
-          </div>
-        </div>
+        <span style="color:rgba(255,255,255,.2);font-size:18px;align-self:center">|</span>
+        <div class="filter-strip hero-strip" id="cat-strip">
+          <span class="ftag on" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
+          <span class="ftag" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
+          <span class="ftag" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
+          <span class="ftag" onclick="setCat('health',this)"><span class="ficon"><i class="ti ti-heart"></i></span>Health</span>
+          <span class="ftag" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
+          <span class="ftag" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
+          <span class="ftag" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
+          <span class="ftag" onclick="setCat('outdoors',this)"><span class="ficon"><i class="ti ti-wave-sine"></i></span>Outdoors</span>
+          <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
         </div>
       </div>
     </div>
