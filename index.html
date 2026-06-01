@@ -1099,6 +1099,7 @@ async function submitSu() {
   const btn = document.getElementById('su-submitBtn');
   btn.textContent = 'Submitting…';
   btn.style.pointerEvents = 'none';
+  const price = fromAdmin ? 0 : (annual ? PRICES[selPlan].a : PRICES[selPlan].m);
   const entry = {
     id:          Date.now(),
     bname:       document.getElementById('su-bname').value.trim(),
@@ -1113,7 +1114,7 @@ async function submitSu() {
     description: document.getElementById('su-desc').value.trim(),
     hours:       document.getElementById('su-hours').value.trim(),
     billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
-    price:       fromAdmin ? 0 : (annual ? PRICES[selPlan].a : PRICES[selPlan].m),
+    price:       price,
     status:      fromAdmin ? 'active' : (selPlan === 'spotlight' ? 'pending' : 'active'),
     submitted:   new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
   };
