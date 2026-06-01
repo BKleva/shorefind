@@ -158,7 +158,13 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .step{display:none}.step.active{display:block}
 .stitle{font-family:'Playfair Display',serif;font-size:28px;color:#0F1923;margin-bottom:4px}
 .ssub{font-size:13px;color:#3a3a3a;margin-bottom:2rem;line-height:1.8}
-.plan-bar-su{background:#0D3D54;border-radius:12px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem}
+.plan-bar-su{background:#0D3D54;border-radius:12px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.plan-switcher{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.75rem}
+.plan-switch-btn{border:1.5px solid #DDD8CE;border-radius:10px;padding:10px 12px;cursor:pointer;text-align:center;background:#fff;transition:all .15s;user-select:none}
+.plan-switch-btn:hover{border-color:#1A6B8A}
+.plan-switch-btn.active{border-color:#0D3D54;background:#e8f5fb}
+.plan-switch-btn .psb-name{font-family:'Playfair Display',serif;font-size:14px;color:#0F1923;display:block;margin-bottom:2px}
+.plan-switch-btn .psb-price{font-size:11px;color:#555;display:block}
 .pb-name{font-family:'Playfair Display',serif;font-size:15px;color:#fff}
 .pb-price{font-size:12px;color:#4BB8B8;font-weight:500}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
@@ -532,6 +538,20 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <div class="step active" id="su-step1">
         <p class="stitle">Tell us about your business</p>
         <p class="ssub">This is how you'll appear in the Shoreworks directory.</p>
+        <div class="plan-switcher" id="su-plan-switcher">
+          <div class="plan-switch-btn active" id="psb-local" onclick="switchPlan('local')">
+            <span class="psb-name">Local Listing</span>
+            <span class="psb-price">Free</span>
+          </div>
+          <div class="plan-switch-btn" id="psb-featured" onclick="switchPlan('featured')">
+            <span class="psb-name">Featured</span>
+            <span class="psb-price" id="psb-featured-price">$79/mo</span>
+          </div>
+          <div class="plan-switch-btn" id="psb-spotlight" onclick="switchPlan('spotlight')">
+            <span class="psb-name">Spotlight</span>
+            <span class="psb-price" id="psb-spotlight-price">$199/mo</span>
+          </div>
+        </div>
         <div id="su-planbar"></div>
         <div class="frow full"><div class="fg"><label class="flbl">Business name *</label><input class="finput" id="su-bname" type="text" placeholder="e.g. Shore Craft Builders"><span class="errmsg" id="e-bname"></span></div></div>
         <div class="frow">
@@ -993,6 +1013,22 @@ function toggleBilling() {
 // ============================================================
 // SIGNUP FLOW
 // ============================================================
+function updatePlanUI(plan) {
+  selPlan = plan;
+  document.querySelectorAll('.plan-switch-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.getElementById('psb-' + plan);
+  if (activeBtn) activeBtn.classList.add('active');
+  document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
+  const price = annual ? PRICES[plan].a : PRICES[plan].m;
+  const priceLabel = fromAdmin ? 'Complimentary' : (price === 0 ? 'Free' : `$${price}/mo${annual?' · annual':''}`);
+  const priceColor = fromAdmin ? '#4BB8B8' : (price === 0 ? '#555' : '#4BB8B8');
+  document.getElementById('su-planbar').innerHTML = fromAdmin
+    ? `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price" style="color:${priceColor}">${priceLabel}</span></div>`
+    : '';
+}
+
+function switchPlan(plan) { updatePlanUI(plan); }
+
 function startSignup(plan, isAdmin) {
   selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
@@ -1000,11 +1036,9 @@ function startSignup(plan, isAdmin) {
   ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('rv-alert').innerHTML = '';
   document.getElementById('su-descrow').style.display = 'grid';
-  document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
-  const price = annual ? PRICES[plan].a : PRICES[plan].m;
-  const priceLabel = fromAdmin ? 'Complimentary' : (price === 0 ? 'Free' : `$${price}/mo${annual?' · annual':''}`);
-  const priceColor = fromAdmin ? '#4BB8B8' : (price === 0 ? '#888' : '#4BB8B8');
-  document.getElementById('su-planbar').innerHTML = `<div class="plan-bar-su"><span class="pb-name">${PNAMES[plan]}</span><span class="pb-price" style="color:${priceColor}">${priceLabel}</span></div>`;
+  const switcher = document.getElementById('su-plan-switcher');
+  if (switcher) switcher.style.display = fromAdmin ? 'none' : 'grid';
+  updatePlanUI(plan);
   const back = document.querySelector('.su-back');
   if (back) { back.onclick = () => showPage(fromAdmin ? 'admin' : 'pricing'); back.innerHTML = `<i class="ti ti-arrow-left"></i> Back to ${fromAdmin ? 'admin' : 'pricing'}`; }
   goSuStep(1);
@@ -1080,7 +1114,7 @@ async function submitSu() {
     hours:       document.getElementById('su-hours').value.trim(),
     billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
     price:       fromAdmin ? 0 : (annual ? PRICES[selPlan].a : PRICES[selPlan].m),
-    status:      fromAdmin ? 'active' : 'pending',
+    status:      fromAdmin ? 'active' : (selPlan === 'spotlight' ? 'pending' : 'active'),
     submitted:   new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
   };
   const { data, error } = await sb.from('listings').insert([entry]).select().single();
