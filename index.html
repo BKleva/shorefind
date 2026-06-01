@@ -83,8 +83,8 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .sc-right{display:flex;flex-direction:column;align-items:center;gap:14px;align-self:center;flex-shrink:0;justify-self:end;margin-left:auto}
 .sc-logo-box{width:96px;height:96px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);overflow:hidden;display:flex;align-items:center;justify-content:center}
 .sc-logo-box img{width:100%;height:100%;object-fit:contain;padding:8px}
-.sc-cta{background:#4BB8B8;border:none;border-radius:100px;padding:7px 16px;color:#0D3D54;font-size:11px;font-weight:700;white-space:nowrap;align-self:center;cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-block;transition:background .15s;letter-spacing:.03em;flex-shrink:0;width:auto}
-.sc-cta:hover{background:#5ecfcf}
+.sc-cta{background:transparent;border:1px solid rgba(75,184,184,.5);border-radius:100px;padding:5px 14px;color:#4BB8B8;font-size:10px;font-weight:600;white-space:nowrap;align-self:center;cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-block;transition:all .15s;letter-spacing:.03em;flex-shrink:0;width:auto}
+.sc-cta:hover{background:rgba(75,184,184,.15);border-color:#4BB8B8}
 
 .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:2.5rem}
 .feat-card{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.25rem;cursor:pointer;transition:all .18s}
@@ -254,6 +254,18 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .det-hl-title{font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;margin-bottom:.5rem}
 .det-hl-text{font-size:12px;color:#555;line-height:1.8}
 .det-info-strip{background:#0D3D54;border-radius:16px;padding:1.75rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.25rem;margin-top:2rem}
+.det-body{display:grid;grid-template-columns:1fr 300px;gap:2.5rem;margin-top:2rem;align-items:start}
+.det-main{}
+.det-sidebar{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:1.5rem;position:sticky;top:2rem}
+.det-sidebar-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4BB8B8;margin-bottom:.6rem;display:block}
+.det-sidebar-val{font-size:13px;color:#0F1923;font-weight:500;line-height:1.5}
+.det-sidebar-val a{color:#1A6B8A;text-decoration:none}
+.det-sidebar-row{padding:10px 0;border-bottom:1px solid #F0EDE6}
+.det-sidebar-row:last-child{border-bottom:none}
+.det-hl-list{display:flex;flex-direction:column;gap:1.25rem;margin-bottom:2rem}
+.det-hl-item{display:flex;gap:14px;align-items:flex-start;padding-bottom:1.25rem;border-bottom:1px solid #EDE8DF}
+.det-hl-item:last-child{border-bottom:none;padding-bottom:0}
+@media(max-width:900px){.det-body{grid-template-columns:1fr}.det-sidebar{position:static}}
 .det-info-item{display:flex;flex-direction:column;gap:5px}
 .det-info-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:600}
 .det-info-val{font-size:13px;color:#fff}
@@ -1202,10 +1214,21 @@ function showDetail(id) {
       ${e.website ? `<a href="${e.website}" class="det-visit" target="_blank"><i class="ti ti-external-link"></i> Visit website</a>` : ''}
     </div>
     ${gallery}
-    ${e.description ? `<div class="det-desc"><i class="ti ti-quote"></i><p>${e.description}</p></div>` : ''}
-    ${(e.cat==='dining'&&(e.doordash||e.ubereats||e.toast))||(e.instagram||e.facebook)?`<div style="margin-bottom:2rem"><span class="det-sec-lbl">Find Us Online</span><div style="display:flex;flex-wrap:wrap;gap:6px">${e.cat==='dining'&&e.doordash?`<a href="${e.doordash}" class="order-link dd" target="_blank">DoorDash</a>`:''}${e.cat==='dining'&&e.ubereats?`<a href="${e.ubereats}" class="order-link ue" target="_blank">UberEats</a>`:''}${e.cat==='dining'&&e.toast?`<a href="${e.toast}" class="order-link ts" target="_blank">Toast</a>`:''}${e.instagram?`<a href="${e.instagram}" class="social-link ig" target="_blank"><i class="ti ti-brand-instagram"></i> Instagram</a>`:''}${e.facebook?`<a href="${e.facebook}" class="social-link fb" target="_blank"><i class="ti ti-brand-facebook"></i> Facebook</a>`:''}</div></div>`:''}
-    ${hl.length ? `<span class="det-sec-lbl">What people love</span><div class="det-hl-grid">${hl.map(h=>`<div class="det-hl"><div class="det-hl-ico"><i class="ti ${h.icon||'ti-star'}"></i></div><p class="det-hl-title">${h.title}</p><p class="det-hl-text">${h.text}</p></div>`).join('')}</div>` : ''}
-    ${infoItems ? `<div class="det-info-strip">${infoItems}</div>` : ''}
+    <div class="det-body">
+      <div class="det-main">
+        ${e.description ? `<div class="det-desc" style="margin-top:0"><i class="ti ti-quote"></i><p>${e.description}</p></div>` : ''}
+        ${hl.length ? `<span class="det-sec-lbl" style="margin-top:1.5rem">What people love</span><div class="det-hl-list">${hl.map(h=>`<div class="det-hl-item"><div class="det-hl-ico" style="flex-shrink:0"><i class="ti ${h.icon||'ti-star'}"></i></div><div><p class="det-hl-title">${h.title}</p><p class="det-hl-text">${h.text}</p></div></div>`).join('')}</div>` : ''}
+      </div>
+      <div class="det-sidebar">
+        <p style="font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;margin-bottom:1rem;font-weight:400">Business Info</p>
+        ${e.town ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Location</span><span class="det-sidebar-val">${e.town} — ${e.county}</span></div>` : ''}
+        ${e.hours ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Hours</span><span class="det-sidebar-val">${e.hours}</span></div>` : ''}
+        ${e.phone ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Phone</span><span class="det-sidebar-val">${e.phone}</span></div>` : ''}
+        ${e.website ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Website</span><span class="det-sidebar-val"><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></span></div>` : ''}
+        ${e.email ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Email</span><span class="det-sidebar-val"><a href="mailto:${e.email}">${e.email}</a></span></div>` : ''}
+        ${(e.cat==='dining'&&(e.doordash||e.ubereats||e.toast))||(e.instagram||e.facebook) ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Find Us Online</span><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${e.cat==='dining'&&e.doordash?`<a href="${e.doordash}" class="order-link dd" target="_blank">DoorDash</a>`:''}${e.cat==='dining'&&e.ubereats?`<a href="${e.ubereats}" class="order-link ue" target="_blank">UberEats</a>`:''}${e.cat==='dining'&&e.toast?`<a href="${e.toast}" class="order-link ts" target="_blank">Toast</a>`:''}${e.instagram?`<a href="${e.instagram}" class="social-link ig" target="_blank"><i class="ti ti-brand-instagram"></i> Instagram</a>`:''}${e.facebook?`<a href="${e.facebook}" class="social-link fb" target="_blank"><i class="ti ti-brand-facebook"></i> Facebook</a>`:''}</div></div>` : ''}
+      </div>
+    </div>
   `;
   showPage('detail');
 }
