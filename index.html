@@ -493,7 +493,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <div class="plan-card pop">
         <div class="pop-banner">Most popular</div>
         <div><span class="ptb" style="background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b">Featured</span><p class="pname">Businesses You'll Love</p><p class="pdesc">Stand out with rich listings, ratings, and the gold Featured ribbon.</p></div>
-        <div class="pprice"><span class="pamount" id="pr-featured">$79</span><span class="pper">/mo</span></div>
+        <div class="pprice"><span class="pamount" id="pr-featured">$14.99</span><span class="pper">/mo</span></div>
         <ul class="pfeats">
           <li><i class="ti ti-check"></i>Everything in Local</li>
           <li><i class="ti ti-check"></i>Business description &amp; ratings</li>
@@ -507,7 +507,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       </div>
       <div class="plan-card">
         <div><span class="ptb" style="background:#0D3D54;color:#4BB8B8">Spotlight</span><p class="pname">Spotlight Business</p><p class="pdesc">The premier position — unmissable hero card at the top of every search.</p></div>
-        <div class="pprice"><span class="pamount" id="pr-spotlight">$199</span><span class="pper">/mo</span></div>
+        <div class="pprice"><span class="pamount" id="pr-spotlight">$49.99</span><span class="pper">/mo</span></div>
         <ul class="pfeats">
           <li><i class="ti ti-check"></i>Everything in Featured</li>
           <li><i class="ti ti-check"></i>Full Spotlight hero card</li>
@@ -545,11 +545,11 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           </div>
           <div class="plan-switch-btn" id="psb-featured" onclick="switchPlan('featured')">
             <span class="psb-name">Featured</span>
-            <span class="psb-price" id="psb-featured-price">$79/mo</span>
+            <span class="psb-price" id="psb-featured-price">$14.99/mo</span>
           </div>
           <div class="plan-switch-btn" id="psb-spotlight" onclick="switchPlan('spotlight')">
             <span class="psb-name">Spotlight</span>
-            <span class="psb-price" id="psb-spotlight-price">$199/mo</span>
+            <span class="psb-price" id="psb-spotlight-price">$49.99/mo</span>
           </div>
         </div>
         <div id="su-planbar"></div>
@@ -852,9 +852,9 @@ const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // CONFIGURATION — edit prices, plan names, and seed businesses here
 // ============================================================
 const PRICES = {
-  local:    { m: 0,   a: 0   },
-  featured: { m: 79,  a: 63  },
-  spotlight:{ m: 199, a: 159 }
+  local:    { m: 0,     a: 0     },
+  featured: { m: 14.99, a: 11.99 },
+  spotlight:{ m: 49.99, a: 39.99 }
 };
 const PNAMES = {
   local:    'Local Listing',
