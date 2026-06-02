@@ -970,10 +970,12 @@ function renderDir() {
     if (q && !e.bname.toLowerCase().includes(q) && !e.cat.includes(q) && !e.town.toLowerCase().includes(q)) return false;
     return true;
   });
-  const shuffle = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
-  const spots  = shuffle(all.filter(e => e.plan === 'spotlight'));
-  const feats  = shuffle(all.filter(e => e.plan === 'featured'));
-  const locals = shuffle(all.filter(e => e.plan === 'local'));
+  const d = new Date(); const daySeed = d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  const seededRand = s => { let n=s; return () => { n=(n*1664525+1013904223)&0xffffffff; return (n>>>0)/0xffffffff; }; };
+  const shuffle = (a, seed) => { const b=[...a], r=seededRand(seed); for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
+  const spots  = shuffle(all.filter(e => e.plan === 'spotlight'), daySeed);
+  const feats  = shuffle(all.filter(e => e.plan === 'featured'),  daySeed+1);
+  const locals = shuffle(all.filter(e => e.plan === 'local'),     daySeed+2);
   const sd = document.getElementById('dir-spotlight');
   const fd = document.getElementById('dir-featured');
   const ld = document.getElementById('dir-local');
