@@ -493,7 +493,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <div class="plan-card pop">
         <div class="pop-banner">Most popular</div>
         <div><span class="ptb" style="background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b">Featured</span><p class="pname">Businesses You'll Love</p><p class="pdesc">Stand out with rich listings, ratings, and the gold Featured ribbon.</p></div>
-        <div class="pprice"><span class="pamount" id="pr-featured">$14.99</span><span class="pper">/mo</span></div>
+        <div class="pprice" style="flex-direction:column;align-items:flex-start;gap:2px"><span class="pamount" style="font-size:28px" id="pr-featured">Free Trial</span><span style="font-size:11px;color:#555">then $14.99/mo</span></div>
         <ul class="pfeats">
           <li><i class="ti ti-check"></i>Everything in Local</li>
           <li><i class="ti ti-check"></i>Business description &amp; ratings</li>
@@ -503,11 +503,11 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           <li><i class="ti ti-check"></i>Advertising &amp; promotions</li>
           <li class="no"><i class="ti ti-minus"></i>Full Spotlight hero card</li>
         </ul>
-        <span class="pcta pri" onclick="startSignup('featured')">Get started</span>
+        <span class="pcta pri" onclick="startSignup('featured')">Start free trial</span>
       </div>
       <div class="plan-card">
         <div><span class="ptb" style="background:#0D3D54;color:#4BB8B8">Spotlight</span><p class="pname">Spotlight Business</p><p class="pdesc">The premier position — unmissable hero card at the top of every search.</p></div>
-        <div class="pprice"><span class="pamount" id="pr-spotlight">$49.99</span><span class="pper">/mo</span></div>
+        <div class="pprice" style="flex-direction:column;align-items:flex-start;gap:2px"><span class="pamount" style="font-size:28px" id="pr-spotlight">Free Trial</span><span style="font-size:11px;color:#555">then $49.99/mo</span></div>
         <ul class="pfeats">
           <li><i class="ti ti-check"></i>Everything in Featured</li>
           <li><i class="ti ti-check"></i>Full Spotlight hero card</li>
@@ -517,7 +517,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           <li><i class="ti ti-check"></i>Dedicated account support</li>
           <li><i class="ti ti-check"></i>Advertising &amp; promotions</li>
         </ul>
-        <span class="pcta sec" onclick="startSignup('spotlight')">Get started</span>
+        <span class="pcta sec" onclick="startSignup('spotlight')">Start free trial</span>
       </div>
     </div>
     <div style="background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
@@ -1163,7 +1163,7 @@ function renderAdmin() {
     const dc = e.status==='active' ? 'active' : e.status==='pending' ? 'pending' : 'hidden';
     const sl = e.status==='active' ? 'Active' : e.status==='pending' ? 'Pending' : 'Hidden';
     const tr = document.createElement('tr'); tr.id = 'row-' + e.id;
-    tr.innerHTML = `<td><strong style="font-size:12px;color:#0F1923">${e.bname}</strong><br><span style="color:#555;font-size:11px">${e.town}</span></td><td><span class="tp ${e.plan}">${cap(e.plan)}</span></td><td style="text-transform:capitalize;color:#333;font-size:11px">${e.cat}</td><td style="font-size:11px;color:#333">${e.county.replace(' County','')}</td><td style="font-size:12px;color:#0F1923"><span class="sdot ${dc}"></span>${sl}</td><td style="font-size:11px;color:#333">${e.fname} ${e.lname}</td><td style="white-space:nowrap">${e.status==='pending'?`<span class="act-btn approve" title="Approve" onclick="appEnt(${e.id})"><i class="ti ti-check"></i></span>`:''} ${e.status==='active'?`<span class="act-btn" title="Hide" onclick="togSt(${e.id},'hidden')"><i class="ti ti-eye-off"></i></span>`:''} ${e.status==='hidden'?`<span class="act-btn approve" title="Show" onclick="togSt(${e.id},'active')"><i class="ti ti-eye"></i></span>`:''} ${e.plan==='spotlight'?'<span class="act-btn" title="Edit page" onclick="editPage('+e.id+')"><i class="ti ti-layout"></i></span> ':''}<span class="act-btn" title="Edit" onclick="togEdit(${e.id})"><i class="ti ti-edit"></i></span> <span class="act-btn del" title="Delete" onclick="delEnt(${e.id})"><i class="ti ti-trash"></i></span></td>`;
+    tr.innerHTML = `<td><strong style="font-size:12px;color:#0F1923">${e.bname}</strong><br><span style="color:#555;font-size:11px">${e.town}</span></td><td><select class="esel" style="font-size:10px;padding:3px 6px;width:90px" onchange="changeTier(${e.id},this.value)"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></td><td style="text-transform:capitalize;color:#333;font-size:11px">${e.cat}</td><td style="font-size:11px;color:#333">${e.county.replace(' County','')}</td><td style="font-size:12px;color:#0F1923"><span class="sdot ${dc}"></span>${sl}</td><td style="font-size:11px;color:#333">${e.fname} ${e.lname}</td><td style="white-space:nowrap">${e.status==='pending'?`<span class="act-btn approve" title="Approve" onclick="appEnt(${e.id})"><i class="ti ti-check"></i></span>`:''} ${e.status==='active'?`<span class="act-btn" title="Hide" onclick="togSt(${e.id},'hidden')"><i class="ti ti-eye-off"></i></span>`:''} ${e.status==='hidden'?`<span class="act-btn approve" title="Show" onclick="togSt(${e.id},'active')"><i class="ti ti-eye"></i></span>`:''} ${e.plan==='spotlight'?'<span class="act-btn" title="Edit page" onclick="editPage('+e.id+')"><i class="ti ti-layout"></i></span> ':''}<span class="act-btn" title="Edit" onclick="togEdit(${e.id})"><i class="ti ti-edit"></i></span> <span class="act-btn del" title="Delete" onclick="delEnt(${e.id})"><i class="ti ti-trash"></i></span></td>`;
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
@@ -1200,6 +1200,12 @@ async function saveEd(id) {
   const { error } = await sb.from('listings').update(updates).eq('id', id);
   if (error) { alert('Save failed: ' + error.message); return; }
   Object.assign(e, updates);
+  renderAdmin();
+}
+async function changeTier(id, newPlan) {
+  const { error } = await sb.from('listings').update({ plan: newPlan }).eq('id', id);
+  if (error) { alert('Failed: ' + error.message); return; }
+  const e = db.find(x => x.id === id); if (e) e.plan = newPlan;
   renderAdmin();
 }
 async function appEnt(id) {
