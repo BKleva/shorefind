@@ -254,6 +254,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .det-desc{background:#fff;border-radius:16px;border:1px solid #DDD8CE;padding:1.75rem;margin-bottom:2rem;display:flex;gap:14px}
 .det-desc i{font-size:22px;color:#4BB8B8;flex-shrink:0;margin-top:4px}
 .det-desc p{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:#0F1923;line-height:1.7}
+.det-desc-toggle{display:none;font-size:12px;font-weight:600;color:#1A6B8A;cursor:pointer;font-family:'Sora',sans-serif;font-style:normal;margin-top:8px}
 .det-sec-lbl{font-family:'Playfair Display',serif;font-size:24px;color:#0F1923;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid #DDD8CE;display:block}
 .det-hl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:2.5rem}
 .det-hl{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.5rem}
@@ -387,6 +388,9 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 
   /* Detail page */
   .det-name{font-size:32px}
+  .det-desc p.clamped,.det-tagline.clamped{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .det-tagline.clamped{margin-bottom:.75rem}
+  .det-desc-toggle{display:inline-block}
   .det-gallery{height:55vw;min-height:220px;max-height:340px}
   .det-hero{padding:1.75rem 1.25rem 2.25rem;border-radius:16px}
 
@@ -1001,6 +1005,13 @@ function renderDir() {
 
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
+function toggleClamp(id, el) {
+  const p = document.getElementById(id);
+  const collapsed = p.classList.contains('clamped');
+  p.classList.toggle('clamped');
+  el.textContent = collapsed ? 'Show less ↑' : 'Read more ↓';
+}
+
 function toggleDesc(el) {
   const card = el.closest('.feat-card,.local-card');
   const full = el.getAttribute('data-full');
@@ -1271,7 +1282,7 @@ function showDetail(id) {
     <div class="det-hero">
       <p class="det-eye">Spotlight Business</p>
       <h1 class="det-name">${e.bname}</h1>
-      ${e.tagline ? `<p class="det-tagline">${e.tagline}</p>` : ''}
+      ${e.tagline ? `<p class="det-tagline clamped" id="det-tagline-text">${e.tagline}</p><span class="det-desc-toggle" style="color:#4BB8B8;margin-top:-14px;margin-bottom:1.25rem" onclick="toggleClamp('det-tagline-text',this)">Read more ↓</span>` : ''}
       <div class="det-badges">
         <span class="det-badge"><i class="ti ti-map-pin"></i>${e.town} — ${e.county}</span>
         ${e.hours ? `<span class="det-badge"><i class="ti ti-clock"></i>${e.hours}</span>` : ''}
@@ -1282,7 +1293,7 @@ function showDetail(id) {
     ${gallery}
     <div class="det-body">
       <div class="det-main">
-        ${e.description ? `<div class="det-desc" style="margin-top:0"><i class="ti ti-quote"></i><p>${e.description}</p></div>` : ''}
+        ${e.description ? `<div class="det-desc" style="margin-top:0"><i class="ti ti-quote"></i><div style="flex:1"><p class="clamped" id="det-desc-text">${e.description}</p><span class="det-desc-toggle" onclick="toggleClamp('det-desc-text',this)">Read more ↓</span></div></div>` : ''}
         ${hl.length ? `<span class="det-sec-lbl" style="margin-top:1.5rem">What people love</span><div class="det-hl-list">${hl.map(h=>`<div class="det-hl-item"><div class="det-hl-ico" style="flex-shrink:0"><i class="ti ${h.icon||'ti-star'}"></i></div><div><p class="det-hl-title">${h.title}</p><p class="det-hl-text">${h.text}</p></div></div>`).join('')}</div>` : ''}
       </div>
       <div class="det-sidebar">
@@ -1297,6 +1308,13 @@ function showDetail(id) {
     </div>
   `;
   showPage('detail');
+  // Hide the Read more toggles if the text doesn't actually overflow the clamp
+  ['det-desc-text','det-tagline-text'].forEach(tid => {
+    const p = document.getElementById(tid);
+    if (!p) return;
+    const tog = p.parentElement.querySelector('.det-desc-toggle');
+    if (tog && p.scrollHeight <= p.clientHeight + 2) tog.style.display = 'none';
+  });
 }
 
 // ============================================================
