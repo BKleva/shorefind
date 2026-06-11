@@ -493,7 +493,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       <div class="plan-card pop">
         <div class="pop-banner">Most popular</div>
         <div><span class="ptb" style="background:#FBF3E2;color:#8a6520;border:1px solid #d4a84b">Featured</span><p class="pname">Businesses You'll Love</p><p class="pdesc">Stand out with rich listings, ratings, and the gold Featured ribbon.</p></div>
-        <div class="pprice" style="flex-direction:column;align-items:flex-start;gap:2px"><span class="pamount" style="font-size:28px" id="pr-featured">Free Trial</span><span style="font-size:11px;color:#555">then $14.99/mo</span></div>
+        <div class="pprice" style="flex-direction:column;align-items:flex-start;gap:2px"><span class="pamount" style="font-size:28px" id="pr-featured">Free Trial</span><span style="font-size:14px;font-weight:600;color:#0D3D54">then $14.99/mo</span></div>
         <ul class="pfeats">
           <li><i class="ti ti-check"></i>Everything in Local</li>
           <li><i class="ti ti-check"></i>Business description &amp; ratings</li>
@@ -507,7 +507,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
       </div>
       <div class="plan-card">
         <div><span class="ptb" style="background:#0D3D54;color:#4BB8B8">Spotlight</span><p class="pname">Spotlight Business</p><p class="pdesc">The premier position — unmissable hero card at the top of every search.</p></div>
-        <div class="pprice" style="flex-direction:column;align-items:flex-start;gap:2px"><span class="pamount" style="font-size:28px" id="pr-spotlight">Free Trial</span><span style="font-size:11px;color:#555">then $49.99/mo</span></div>
+        <div class="pprice" style="flex-direction:column;align-items:flex-start;gap:2px"><span class="pamount" style="font-size:28px" id="pr-spotlight">Free Trial</span><span style="font-size:14px;font-weight:600;color:#0D3D54">then $49.99/mo</span></div>
         <ul class="pfeats">
           <li><i class="ti ti-check"></i>Everything in Featured</li>
           <li><i class="ti ti-check"></i>Full Spotlight hero card</li>
@@ -995,11 +995,27 @@ function renderDir() {
   };
   sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div class="sc-body"><div class="sc-head">${e.logo?`<div class="sc-logo-sm"><img src="${e.logo}" alt="${e.bname}"></div>`:`<div class="sc-logo-sm"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`}<div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2></div></div><p class="sc-desc">${e.description||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${allLinks(e,true)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
   const bizIcon = (e, cls) => e.logo ? `<div class="${cls}"><img src="${e.logo}" alt="${e.bname} logo"></div>` : `<div class="${cls}"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
-  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p>${e.description?`<p style="font-size:12px;color:#444;line-height:1.7;margin-bottom:6px;margin-top:4px">${e.description}</p>`:''}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div>${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
-  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p></div></div>`).join('')}</div>` : '';
+  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i>${e.town} · ${e.county.replace(' County','')}</div>${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
+  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p>${truncDesc(e.id, e.description, '')}</div></div>`).join('')}</div>` : '';
 }
 
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+function toggleDesc(el) {
+  const card = el.closest('.feat-card,.local-card');
+  const full = el.getAttribute('data-full');
+  const descEl = card.querySelector('.card-desc');
+  const expanded = el.getAttribute('data-expanded') === '1';
+  descEl.textContent = expanded ? full.slice(0,140)+'…' : full;
+  el.textContent = expanded ? 'Read more ↓' : 'Show less ↑';
+  el.setAttribute('data-expanded', expanded ? '0' : '1');
+}
+
+const truncDesc = (id, text, cls) => {
+  if (!text) return '';
+  const short = text.length > 140;
+  return `<p class="card-desc ${cls}" style="font-size:12px;color:#444;line-height:1.7;margin-bottom:6px;margin-top:4px">${short ? text.slice(0,140)+'…' : text}</p>${short ? `<span onclick="toggleDesc(this)" data-full="${esc(text)}" data-expanded="0" style="font-size:11px;color:#1A6B8A;cursor:pointer;font-weight:500">Read more ↓</span>` : ''}`;
+};
 
 // ============================================================
 // BILLING TOGGLE
