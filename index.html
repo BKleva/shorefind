@@ -89,7 +89,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 
 .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:2.5rem}
 .feat-card{background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.25rem 1.5rem;cursor:pointer;transition:all .18s;display:flex;align-items:flex-start;gap:12px}
-.feat-card:hover{border-color:#1A6B8A;transform:translateY(-2px)}
+.feat-card:hover{border-color:#1A6B8A}
 .fc-icon{width:48px;height:48px;border-radius:10px;background:#e8f5fb;display:flex;align-items:center;justify-content:center;color:#1A6B8A;font-size:18px;overflow:hidden;flex-shrink:0}
 .fc-icon img{width:100%;height:100%;object-fit:contain;padding:4px}
 .fc-body{flex:1;min-width:0}
@@ -411,7 +411,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
     <div class="logo" onclick="showPage('dir')">Shore<em>works</em><span class="logo-sub">Catalog</span></div>
     <div class="nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
-      <span class="nb" id="nav-pricing" onclick="showPage('pricing')">Pricing</span>
+      <span class="nb" id="nav-pricing" onclick="showPage('pricing')" style="display:none">Pricing</span>
       <span class="nb" id="nav-about" onclick="showPage('about')">About</span>
       <span class="nb" id="nav-contact" onclick="showPage('contact')">Contact</span>
       <span class="nb" id="nav-admin" onclick="showPage('admin')" style="display:none">Admin</span>
@@ -1002,8 +1002,8 @@ function renderDir() {
   };
   sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div class="sc-body"><div class="sc-head">${e.logo?`<div class="sc-logo-sm"><img src="${e.logo}" alt="${e.bname}"></div>`:`<div class="sc-logo-sm"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`}<div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2></div></div><p class="sc-desc">${e.description||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${allLinks(e,true)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
   const bizIcon = (e, cls) => e.logo ? `<div class="${cls}"><img src="${e.logo}" alt="${e.bname} logo"></div>` : `<div class="${cls}"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
-  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} · ${e.county.replace(' County','')}</a></div>${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
-  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p>${e.address ? `<p class="li-cat" style="margin-top:1px"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none">${esc(e.address)}, ${e.town}</a></p>` : ''}${truncDesc(e.id, e.description, '')}</div></div>`).join('')}</div>` : '';
+  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} · ${e.county.replace(' County','')}</a></div>${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''} ${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
+  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p>${e.address ? `<p class="li-cat" style="margin-top:1px"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none">${esc(e.address)}, ${e.town}</a></p>` : ''}${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''}${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''}${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''}${truncDesc(e.id, e.description, '')}</div></div>`).join('')}</div>` : '';
 }
 
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
@@ -1457,6 +1457,7 @@ async function checkAdmin() {
 
 function updateAdminUI() {
   document.getElementById('nav-admin').style.display = isAdmin ? '' : 'none';
+  document.getElementById('nav-pricing').style.display = isAdmin ? '' : 'none';
   const lnk = document.getElementById('footer-admin-link');
   const out  = document.getElementById('footer-logout-link');
   if (lnk) lnk.style.display = isAdmin ? 'none' : '';
