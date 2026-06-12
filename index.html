@@ -314,6 +314,19 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .cf-success h3{font-family:'Playfair Display',serif;font-size:24px;color:#0F1923;margin-bottom:.5rem}
 .cf-success p{font-size:13px;color:#3a3a3a;line-height:1.8}
 
+.feat-modal-overlay{display:none;position:fixed;inset:0;background:rgba(8,29,43,.6);z-index:9998;align-items:center;justify-content:center;padding:1.25rem}
+.feat-modal-overlay.open{display:flex}
+.feat-modal-card{background:#fff;border-radius:18px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.35);animation:featPop .22s ease}
+@keyframes featPop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.feat-modal-x{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:#F0EDE6;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#333;font-size:16px;transition:background .15s}
+.feat-modal-x:hover{background:#DDD8CE}
+.fm-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:1rem;padding-right:2rem}
+.fm-name{font-family:'Playfair Display',serif;font-size:22px;color:#0F1923;line-height:1.15}
+.fm-desc{font-size:13px;color:#444;line-height:1.8;margin-bottom:1.25rem}
+.fm-row{display:flex;align-items:center;gap:8px;font-size:12px;color:#333;padding:8px 0;border-top:1px solid #F0EDE6}
+.fm-row i{color:#1A6B8A;font-size:14px;flex-shrink:0}
+.fm-row a{color:#1A6B8A;text-decoration:none}
+
 .about-hero{background:linear-gradient(135deg,#0D3D54 0%,#082737 100%);border-radius:20px;padding:3.5rem 3rem;margin-bottom:2.5rem;position:relative;overflow:hidden;border:1px solid rgba(75,184,184,.15);box-shadow:0 6px 32px rgba(0,0,0,.15)}
 .about-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4BB8B8,#d4a84b,#4BB8B8);opacity:.8}
 .about-hero::after{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;border:1px solid rgba(75,184,184,.07)}
@@ -823,6 +836,14 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   </div>
 </div>
 
+<!-- FEATURED CARD MODAL -->
+<div class="feat-modal-overlay" id="feat-modal" onclick="if(event.target===this)closeFeatCard()">
+  <div class="feat-modal-card">
+    <button class="feat-modal-x" onclick="closeFeatCard()" aria-label="Close"><i class="ti ti-x"></i></button>
+    <div id="feat-modal-content"></div>
+  </div>
+</div>
+
 <!-- AUTH MODAL -->
 <div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:380px;margin:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.25)">
@@ -1002,7 +1023,7 @@ function renderDir() {
   };
   sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div class="sc-body"><div class="sc-head">${e.logo?`<div class="sc-logo-sm"><img src="${e.logo}" alt="${e.bname}"></div>`:`<div class="sc-logo-sm"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`}<div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2></div></div><p class="sc-desc">${e.description||''}</p><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${allLinks(e,true)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
   const bizIcon = (e, cls) => e.logo ? `<div class="${cls}"><img src="${e.logo}" alt="${e.bname} logo"></div>` : `<div class="${cls}"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
-  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} · ${e.county.replace(' County','')}</a></div>${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''} ${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
+  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card" onclick="featCardClick(event,${e.id})">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} · ${e.county.replace(' County','')}</a></div>${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''} ${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
   ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p>${e.address ? `<p class="li-cat" style="margin-top:1px"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none">${esc(e.address)}, ${e.town}</a></p>` : ''}${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''}${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''}${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''}${truncDesc(e.id, e.description, '')}</div></div>`).join('')}</div>` : '';
 }
 
@@ -1012,6 +1033,38 @@ function mapsUrl(e) {
   const q = [e.address || e.bname, e.town, e.county, 'NJ'].filter(Boolean).join(', ');
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
 }
+
+// ============================================================
+// FEATURED CARD MODAL
+// ============================================================
+function featCardClick(ev, id) {
+  // Don't open the modal when a link or the Read more toggle was clicked
+  if (ev.target.closest('a') || ev.target.hasAttribute('data-full')) return;
+  openFeatCard(id);
+}
+
+function openFeatCard(id) {
+  const e = db.find(x => x.id === id); if (!e) return;
+  const icon = e.logo ? `<div class="fc-icon" style="width:56px;height:56px"><img src="${e.logo}" alt="${esc(e.bname)} logo"></div>` : `<div class="fc-icon" style="width:56px;height:56px"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
+  document.getElementById('feat-modal-content').innerHTML = `
+    <div class="fm-head">${icon}<div><span class="fc-ribbon">Featured</span><p class="fm-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p></div></div>
+    ${e.description ? `<p class="fm-desc">${e.description}</p>` : ''}
+    <div class="fm-row"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} — ${e.county}</a></div>
+    ${e.hours ? `<div class="fm-row"><i class="ti ti-clock"></i><span>${e.hours}</span></div>` : ''}
+    ${e.phone ? `<div class="fm-row"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>` : ''}
+    ${e.email ? `<div class="fm-row"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>` : ''}
+    ${e.website ? `<div class="fm-row"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>` : ''}
+    ${(e.cat==='dining'&&(e.doordash||e.ubereats||e.toast))||e.instagram||e.facebook ? `<div class="fm-row" style="flex-wrap:wrap">${e.cat==='dining'&&e.doordash?`<a href="${e.doordash}" class="order-link dd" target="_blank">DoorDash</a>`:''}${e.cat==='dining'&&e.ubereats?`<a href="${e.ubereats}" class="order-link ue" target="_blank">UberEats</a>`:''}${e.cat==='dining'&&e.toast?`<a href="${e.toast}" class="order-link ts" target="_blank">Toast</a>`:''}${e.instagram?`<a href="${e.instagram}" class="social-link ig" target="_blank"><i class="ti ti-brand-instagram"></i> Instagram</a>`:''}${e.facebook?`<a href="${e.facebook}" class="social-link fb" target="_blank"><i class="ti ti-brand-facebook"></i> Facebook</a>`:''}</div>` : ''}
+  `;
+  document.getElementById('feat-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFeatCard() {
+  document.getElementById('feat-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeFeatCard(); });
 
 function toggleClamp(id, el) {
   const p = document.getElementById(id);
