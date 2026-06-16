@@ -11,7 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:#D4C9AE}
-body{margin:0;overflow-x:hidden;color:#1a1a1a;background:linear-gradient(to bottom,rgba(253,250,240,.75) 0%,rgba(245,235,215,.68) 50%,rgba(236,225,200,.65) 100%),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&q=80') center/cover fixed no-repeat;font-family:'Sora',sans-serif;min-height:100vh;font-size:14px}
+body{margin:0;overflow-x:hidden;color:#1a1a1a;background:linear-gradient(to bottom,rgba(253,250,240,.75) 0%,rgba(245,235,215,.68) 50%,rgba(236,225,200,.65) 100%),url('https://images.unsplash.com/photo-1686562919000-812eecd59aa4?w=1920&q=80') center/cover fixed no-repeat;font-family:'Sora',sans-serif;min-height:100vh;font-size:14px}
 .app{max-width:1200px;margin:0 auto;padding:0 2rem 4rem}
 .page{display:none}.page.active{display:block}
 div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
@@ -1031,6 +1031,7 @@ function renderDir() {
       e.cat==='dining'&&e.doordash ? `<a href="${e.doordash}" class="order-link dd" target="_blank" ${s}>DoorDash</a>` : '',
       e.cat==='dining'&&e.ubereats ? `<a href="${e.ubereats}" class="order-link ue" target="_blank" ${s}>UberEats</a>` : '',
       e.cat==='dining'&&e.toast   ? `<a href="${e.toast}" class="order-link ts" target="_blank" ${s}>Toast</a>` : '',
+      e.order_url ? `<a href="${e.order_url}" class="order-link" target="_blank" ${s}><i class="ti ti-shopping-cart"></i> Order</a>` : '',
       e.instagram ? `<a href="${e.instagram}" class="social-link ig" target="_blank" ${s}><i class="ti ti-brand-instagram"></i> Instagram</a>` : '',
       e.facebook  ? `<a href="${e.facebook}" class="social-link fb" target="_blank" ${s}><i class="ti ti-brand-facebook"></i> Facebook</a>` : '',
       e.tiktok    ? `<a href="${e.tiktok}" class="social-link tt" target="_blank" ${s}><i class="ti ti-brand-tiktok"></i> TikTok</a>` : ''
