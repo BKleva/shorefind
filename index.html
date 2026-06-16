@@ -564,11 +564,11 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           </div>
           <div class="plan-switch-btn" id="psb-featured" onclick="switchPlan('featured')">
             <span class="psb-name">Featured</span>
-            <span class="psb-price" id="psb-featured-price">$14.99/mo</span>
+            <span class="psb-price" id="psb-featured-price">Free</span>
           </div>
           <div class="plan-switch-btn" id="psb-spotlight" onclick="switchPlan('spotlight')">
             <span class="psb-name">Spotlight</span>
-            <span class="psb-price" id="psb-spotlight-price">$49.99/mo</span>
+            <span class="psb-price" id="psb-spotlight-price">$19.99/mo</span>
           </div>
         </div>
         <div id="su-planbar"></div>
@@ -887,8 +887,8 @@ const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ============================================================
 const PRICES = {
   local:    { m: 0,     a: 0     },
-  featured: { m: 14.99, a: 11.99 },
-  spotlight:{ m: 49.99, a: 39.99 }
+  featured: { m: 0,     a: 0     },
+  spotlight:{ m: 19.99, a: 19.99 }
 };
 const PNAMES = {
   local:    'Local Listing',
