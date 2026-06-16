@@ -966,6 +966,7 @@ async function loadDB() {
 // ============================================================
 function showPage(p) {
   if (p === 'admin' && !isAdmin) { openAuthModal(); return; }
+  if (p !== 'detail') history.replaceState(null, '', location.pathname);
   window.scrollTo(0, 0);
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
@@ -1052,6 +1053,7 @@ function featCardClick(ev, id) {
 
 function openFeatCard(id) {
   const e = db.find(x => x.id === id); if (!e) return;
+  history.pushState({type:'feat', id}, '', '#feat=' + id);
   const icon = e.logo ? `<div class="fc-icon" style="width:56px;height:56px"><img src="${e.logo}" alt="${esc(e.bname)} logo"></div>` : `<div class="fc-icon" style="width:56px;height:56px"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
   document.getElementById('feat-modal-content').innerHTML = `
     <div class="fm-head">${icon}<div><span class="fc-ribbon">Featured</span><p class="fm-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p></div></div>
@@ -1070,6 +1072,7 @@ function openFeatCard(id) {
 function closeFeatCard() {
   document.getElementById('feat-modal').classList.remove('open');
   document.body.style.overflow = '';
+  if (location.hash.startsWith('#feat=')) history.pushState(null, '', location.pathname);
 }
 document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeFeatCard(); });
 
@@ -1334,6 +1337,7 @@ function showDetail(id) {
   const e = db.find(x => x.id === id);
   if (!e) return;
   selDetailId = id;
+  history.pushState({type:'b', id}, '', '#b=' + id);
   const photos = (e.photos || []).filter(p => p);
   const hl = (e.highlights || []).filter(h => h.title || h.text);
   const img = url => `<div class="det-photo"><img src="${url}" alt="" onerror="this.style.opacity=0"></div>`;
@@ -1577,11 +1581,36 @@ async function doLogout() {
 // ============================================================
 // INIT
 // ============================================================
+function handleHash() {
+  const hash = location.hash;
+  if (hash.startsWith('#b=')) {
+    const id = parseInt(hash.slice(3));
+    if (db.find(x => x.id === id)) { showDetail(id); return; }
+  } else if (hash.startsWith('#feat=')) {
+    const id = parseInt(hash.slice(6));
+    if (db.find(x => x.id === id)) { openFeatCard(id); return; }
+  }
+}
+
+window.addEventListener('popstate', () => {
+  const hash = location.hash;
+  if (hash.startsWith('#b=')) {
+    const id = parseInt(hash.slice(3));
+    if (db.find(x => x.id === id)) { showDetail(id); return; }
+  } else if (hash.startsWith('#feat=')) {
+    const id = parseInt(hash.slice(6));
+    if (db.find(x => x.id === id)) { openFeatCard(id); return; }
+  }
+  closeFeatCard();
+  showPage('dir');
+});
+
 async function init() {
   await checkAdmin();
   await loadDB();
   renderDir();
   if (isAdmin) renderAdmin();
+  handleHash();
 }
 init();
 </script>
