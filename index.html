@@ -283,11 +283,6 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .ped-sec-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#555;margin-bottom:1rem;display:block}
 .hl-ed-block{border:1px solid #DDD8CE;border-radius:10px;padding:1rem;margin-bottom:.75rem;background:#FAF8F4}
 .pp-box{width:52px;height:52px;border-radius:8px;background:#F0EDE6;border:1px solid #DDD8CE;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:18px;flex-shrink:0}
-.pp-upload-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:8px;border:1px solid #DDD8CE;background:#F7F5F2;font-size:11px;font-weight:600;color:#333;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
-.pp-upload-btn:hover{border-color:#1A6B8A;color:#1A6B8A;background:#e8f5fb}
-.pp-upload-btn input[type=file]{display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spinning{animation:spin .8s linear infinite;display:inline-block}
 .order-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .order-link{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600;text-decoration:none;font-family:'Sora',sans-serif;white-space:nowrap;transition:opacity .15s}
 .order-link:hover{opacity:.8}
@@ -829,10 +824,10 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
         <div class="fg"><input class="finput" id="ped-tagline" type="text" placeholder="A short, vivid line that captures the business…"><span style="font-size:11px;color:#555;margin-top:4px;display:block">Shown beneath the business name on their page.</span></div>
       </div>
       <div class="ped-sec">
-        <span class="ped-sec-lbl">Photos <span style="font-weight:400;text-transform:none;letter-spacing:0">— upload files or paste URLs (up to 3)</span></span>
-        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-bottom:8px"><div class="pp-box" id="pp-0"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p0" type="url" placeholder="https://…" oninput="previewPhoto(0)"><label class="pp-upload-btn"><i class="ti ti-upload"></i> Upload<input type="file" accept="image/*" onchange="uploadPhoto(0,this.files[0])"></label></div>
-        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-bottom:8px"><div class="pp-box" id="pp-1"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p1" type="url" placeholder="https://…" oninput="previewPhoto(1)"><label class="pp-upload-btn"><i class="ti ti-upload"></i> Upload<input type="file" accept="image/*" onchange="uploadPhoto(1,this.files[0])"></label></div>
-        <div style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center"><div class="pp-box" id="pp-2"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p2" type="url" placeholder="https://…" oninput="previewPhoto(2)"><label class="pp-upload-btn"><i class="ti ti-upload"></i> Upload<input type="file" accept="image/*" onchange="uploadPhoto(2,this.files[0])"></label></div>
+        <span class="ped-sec-lbl">Photos <span style="font-weight:400;text-transform:none;letter-spacing:0">— paste up to 3 image URLs</span></span>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;margin-bottom:8px"><div class="pp-box" id="pp-0"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p0" type="url" placeholder="https://…" oninput="previewPhoto(0)"></div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;margin-bottom:8px"><div class="pp-box" id="pp-1"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p1" type="url" placeholder="https://…" oninput="previewPhoto(1)"></div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center"><div class="pp-box" id="pp-2"><i class="ti ti-photo"></i></div><input class="finput" id="ped-p2" type="url" placeholder="https://…" oninput="previewPhoto(2)"></div>
       </div>
       <div class="ped-sec">
         <span class="ped-sec-lbl">What people love <span style="font-weight:400;text-transform:none;letter-spacing:0">— up to 3 highlights</span></span>
@@ -1429,19 +1424,6 @@ function previewPhoto(i) {
   img.onerror = () => { box.innerHTML = '<i class="ti ti-alert-circle" style="color:#C03030"></i>'; };
   img.src = url;
   box.appendChild(img);
-}
-
-async function uploadPhoto(idx, file) {
-  if (!file) return;
-  const box = document.getElementById('pp-'+idx);
-  box.innerHTML = '<i class="ti ti-loader spinning"></i>';
-  const ext = file.name.split('.').pop().toLowerCase();
-  const path = `listing-${selPageId}/${Date.now()}-${idx}.${ext}`;
-  const { error } = await sb.storage.from('listing-photos').upload(path, file, { upsert: true, contentType: file.type });
-  if (error) { alert('Upload failed: ' + error.message); previewPhoto(idx); return; }
-  const { data } = sb.storage.from('listing-photos').getPublicUrl(path);
-  document.getElementById('ped-p'+idx).value = data.publicUrl;
-  previewPhoto(idx);
 }
 
 function getHlData() {
