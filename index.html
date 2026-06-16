@@ -1027,7 +1027,8 @@ function renderDir() {
       e.cat==='dining'&&e.ubereats ? `<a href="${e.ubereats}" class="order-link ue" target="_blank" ${s}>UberEats</a>` : '',
       e.cat==='dining'&&e.toast   ? `<a href="${e.toast}" class="order-link ts" target="_blank" ${s}>Toast</a>` : '',
       e.instagram ? `<a href="${e.instagram}" class="social-link ig" target="_blank" ${s}><i class="ti ti-brand-instagram"></i> Instagram</a>` : '',
-      e.facebook  ? `<a href="${e.facebook}" class="social-link fb" target="_blank" ${s}><i class="ti ti-brand-facebook"></i> Facebook</a>` : ''
+      e.facebook  ? `<a href="${e.facebook}" class="social-link fb" target="_blank" ${s}><i class="ti ti-brand-facebook"></i> Facebook</a>` : '',
+      e.tiktok    ? `<a href="${e.tiktok}" class="social-link tt" target="_blank" ${s}><i class="ti ti-brand-tiktok"></i> TikTok</a>` : ''
     ].filter(Boolean).join('');
     return parts ? `<div style="display:flex;flex-wrap:nowrap;gap:6px;margin-top:8px;overflow-x:auto;padding-bottom:2px">${parts}</div>` : '';
   };
