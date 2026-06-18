@@ -297,12 +297,6 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .order-link.ts{background:#fff5f0;color:#FF4C00;border:1px solid rgba(255,76,0,.2)}
 .order-link:not(.dd):not(.ue):not(.ts){background:#fff;color:#0D3D54;border:1px solid #DDD8CE}
 .social-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.locs-more-btn{font-size:11px;font-weight:600;color:#1A6B8A;cursor:pointer;user-select:none;white-space:nowrap}
-.locs-more-btn:hover{text-decoration:underline}
-.locs-drop{padding-top:4px}
-.locs-drop-row{display:flex;align-items:center;gap:5px;font-size:12px;color:#555;margin-top:3px}
-.locs-drop-row i{font-size:13px;opacity:.45;flex-shrink:0}
-.locs-drop-row a{color:#1A6B8A;text-decoration:none}
 .card-links-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .social-link{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600;text-decoration:none;font-family:'Sora',sans-serif;white-space:nowrap;transition:opacity .15s}
 .social-link:hover{opacity:.8}
@@ -599,8 +593,6 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
           <div class="fg"><label class="flbl">Town *</label><input class="finput" id="su-town" type="text" placeholder="e.g. Toms River"><span class="errmsg" id="e-town"></span></div>
         </div>
         <div class="frow full"><div class="fg"><label class="flbl">Street address <span style="color:#555;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="su-address" type="text" placeholder="e.g. 123 Shore Rd"></div></div>
-        <div id="su-extra-locs"></div>
-        <div style="margin-top:-4px;margin-bottom:12px"><span class="btn btn-sec" id="su-add-loc-btn" onclick="addSuLoc()" style="font-size:11px;padding:6px 14px"><i class="ti ti-plus"></i> Add another location</span></div>
         <div class="frow full" style="margin-bottom:6px"><label class="flbl">Category *</label></div>
         <div class="cat-grid">
           <span class="cat-opt" data-c="dining" onclick="pickCat(this)"><i class="ti ti-tools-kitchen-2"></i>Dining</span>
@@ -1033,9 +1025,9 @@ function renderDir() {
   const d = new Date(); const daySeed = d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
   const seededRand = s => { let n=s; return () => { n=(n*1664525+1013904223)&0xffffffff; return (n>>>0)/0xffffffff; }; };
   const shuffle = (a, seed) => { const b=[...a], r=seededRand(seed); for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
-  const spots  = shuffle(all.filter(e => e.plan === 'spotlight'), daySeed);
-  const feats  = shuffle(all.filter(e => e.plan === 'featured'),  daySeed+1);
-  const locals = shuffle(all.filter(e => e.plan === 'local'),     daySeed+2);
+  const spots  = pairLinked(shuffle(all.filter(e => e.plan === 'spotlight'), daySeed));
+  const feats  = pairLinked(shuffle(all.filter(e => e.plan === 'featured'),  daySeed+1));
+  const locals = pairLinked(shuffle(all.filter(e => e.plan === 'local'),     daySeed+2));
   const sd = document.getElementById('dir-spotlight');
   const fd = document.getElementById('dir-featured');
   const ld = document.getElementById('dir-local');
@@ -1055,24 +1047,29 @@ function renderDir() {
     ].filter(Boolean).join('');
     return parts ? `<div class="card-links-row">${parts}</div>` : '';
   };
-  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div class="sc-body"><div class="sc-head">${e.logo?`<div class="sc-logo-sm"><img src="${e.logo}" alt="${e.bname}"></div>`:`<div class="sc-logo-sm"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`}<div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2></div></div><p class="sc-desc clamped" id="sc-desc-${e.id}">${e.description||''}</p><span class="sc-read-more" onclick="event.stopPropagation();toggleClamp('sc-desc-${e.id}',this)">Read more ↓</span><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${locsMore(e)}${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${allLinks(e,true)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
+  sd.innerHTML = spots.length ? `<div class="tier-hdr"><span class="tbadge tb-spot">Spotlight</span><span class="tier-title">Spotlight Businesses</span><span class="tier-count">${spots.length} listing${spots.length>1?'s':''}</span></div><div class="spot-grid">${spots.map(e=>`<div class="spot-card" onclick="showDetail(${e.id})"><div class="sc-body"><div class="sc-head">${e.logo?`<div class="sc-logo-sm"><img src="${e.logo}" alt="${e.bname}"></div>`:`<div class="sc-logo-sm"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`}<div><p class="sc-eye">${e.county} · ${cap(e.cat)}</p><h2 class="sc-name">${e.bname}</h2></div></div><p class="sc-desc clamped" id="sc-desc-${e.id}">${e.description||''}</p><span class="sc-read-more" onclick="event.stopPropagation();toggleClamp('sc-desc-${e.id}',this)">Read more ↓</span><div class="sc-meta"><span class="sc-tag"><i class="ti ti-map-pin"></i>${e.town}</span>${e.hours?`<span class="sc-tag"><i class="ti ti-clock"></i>${e.hours}</span>`:''}${e.website?`<span class="sc-tag"><i class="ti ti-world"></i>${e.website.replace('https://','')}</span>`:''}</div>${allLinks(e,true)}</div><span class="sc-cta" onclick="event.stopPropagation();showDetail(${e.id})">View page →</span></div>`).join('')}</div>` : '';
   const bizIcon = (e, cls) => e.logo ? `<div class="${cls}"><img src="${e.logo}" alt="${e.bname} logo"></div>` : `<div class="${cls}"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
-  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card" onclick="featCardClick(event,${e.id});togCardPh(this,event)">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} · ${e.county.replace(' County','')}</a></div>${e.phone?`<div class="locs-drop-row card-ph" style="display:none"><i class="ti ti-phone" style="font-size:11px;opacity:.45;flex-shrink:0"></i><a href="tel:${e.phone.replace(/\D/g,'')}" onclick="event.stopPropagation()" style="color:#1A6B8A;text-decoration:none;font-size:12px">${e.phone}</a></div>`:''}${locsMore(e,true)} ${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
-  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p>${e.address ? `<p class="li-cat" style="margin-top:1px"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none">${esc(e.address)}, ${e.town}</a></p>` : ''}${locsMore(e)}${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''}${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''}${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''}${truncDesc(e.id, e.description, '')}</div></div>`).join('')}</div>` : '';
+  fd.innerHTML = feats.length ? `<div class="tier-hdr"><span class="tbadge tb-feat">Featured</span><span class="tier-title">Businesses You'll Love</span><span class="tier-count">${feats.length} listing${feats.length>1?'s':''}</span></div><div class="feat-grid">${feats.map(e=>`<div class="feat-card" onclick="featCardClick(event,${e.id});togCardPh(this,event)">${bizIcon(e,'fc-icon')}<div class="fc-body"><span class="fc-ribbon">Featured</span><p class="fc-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p>${truncDesc(e.id, e.description, '')}<div class="fc-foot"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} · ${e.county.replace(' County','')}</a></div>${e.phone?`<div class="fc-foot card-ph" style="display:none"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}" onclick="event.stopPropagation()">${e.phone}</a></div>`:''} ${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''} ${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''} ${allLinks(e,false)}</div></div>`).join('')}</div>` : '';
+  ld.innerHTML = locals.length ? `<div class="tier-hdr"><span class="tbadge tb-local">Local</span><span class="tier-title">Local Listings</span><span class="tier-count">${locals.length}</span></div><div class="local-grid">${locals.map(e=>`<div class="local-card">${bizIcon(e,'li-icon')}<div><p class="li-name">${e.bname}</p><p class="li-cat">${cap(e.cat)} · ${e.county.replace(' County','')}</p>${e.address ? `<p class="li-cat" style="margin-top:1px"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none">${esc(e.address)}, ${e.town}</a></p>` : ''}${e.phone?`<div class="fc-foot"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>`:''}${e.email?`<div class="fc-foot"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>`:''}${e.website?`<div class="fc-foot"><i class="ti ti-world"></i><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></div>`:''}${truncDesc(e.id, e.description, '')}</div></div>`).join('')}</div>` : '';
 }
 
+function pairLinked(arr) {
+  const used = new Set(), out = [];
+  for (const e of arr) {
+    if (used.has(e.id)) continue;
+    out.push(e); used.add(e.id);
+    if (e.linked_to) { const p = arr.find(x => x.id === e.linked_to); if (p && !used.has(p.id)) { out.push(p); used.add(p.id); } }
+  }
+  for (const e of arr) { if (!used.has(e.id)) out.push(e); }
+  return out;
+}
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
 function mapsUrl(e) {
   const q = [e.address || e.bname, e.town, e.county, 'NJ'].filter(Boolean).join(', ');
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
 }
-function togLocs(id, el) {
-  const d = document.getElementById(id); if (!d) return;
-  const open = d.style.display !== 'none';
-  d.style.display = open ? 'none' : '';
-  if (el) el.textContent = open ? el.dataset.closed : 'less ↑';
-}
+
 function togCardPh(el, event) {
   if (event.target.closest('a')) return;
   const phs = el.querySelectorAll('.card-ph');
@@ -1080,15 +1077,7 @@ function togCardPh(el, event) {
   const show = phs[0].style.display === 'none';
   phs.forEach(ph => ph.style.display = show ? '' : 'none');
 }
-function locsMore(e, hidePh) {
-  const locs = (e.locations || []).filter(l => l.town);
-  if (!locs.length) return '';
-  const rows = locs.map(l => {
-    const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([l.address,l.town,l.county,'NJ'].filter(Boolean).join(', '));
-    return `<div class="locs-drop-row"><i class="ti ti-map-pin"></i><a href="${url}" target="_blank">${l.address ? esc(l.address)+', ' : ''}${l.town}${l.county ? ' · '+l.county.replace(' County','') : ''}</a></div>${l.phone ? (hidePh ? `<div class="locs-drop-row card-ph" style="display:none;padding-left:18px"><i class="ti ti-phone" style="font-size:11px;opacity:.45;flex-shrink:0"></i><a href="tel:${l.phone.replace(/\D/g,'')}" onclick="event.stopPropagation()" style="color:#1A6B8A;text-decoration:none;font-size:12px">${l.phone}</a></div>` : `<div class="locs-drop-row" style="padding-left:18px"><i class="ti ti-phone" style="font-size:11px;opacity:.45;flex-shrink:0"></i><a href="tel:${l.phone.replace(/\D/g,'')}" onclick="event.stopPropagation()" style="color:#1A6B8A;text-decoration:none;font-size:12px">${l.phone}</a></div>`) : ''}`;
-  }).join('');
-  return rows;
-}
+
 
 // ============================================================
 // FEATURED CARD MODAL
@@ -1107,7 +1096,6 @@ function openFeatCard(id) {
     <div class="fm-head">${icon}<div><span class="fc-ribbon">Featured</span><p class="fm-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p></div></div>
     ${e.description ? `<p class="fm-desc">${e.description}</p>` : ''}
     <div class="fm-row"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} — ${e.county}</a></div>
-    ${(e.locations||[]).filter(l=>l.town).map(l=>`<div class="fm-row"><i class="ti ti-map-pin" style="opacity:.5"></i><a href="${'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent([l.address,l.town,l.county,'NJ'].filter(Boolean).join(', '))}" target="_blank">${l.address?esc(l.address)+', ':''}${l.town}${l.county?' — '+l.county:''}</a></div>${l.phone?`<div class="fm-row"><i class="ti ti-phone" style="opacity:.5"></i><a href="tel:${l.phone.replace(/\D/g,'')}">${l.phone}</a></div>`:''}`).join('')}
     ${e.hours ? `<div class="fm-row"><i class="ti ti-clock"></i><span>${e.hours}</span></div>` : ''}
     ${e.phone ? `<div class="fm-row"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>` : ''}
     ${e.email ? `<div class="fm-row"><i class="ti ti-mail"></i><a href="mailto:${e.email}">${e.email}</a></div>` : ''}
@@ -1179,44 +1167,12 @@ function updatePlanUI(plan) {
 
 function switchPlan(plan) { updatePlanUI(plan); }
 
-// ---- extra locations (signup form) ----
-let suExtraLocs = [];
-function addSuLoc() {
-  if (suExtraLocs.length >= 4) return;
-  suExtraLocs.push({address:'',town:'',county:''});
-  renderSuLocs();
-}
-function removeSuLoc(i) {
-  suExtraLocs.splice(i, 1);
-  renderSuLocs();
-}
-function renderSuLocs() {
-  const coOpts = ['Atlantic County','Cape May County'].map(c=>`<option value="${c}">${c}</option>`).join('');
-  document.getElementById('su-extra-locs').innerHTML = suExtraLocs.map((loc,i)=>`
-    <div style="border:1px solid #DDD8CE;border-radius:10px;padding:12px;margin-bottom:8px;background:#FAF8F4">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="font-size:11px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.08em">Location ${i+2}</span>
-        <span style="font-size:11px;color:#C03030;cursor:pointer;text-decoration:underline" onclick="removeSuLoc(${i})">Remove</span>
-      </div>
-      <div class="frow">
-        <div class="fg"><label class="flbl">County *</label><select class="fsel" id="el-county-${i}"><option value="">Select…</option>${coOpts}</select></div>
-        <div class="fg"><label class="flbl">Town *</label><input class="finput" id="el-town-${i}" type="text" placeholder="e.g. Ocean City" value="${esc(loc.town||'')}"></div>
-      </div>
-      <div class="frow">
-        <div class="fg"><label class="flbl">Street address <span style="color:#555;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="el-address-${i}" type="text" placeholder="e.g. 456 Shore Rd" value="${esc(loc.address||'')}"></div>
-        <div class="fg"><label class="flbl">Phone <span style="color:#555;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="el-phone-${i}" type="tel" placeholder="e.g. (609) 555-0100" value="${esc(loc.phone||'')}"></div>
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('su-add-loc-btn').style.display = suExtraLocs.length >= 4 ? 'none' : '';
-}
 
 function startSignup(plan, isAdmin) {
   selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
   ['su-bname','su-county','su-town','su-address','su-service','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  suExtraLocs = []; renderSuLocs();
-  ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
+    ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('rv-alert').innerHTML = '';
   document.getElementById('su-descrow').style.display = 'grid';
   const switcher = document.getElementById('su-plan-switcher');
@@ -1302,7 +1258,6 @@ async function submitSu() {
     order_url:   document.getElementById('su-orderurl').value.trim(),
     description: document.getElementById('su-desc').value.trim(),
     hours:       document.getElementById('su-hours').value.trim(),
-    locations:   suExtraLocs.length ? suExtraLocs.map((_,i)=>({address:document.getElementById('el-address-'+i)?.value.trim()||'',town:document.getElementById('el-town-'+i)?.value.trim()||'',county:document.getElementById('el-county-'+i)?.value||'',phone:document.getElementById('el-phone-'+i)?.value.trim()||''})).filter(l=>l.town) : null,
     billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
     price:       price,
     status:      fromAdmin ? 'active' : (selPlan === 'spotlight' ? 'pending' : 'active'),
@@ -1354,7 +1309,7 @@ function renderAdmin() {
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
-    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('Street address')}<input class="einput" id="ei-address-${e.id}" value="${esc(e.address||'')}" placeholder="123 Shore Rd"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','fitness','retail','auto','beauty','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Specific service')}<input class="einput" id="ei-service-${e.id}" value="${esc(e.service||'')}" placeholder="e.g. HVAC repair"></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.description||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div><div>${lbl('Instagram URL')}<input class="einput" id="ei-instagram-${e.id}" value="${esc(e.instagram||'')}" type="url" placeholder="instagram.com/…"></div><div>${lbl('Facebook URL')}<input class="einput" id="ei-facebook-${e.id}" value="${esc(e.facebook||'')}" type="url" placeholder="facebook.com/…"></div><div>${lbl('TikTok URL')}<input class="einput" id="ei-tiktok-${e.id}" value="${esc(e.tiktok||'')}" type="url" placeholder="tiktok.com/@…"></div><div>${lbl('Order / Booking URL')}<input class="einput" id="ei-orderurl-${e.id}" value="${esc(e.order_url||'')}" type="url" placeholder="doordash.com/… or booking link"></div></div>${(e.cat==='dining')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div style="border-top:1px solid #EEE;padding-top:12px;margin-top:4px"><div style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Additional Locations</div><div style="margin-bottom:10px"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px"><div>${lbl("Location 2 County")}<select class="esel" id="ei-loc2county-${e.id}"><option value="">None</option><option value="Atlantic County">Atlantic County</option><option value="Cape May County">Cape May County</option></select></div><div>${lbl("Location 2 Town")}<input class="einput" id="ei-loc2town-${e.id}" value="${(e.locations&&e.locations[0]&&e.locations[0].town)||''}" placeholder="e.g. Ocean City"></div><div>${lbl("Location 2 Phone")}<input class="einput" id="ei-loc2phone-${e.id}" value="${(e.locations&&e.locations[0]&&e.locations[0].phone)||''}" placeholder="e.g. (609) 555-0100"></div></div><div>${lbl("Location 2 Address (optional)")}<input class="einput" id="ei-loc2addr-${e.id}" value="${(e.locations&&e.locations[0]&&e.locations[0].address)||''}" placeholder="e.g. 456 Shore Rd"></div></div><div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:4px"><div>${lbl("Location 3 County")}<select class="esel" id="ei-loc3county-${e.id}"><option value="">None</option><option value="Atlantic County">Atlantic County</option><option value="Cape May County">Cape May County</option></select></div><div>${lbl("Location 3 Town")}<input class="einput" id="ei-loc3town-${e.id}" value="${(e.locations&&e.locations[1]&&e.locations[1].town)||''}" placeholder="e.g. Cape May"></div><div>${lbl("Location 3 Phone")}<input class="einput" id="ei-loc3phone-${e.id}" value="${(e.locations&&e.locations[1]&&e.locations[1].phone)||''}" placeholder="e.g. (609) 555-0200"></div></div><div>${lbl("Location 3 Address (optional)")}<input class="einput" id="ei-loc3addr-${e.id}" value="${(e.locations&&e.locations[1]&&e.locations[1].address)||''}" placeholder="e.g. 789 Ocean Ave"></div></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
+    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('Street address')}<input class="einput" id="ei-address-${e.id}" value="${esc(e.address||'')}" placeholder="123 Shore Rd"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','fitness','retail','auto','beauty','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Specific service')}<input class="einput" id="ei-service-${e.id}" value="${esc(e.service||'')}" placeholder="e.g. HVAC repair"></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="local" ${e.plan==='local'?'selected':''}>Local</option><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<input class="einput" id="ei-desc-${e.id}" value="${esc(e.description||'')}"></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div><div>${lbl('Instagram URL')}<input class="einput" id="ei-instagram-${e.id}" value="${esc(e.instagram||'')}" type="url" placeholder="instagram.com/…"></div><div>${lbl('Facebook URL')}<input class="einput" id="ei-facebook-${e.id}" value="${esc(e.facebook||'')}" type="url" placeholder="facebook.com/…"></div><div>${lbl('TikTok URL')}<input class="einput" id="ei-tiktok-${e.id}" value="${esc(e.tiktok||'')}" type="url" placeholder="tiktok.com/@…"></div><div>${lbl('Order / Booking URL')}<input class="einput" id="ei-orderurl-${e.id}" value="${esc(e.order_url||'')}" type="url" placeholder="doordash.com/… or booking link"></div></div>${(e.cat==='dining')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div style="border-top:1px solid #EEE;padding-top:12px;margin-top:4px"><div>${lbl("Link to listing ID")}<input class="einput" id="ei-linkedto-${e.id}" type="number" value="${e.linked_to||''}" placeholder="Pair with another listing's ID"></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
     tbody.appendChild(etr);
   });
 }
@@ -1388,7 +1343,7 @@ async function saveEd(id) {
     facebook:    document.getElementById('ei-facebook-'+id)?.value.trim() || '',
     tiktok:      document.getElementById('ei-tiktok-'+id)?.value.trim() || '',
     order_url:   document.getElementById('ei-orderurl-'+id)?.value.trim() || '',
-    locations:   [{county:document.getElementById('ei-loc2county-'+id)?.value||'',town:document.getElementById('ei-loc2town-'+id)?.value.trim()||'',address:document.getElementById('ei-loc2addr-'+id)?.value.trim()||'',phone:document.getElementById('ei-loc2phone-'+id)?.value.trim()||''},{county:document.getElementById('ei-loc3county-'+id)?.value||'',town:document.getElementById('ei-loc3town-'+id)?.value.trim()||'',address:document.getElementById('ei-loc3addr-'+id)?.value.trim()||'',phone:document.getElementById('ei-loc3phone-'+id)?.value.trim()||''}].filter(l=>l.town)||null
+    linked_to:   parseInt(document.getElementById('ei-linkedto-'+id)?.value)||null
   };
   const { error } = await sb.from('listings').update(updates).eq('id', id);
   if (error) { alert('Save failed: ' + error.message); return; }
@@ -1465,7 +1420,7 @@ function showDetail(id) {
       </div>
       <div class="det-sidebar">
         <p style="font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;margin-bottom:1rem;font-weight:400">Business Info</p>
-        ${e.town ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Location${(e.locations||[]).filter(l=>l.town).length?'s':''}</span><span class="det-sidebar-val"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none;display:block">${e.address?esc(e.address)+'<br>':''}${e.town} — ${e.county} <i class="ti ti-external-link" style="font-size:11px"></i></a>${(e.locations||[]).filter(l=>l.town).map(l=>`<a href="${'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent([l.address,l.town,l.county,'NJ'].filter(Boolean).join(', '))}" target="_blank" style="color:#1A6B8A;text-decoration:none;display:block;margin-top:6px">${l.address?esc(l.address)+'<br>':''}${l.town}${l.county?' — '+l.county:''} <i class="ti ti-external-link" style="font-size:11px"></i></a>${l.phone?`<a href="tel:${l.phone.replace(/\D/g,'')}" style="color:#1A6B8A;text-decoration:none;display:block;font-size:12px;margin-top:2px">${l.phone}</a>`:''}`).join('')}</span></div>` : ''}
+        ${e.town ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Location</span><span class="det-sidebar-val"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none;display:block">${e.address?esc(e.address)+'<br>':''}${e.town} — ${e.county} <i class="ti ti-external-link" style="font-size:11px"></i></a></span></div>` : ''}
         ${e.hours ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Hours</span><span class="det-sidebar-val">${e.hours}</span></div>` : ''}
         ${e.phone ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Phone</span><span class="det-sidebar-val"><a href="tel:${e.phone.replace(/\D/g,'')}" style="color:#1A6B8A;text-decoration:none">${e.phone}</a></span></div>` : ''}
         ${e.website ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Website</span><span class="det-sidebar-val"><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></span></div>` : ''}
