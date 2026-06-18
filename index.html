@@ -1065,25 +1065,28 @@ function wrapPairs(arr, gridSel) {
   arr.forEach((e, i) => {
     if (used.has(e.id)) return;
     const next = arr[i + 1];
-    if (!next || (e.linked_to !== next.id && next.linked_to !== e.id)) return;
-    const el1 = grid.querySelector('[data-id="' + e.id + '"]');
-    const el2 = grid.querySelector('[data-id="' + next.id + '"]');
-    if (!el1 || !el2) return;
-    el1.classList.add('card-stack-lead');
-    el2.classList.add('card-stack-sibling');
+    if (!next || next.linked_to !== e.id) return;
+    const elLead = grid.querySelector('[data-id="' + e.id + '"]');
+    const elSib  = grid.querySelector('[data-id="' + next.id + '"]');
+    if (!elLead || !elSib) return;
+    elLead.classList.add('card-stack-lead');
+    elSib.classList.add('card-stack-sibling');
     const w = document.createElement('div');
     w.className = 'card-stack';
-    el1.parentNode.insertBefore(w, el1);
-    w.appendChild(el1); w.appendChild(el2);
+    elLead.parentNode.insertBefore(w, elLead);
+    w.appendChild(elLead); w.appendChild(elSib);
     used.add(next.id);
   });
 }
 function pairLinked(arr) {
   const used = new Set(), out = [];
+  const linkedBy = new Map();
+  arr.forEach(e => { if (e.linked_to) linkedBy.set(e.linked_to, e); });
   for (const e of arr) {
-    if (used.has(e.id)) continue;
+    if (used.has(e.id) || e.linked_to) continue;
     out.push(e); used.add(e.id);
-    if (e.linked_to) { const p = arr.find(x => x.id === e.linked_to); if (p && !used.has(p.id)) { out.push(p); used.add(p.id); } }
+    const sib = linkedBy.get(e.id);
+    if (sib && !used.has(sib.id)) { out.push(sib); used.add(sib.id); }
   }
   for (const e of arr) { if (!used.has(e.id)) out.push(e); }
   return out;
