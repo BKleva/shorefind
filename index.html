@@ -305,9 +305,12 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .social-link.tt{background:#f0fafa;color:#010101;border:1px solid rgba(1,1,1,.15)}
 
 .card-stack{position:relative}
-.card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.12)}
-.card-stack-sibling{position:relative;z-index:1;margin-top:8px;max-height:88px;overflow:hidden;cursor:pointer}
-.card-stack-sibling::after{content:'';position:absolute;bottom:0;left:0;right:0;height:36px;background:linear-gradient(transparent,#fff);border-radius:0 0 14px 14px;pointer-events:none}
+.card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.12),6px 6px 0 0 #fff,6px 6px 0 1px #DDD8CE,11px 11px 0 0 #fff,11px 11px 0 1px #E5E0D8}
+.card-stack-sibling{display:none}
+.loc-switcher{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #EEE9E0}
+.loc-pill{font-size:11px;font-weight:600;padding:4px 11px;border-radius:100px;background:#F0EDE6;color:#555;cursor:pointer;border:1px solid #DDD8CE;user-select:none;white-space:nowrap;transition:opacity .15s}
+.loc-pill.active{background:#1A6B8A;color:#fff;border-color:#1A6B8A}
+.loc-pill:hover{opacity:.75}
 .contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start;padding:2rem 0 3rem}
 .contact-info{position:sticky;top:2rem}
 .contact-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
@@ -1062,31 +1065,51 @@ function renderDir() {
 function wrapPairs(arr, gridSel) {
   const grid = document.querySelector(gridSel); if (!grid) return;
   const used = new Set();
-  arr.forEach((e, i) => {
-    if (used.has(e.id)) return;
-    const next = arr[i + 1];
-    if (!next || next.linked_to !== e.id) return;
+  let i = 0;
+  while (i < arr.length) {
+    const e = arr[i];
+    if (used.has(e.id) || e.linked_to) { i++; continue; }
+    const sibs = [];
+    let j = i + 1;
+    while (j < arr.length && arr[j].linked_to === e.id) { sibs.push(arr[j]); j++; }
+    if (!sibs.length) { i++; continue; }
     const elLead = grid.querySelector('[data-id="' + e.id + '"]');
-    const elSib  = grid.querySelector('[data-id="' + next.id + '"]');
-    if (!elLead || !elSib) return;
+    if (!elLead) { i = j; continue; }
     elLead.classList.add('card-stack-lead');
-    elSib.classList.add('card-stack-sibling');
     const w = document.createElement('div');
     w.className = 'card-stack';
     elLead.parentNode.insertBefore(w, elLead);
-    w.appendChild(elLead); w.appendChild(elSib);
-    used.add(next.id);
-  });
+    w.appendChild(elLead);
+    sibs.forEach(s => {
+      used.add(s.id);
+      const el = grid.querySelector('[data-id="' + s.id + '"]');
+      if (el) { el.classList.add('card-stack-sibling'); w.appendChild(el); }
+    });
+    const leadD = db.find(x => x.id == e.id);
+    if (leadD) {
+      const allD = [leadD, ...sibs.map(s => db.find(x => x.id == s.id)).filter(Boolean)];
+      const pills = allD.map((d, idx) =>
+        '<span class="loc-pill' + (idx === 0 ? ' active' : '') + '" onclick="event.stopPropagation();featCardClick(event,' + d.id + ')">' + esc(d.town) + '</span>'
+      ).join('');
+      const body = elLead.querySelector('.fc-body');
+      if (body) body.insertAdjacentHTML('beforeend', '<div class="loc-switcher">' + pills + '</div>');
+    }
+    used.add(e.id);
+    i = j;
+  }
 }
 function pairLinked(arr) {
   const used = new Set(), out = [];
   const linkedBy = new Map();
-  arr.forEach(e => { if (e.linked_to) linkedBy.set(e.linked_to, e); });
+  arr.forEach(e => {
+    if (!e.linked_to) return;
+    if (!linkedBy.has(e.linked_to)) linkedBy.set(e.linked_to, []);
+    linkedBy.get(e.linked_to).push(e);
+  });
   for (const e of arr) {
     if (used.has(e.id) || e.linked_to) continue;
     out.push(e); used.add(e.id);
-    const sib = linkedBy.get(e.id);
-    if (sib && !used.has(sib.id)) { out.push(sib); used.add(sib.id); }
+    (linkedBy.get(e.id) || []).forEach(s => { if (!used.has(s.id)) { out.push(s); used.add(s.id); } });
   }
   for (const e of arr) { if (!used.has(e.id)) out.push(e); }
   return out;
