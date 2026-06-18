@@ -304,9 +304,10 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .social-link.fb{background:#f0f4ff;color:#1877F2;border:1px solid rgba(24,119,242,.2)}
 .social-link.tt{background:#f0fafa;color:#010101;border:1px solid rgba(1,1,1,.15)}
 
-.card-stack{display:contents}
-.card-stack-lead{position:relative;box-shadow:0 2px 8px rgba(0,0,0,.07),0 6px 0 -2px #fff,0 6px 0 -1px #DDD8CE,0 12px 0 -4px #fff,0 12px 0 -3px #E5E0D8}
-.card-stack-sibling{margin-top:6px}
+.card-stack{position:relative}
+.card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.card-stack-sibling{position:relative;z-index:1;margin-top:8px;max-height:88px;overflow:hidden;cursor:pointer}
+.card-stack-sibling::after{content:'';position:absolute;bottom:0;left:0;right:0;height:36px;background:linear-gradient(transparent,#fff);border-radius:0 0 14px 14px;pointer-events:none}
 .contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start;padding:2rem 0 3rem}
 .contact-info{position:sticky;top:2rem}
 .contact-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
