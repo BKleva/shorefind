@@ -304,15 +304,11 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .social-link.fb{background:#f0f4ff;color:#1877F2;border:1px solid rgba(24,119,242,.2)}
 .social-link.tt{background:#f0fafa;color:#010101;border:1px solid rgba(1,1,1,.15)}
 
-.card-stack{position:relative}
-.card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.12),6px 6px 0 0 #fff,6px 6px 0 1px #DDD8CE,11px 11px 0 0 #fff,11px 11px 0 1px #E5E0D8}
-.card-stack-sibling{display:none;position:relative}
+.card-stack{position:relative;padding-bottom:10px}
+.card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.10),0 10px 0 -2px #fff,0 10px 0 -1px #DDD8CE}
+.card-stack-sibling{position:relative}
 .stack-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #DDD8CE;box-shadow:0 2px 8px rgba(0,0,0,.14);cursor:pointer;z-index:10;font-size:20px;color:#1A6B8A;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;user-select:none;flex-shrink:0}
 .stack-arrow:hover{background:#EBF4F8;border-color:#1A6B8A}
-.loc-switcher{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.loc-pill{font-size:11px;font-weight:600;padding:4px 11px;border-radius:100px;background:#F0EDE6;color:#555;cursor:pointer;border:1px solid #DDD8CE;user-select:none;white-space:nowrap;transition:opacity .15s}
-.loc-pill.active{background:#1A6B8A;color:#fff;border-color:#1A6B8A}
-.loc-pill:hover{opacity:.75}
 .contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start;padding:2rem 0 3rem}
 .contact-info{position:sticky;top:2rem}
 .contact-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#4BB8B8;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
@@ -1072,7 +1068,6 @@ function cycleStack(stackEl) {
 function showStack(stackEl, idx) {
   const cards = [...stackEl.querySelectorAll(':scope>.card-stack-lead,:scope>.card-stack-sibling')];
   cards.forEach((c, i) => c.style.display = i === idx ? '' : 'none');
-  stackEl.querySelectorAll(':scope>.loc-switcher .loc-pill').forEach((p, i) => p.classList.toggle('active', i === idx));
 }
 function wrapPairs(arr, gridSel) {
   const grid = document.querySelector(gridSel); if (!grid) return;
@@ -1092,14 +1087,15 @@ function wrapPairs(arr, gridSel) {
     w.className = 'card-stack';
     elLead.parentNode.insertBefore(w, elLead);
     w.appendChild(elLead);
-    const sibEls = [];
     sibs.forEach(s => {
       used.add(s.id);
       const el = grid.querySelector('[data-id="' + s.id + '"]');
-      if (el) { el.classList.add('card-stack-sibling'); w.appendChild(el); sibEls.push(el); }
+      if (!el) return;
+      el.classList.add('card-stack-sibling');
+      el.style.display = 'none';
+      w.appendChild(el);
     });
-    // Arrow on each card in the stack
-    [elLead, ...sibEls].forEach(card => {
+    [elLead, ...sibs.map(s => grid.querySelector('[data-id="' + s.id + '"]') || w.querySelector('[data-id="' + s.id + '"]')).filter(Boolean)].forEach(card => {
       const btn = document.createElement('button');
       btn.className = 'stack-arrow';
       btn.innerHTML = '&#8250;';
@@ -1107,20 +1103,6 @@ function wrapPairs(arr, gridSel) {
       btn.onclick = ev => { ev.stopPropagation(); cycleStack(card.closest('.card-stack')); };
       card.appendChild(btn);
     });
-    // Location switcher in wrapper
-    const allData = [e, ...sibs].map(s => db.find(x => x.id == s.id)).filter(Boolean);
-    if (allData.length) {
-      const sw = document.createElement('div');
-      sw.className = 'loc-switcher';
-      allData.forEach((d, idx) => {
-        const pill = document.createElement('span');
-        pill.className = 'loc-pill' + (idx === 0 ? ' active' : '');
-        pill.textContent = d.town;
-        pill.onclick = ev => { ev.stopPropagation(); showStack(w, idx); };
-        sw.appendChild(pill);
-      });
-      w.appendChild(sw);
-    }
     used.add(e.id);
     i = j;
   }
