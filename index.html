@@ -306,8 +306,10 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 
 .card-stack{position:relative}
 .card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.12),6px 6px 0 0 #fff,6px 6px 0 1px #DDD8CE,11px 11px 0 0 #fff,11px 11px 0 1px #E5E0D8}
-.card-stack-sibling{display:none}
-.loc-switcher{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #EEE9E0}
+.card-stack-sibling{display:none;position:relative}
+.stack-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #DDD8CE;box-shadow:0 2px 8px rgba(0,0,0,.14);cursor:pointer;z-index:10;font-size:20px;color:#1A6B8A;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;user-select:none;flex-shrink:0}
+.stack-arrow:hover{background:#EBF4F8;border-color:#1A6B8A}
+.loc-switcher{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .loc-pill{font-size:11px;font-weight:600;padding:4px 11px;border-radius:100px;background:#F0EDE6;color:#555;cursor:pointer;border:1px solid #DDD8CE;user-select:none;white-space:nowrap;transition:opacity .15s}
 .loc-pill.active{background:#1A6B8A;color:#fff;border-color:#1A6B8A}
 .loc-pill:hover{opacity:.75}
@@ -1062,6 +1064,16 @@ function renderDir() {
   wrapPairs(locals, '.local-grid');
 }
 
+function cycleStack(stackEl) {
+  const cards = [...stackEl.querySelectorAll(':scope>.card-stack-lead,:scope>.card-stack-sibling')];
+  const cur = cards.findIndex(c => c.style.display !== 'none');
+  showStack(stackEl, (cur + 1) % cards.length);
+}
+function showStack(stackEl, idx) {
+  const cards = [...stackEl.querySelectorAll(':scope>.card-stack-lead,:scope>.card-stack-sibling')];
+  cards.forEach((c, i) => c.style.display = i === idx ? '' : 'none');
+  stackEl.querySelectorAll(':scope>.loc-switcher .loc-pill').forEach((p, i) => p.classList.toggle('active', i === idx));
+}
 function wrapPairs(arr, gridSel) {
   const grid = document.querySelector(gridSel); if (!grid) return;
   const used = new Set();
@@ -1080,19 +1092,34 @@ function wrapPairs(arr, gridSel) {
     w.className = 'card-stack';
     elLead.parentNode.insertBefore(w, elLead);
     w.appendChild(elLead);
+    const sibEls = [];
     sibs.forEach(s => {
       used.add(s.id);
       const el = grid.querySelector('[data-id="' + s.id + '"]');
-      if (el) { el.classList.add('card-stack-sibling'); w.appendChild(el); }
+      if (el) { el.classList.add('card-stack-sibling'); w.appendChild(el); sibEls.push(el); }
     });
-    const leadD = db.find(x => x.id == e.id);
-    if (leadD) {
-      const allD = [leadD, ...sibs.map(s => db.find(x => x.id == s.id)).filter(Boolean)];
-      const pills = allD.map((d, idx) =>
-        '<span class="loc-pill' + (idx === 0 ? ' active' : '') + '" onclick="event.stopPropagation();featCardClick(event,' + d.id + ')">' + esc(d.town) + '</span>'
-      ).join('');
-      const body = elLead.querySelector('.fc-body');
-      if (body) body.insertAdjacentHTML('beforeend', '<div class="loc-switcher">' + pills + '</div>');
+    // Arrow on each card in the stack
+    [elLead, ...sibEls].forEach(card => {
+      const btn = document.createElement('button');
+      btn.className = 'stack-arrow';
+      btn.innerHTML = '&#8250;';
+      btn.title = 'Next location';
+      btn.onclick = ev => { ev.stopPropagation(); cycleStack(card.closest('.card-stack')); };
+      card.appendChild(btn);
+    });
+    // Location switcher in wrapper
+    const allData = [e, ...sibs].map(s => db.find(x => x.id == s.id)).filter(Boolean);
+    if (allData.length) {
+      const sw = document.createElement('div');
+      sw.className = 'loc-switcher';
+      allData.forEach((d, idx) => {
+        const pill = document.createElement('span');
+        pill.className = 'loc-pill' + (idx === 0 ? ' active' : '');
+        pill.textContent = d.town;
+        pill.onclick = ev => { ev.stopPropagation(); showStack(w, idx); };
+        sw.appendChild(pill);
+      });
+      w.appendChild(sw);
     }
     used.add(e.id);
     i = j;
