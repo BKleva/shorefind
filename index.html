@@ -403,7 +403,8 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   .nb.solid{padding:6px 13px}
 
   /* Hero */
-  .dir-hero{padding:2rem 1.5rem 2rem;border-radius:18px;grid-template-columns:1fr;gap:1rem}
+  .dir-hero{padding:2rem 1.5rem 2rem;border-radius:18px;grid-template-columns:1fr;gap:1rem;overflow:visible}
+  .dir-hero::before{display:none}
   .hero-tag{font-size:9px;letter-spacing:.12em}
   .dir-hero h1{font-size:clamp(1.75rem,10vw,2.5rem);white-space:normal}
   .dir-hero p{font-size:13px}
