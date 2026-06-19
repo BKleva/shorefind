@@ -873,6 +873,10 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
         <span class="ped-sec-lbl">What people love <span style="font-weight:400;text-transform:none;letter-spacing:0">— up to 3 highlights</span></span>
         <div id="ped-hls"></div>
       </div>
+      <div class="ped-sec">
+        <span class="ped-sec-lbl">Additional Locations <span style="font-weight:400;text-transform:none;letter-spacing:0">— address, phone &amp; order link per location</span></span>
+        <div id="ped-locs"></div>
+      </div>
       <div class="form-actions" style="margin-top:1.5rem">
         <span class="btn btn-pri" onclick="savePage()"><i class="ti ti-check"></i> Save page</span>
         <span class="btn btn-sec" onclick="showPage('admin')">Cancel</span>
@@ -1597,6 +1601,10 @@ function showDetail(id) {
       <div class="det-sidebar">
         <p style="font-family:'Playfair Display',serif;font-size:17px;color:#0F1923;margin-bottom:1rem;font-weight:400">Business Info</p>
         ${e.town ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Location</span><span class="det-sidebar-val"><a href="${mapsUrl(e)}" target="_blank" style="color:#1A6B8A;text-decoration:none;display:block">${e.address?esc(e.address)+'<br>':''}${e.town} — ${e.county} <i class="ti ti-external-link" style="font-size:11px"></i></a></span></div>` : ''}
+        ${(e.extra_locations||[]).filter(l=>l.address||l.phone||l.order_url).map(l=>{
+          const lmurl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((l.address||'')+', NJ');
+          return `<div class="det-sidebar-row"><span class="det-sidebar-lbl">${esc(l.label)||'Location'}</span><span class="det-sidebar-val">${l.address?`<a href="${lmurl}" target="_blank" style="color:#1A6B8A;text-decoration:none;display:block">${esc(l.address)} <i class="ti ti-external-link" style="font-size:11px"></i></a>`:''} ${l.phone?`<a href="tel:${l.phone.replace(/\D/g,'')}" style="color:#1A6B8A;text-decoration:none;display:block;margin-top:3px">${esc(l.phone)}</a>`:''} ${l.order_url?`<a href="${l.order_url}" target="_blank" class="order-link" style="margin-top:6px">Order / Book</a>`:''}</span></div>`;
+        }).join('')}
         ${e.hours ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Hours</span><span class="det-sidebar-val">${e.hours}</span></div>` : ''}
         ${e.phone ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Phone</span><span class="det-sidebar-val"><a href="tel:${e.phone.replace(/\D/g,'')}" style="color:#1A6B8A;text-decoration:none">${e.phone}</a></span></div>` : ''}
         ${e.website ? `<div class="det-sidebar-row"><span class="det-sidebar-lbl">Website</span><span class="det-sidebar-val"><a href="${e.website}" target="_blank">${e.website.replace(/https?:\/\//,'')}</a></span></div>` : ''}
@@ -1635,6 +1643,7 @@ function editPage(id) {
   const ph = e.photos || [];
   [0,1,2].forEach(i => { document.getElementById('ped-p'+i).value = ph[i] || ''; previewPhoto(i); });
   renderHlEditors(e.highlights && e.highlights.length ? e.highlights : [{icon:'ti-star',title:'',text:''}]);
+  renderLocEditors(e.extra_locations && e.extra_locations.length ? e.extra_locations : []);
   showPage('editor');
 }
 
@@ -1690,6 +1699,35 @@ function renderHlEditors(hls) {
 function addHl()     { const d = getHlData(); if (d.length < 3) { d.push({icon:'ti-star',title:'',text:''}); renderHlEditors(d); } }
 function removeHl(i) { const d = getHlData(); d.splice(i,1); renderHlEditors(d); }
 
+function renderLocEditors(locs) {
+  document.getElementById('ped-locs').innerHTML =
+    locs.map((l, i) => `<div class="hl-ed-block" id="locb-${i}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#555">Location ${i + 1}</span>
+        <span style="font-size:11px;color:#C03030;cursor:pointer" onclick="removeLoc(${i})">Remove</span>
+      </div>
+      <div class="fg" style="margin-bottom:8px"><label class="flbl">Label <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional nickname)</span></label><input class="finput" id="loc-label-${i}" value="${esc(l.label||'')}" placeholder="e.g. Ocean City Location"></div>
+      <div class="fg" style="margin-bottom:8px"><label class="flbl">Address</label><input class="finput" id="loc-address-${i}" value="${esc(l.address||'')}" placeholder="e.g. 123 Boardwalk, Wildwood, NJ 08260"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="fg"><label class="flbl">Phone</label><input class="finput" id="loc-phone-${i}" value="${esc(l.phone||'')}" type="tel" placeholder="(609) 555-0000"></div>
+        <div class="fg"><label class="flbl">Order / Book URL</label><input class="finput" id="loc-order-${i}" value="${esc(l.order_url||'')}" type="url" placeholder="https://…"></div>
+      </div>
+    </div>`).join('') +
+    `<span class="btn btn-sec" style="font-size:11px;padding:7px 14px;margin-top:${locs.length?'.5rem':'0'}" onclick="addLoc()"><i class="ti ti-plus"></i> Add location</span>`;
+}
+
+function getLocData() {
+  return Array.from(document.querySelectorAll('[id^="locb-"]')).map((_, i) => ({
+    label:     document.getElementById('loc-label-'+i)?.value.trim() || '',
+    address:   document.getElementById('loc-address-'+i)?.value.trim() || '',
+    phone:     document.getElementById('loc-phone-'+i)?.value.trim() || '',
+    order_url: document.getElementById('loc-order-'+i)?.value.trim() || ''
+  }));
+}
+
+function addLoc()    { const d = getLocData(); d.push({label:'',address:'',phone:'',order_url:''}); renderLocEditors(d); }
+function removeLoc(i){ const d = getLocData(); d.splice(i,1); renderLocEditors(d); }
+
 async function savePage() {
   if (!selPageId) { alert('No listing selected'); return; }
   const e = db.find(x => x.id === selPageId);
@@ -1697,9 +1735,10 @@ async function savePage() {
   // Refresh session before writing to avoid stale-token RLS block
   await sb.auth.getSession();
   const updates = {
-    tagline:    document.getElementById('ped-tagline').value.trim(),
-    photos:     [0,1,2].map(i => document.getElementById('ped-p'+i).value.trim()),
-    highlights: getHlData().filter(h => h.title || h.text)
+    tagline:         document.getElementById('ped-tagline').value.trim(),
+    photos:          [0,1,2].map(i => document.getElementById('ped-p'+i).value.trim()),
+    highlights:      getHlData().filter(h => h.title || h.text),
+    extra_locations: getLocData().filter(l => l.address || l.phone || l.order_url)
   };
   const { data, error } = await sb.from('listings').update(updates).eq('id', selPageId).select();
   if (error) { alert('Save failed: ' + error.message); return; }
