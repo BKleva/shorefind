@@ -316,6 +316,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 
 .card-stack{position:relative;padding-bottom:10px}
 .card-stack-lead{position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.10),0 10px 0 -2px #fff,0 10px 0 -1px #DDD8CE}
+.stack-multi .card-stack-lead{box-shadow:0 4px 14px rgba(0,0,0,.10),0 8px 0 -2px #fff,0 8px 0 -1px #DDD8CE,0 16px 0 -4px #fff,0 16px 0 -3px #DDD8CE}
 .card-stack-sibling{position:relative}
 .stack-nav{position:absolute;left:12px;top:72px;display:flex;flex-direction:column;align-items:center;gap:4px;z-index:10}
 .stack-arrow{width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #DDD8CE;box-shadow:0 2px 8px rgba(0,0,0,.14);cursor:pointer;font-size:20px;color:#1A6B8A;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;user-select:none;flex-shrink:0}
@@ -1202,6 +1203,7 @@ function wrapPairs(arr, gridSel) {
     });
     const sibEls = [...w.querySelectorAll('.card-stack-sibling')];
     const total = 1 + sibEls.length;
+    if (total >= 3) w.classList.add('stack-multi');
     [elLead, ...sibEls].forEach((card, idx) => {
       const nav = document.createElement('div');
       nav.className = 'stack-nav';
