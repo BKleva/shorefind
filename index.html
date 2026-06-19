@@ -34,7 +34,17 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .dir-hero h1 em{font-style:italic;color:#4BB8B8}
 .dir-hero p{font-size:14px;color:rgba(255,255,255,.88);line-height:1.85}
 .hero-right{position:relative;z-index:1}
-.search-bar{display:flex;max-width:420px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:100px;overflow:hidden;margin-bottom:1.25rem}
+.search-wrap{position:relative;max-width:420px;margin-bottom:1.25rem}
+.search-bar{display:flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:100px;overflow:hidden}
+.search-drop{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.22);overflow:hidden;z-index:9990;display:none}
+.search-drop.open{display:block}
+.sdrop-item{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid #F0EDE6;font-family:'Sora',sans-serif}
+.sdrop-item:last-child{border-bottom:none}
+.sdrop-item:hover,.sdrop-item.sd-active{background:#EBF4F8}
+.sdrop-icon{width:28px;height:28px;border-radius:8px;background:#F0EDE6;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;color:#1A6B8A;overflow:hidden}
+.sdrop-icon img{width:100%;height:100%;object-fit:cover}
+.sdrop-name{font-size:13px;font-weight:600;color:#0F1923}
+.sdrop-sub{font-size:11px;color:#888;margin-top:1px}
 .search-bar input{flex:1;background:transparent;border:none;padding:11px 18px;color:#fff;font-size:13px;font-family:'Sora',sans-serif;outline:none}
 .search-bar input::placeholder{color:rgba(255,255,255,.35)}
 .search-btn-el{background:#4BB8B8;border:none;padding:0 22px;color:#0D3D54;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap}
@@ -467,9 +477,12 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
         <p>Curated, verified local businesses across Atlantic &amp; Cape May counties.</p>
       </div>
       <div class="hero-right">
-        <div class="search-bar">
-          <input type="text" id="dirSearch" placeholder="Search businesses…" oninput="renderDir()">
-          <button class="search-btn-el">Search</button>
+        <div class="search-wrap">
+          <div class="search-bar">
+            <input type="text" id="dirSearch" placeholder="Search businesses…" oninput="suggestDir();renderDir()" autocomplete="off">
+            <button class="search-btn-el" onclick="renderDir()">Search</button>
+          </div>
+          <div class="search-drop" id="searchDrop"></div>
         </div>
       </div>
       <div class="hero-filters-full">
@@ -1036,6 +1049,66 @@ function allLinks(e, stop) {
   ].filter(Boolean).join('');
   return parts ? `<div class="card-links-row">${parts}</div>` : '';
 }
+
+// SEARCH AUTOCOMPLETE
+// ============================================================
+function suggestDir() {
+  const inp = document.getElementById('dirSearch');
+  const drop = document.getElementById('searchDrop');
+  const q = inp.value.trim().toLowerCase();
+  if (!q || !db.length) { drop.classList.remove('open'); return; }
+  const matches = db
+    .filter(e => e.bname.toLowerCase().includes(q))
+    .sort((a, b) => {
+      const an = a.bname.toLowerCase().startsWith(q) ? 0 : 1;
+      const bn = b.bname.toLowerCase().startsWith(q) ? 0 : 1;
+      return an - bn || a.bname.localeCompare(b.bname);
+    })
+    .slice(0, 8);
+  if (!matches.length) { drop.classList.remove('open'); return; }
+  drop._activeIdx = -1;
+  drop.innerHTML = matches.map(e => {
+    const icon = e.logo
+      ? `<div class="sdrop-icon"><img src="${e.logo}" alt=""></div>`
+      : `<div class="sdrop-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
+    return `<div class="sdrop-item" data-id="${e.id}" onmousedown="pickSuggest(${e.id})">
+      ${icon}<div><div class="sdrop-name">${e.bname}</div><div class="sdrop-sub">${cap(e.cat)} · ${e.town}</div></div>
+    </div>`;
+  }).join('');
+  drop.classList.add('open');
+}
+
+function pickSuggest(id) {
+  const e = db.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('dirSearch').value = e.bname;
+  document.getElementById('searchDrop').classList.remove('open');
+  renderDir();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('dirSearch');
+  const drop = document.getElementById('searchDrop');
+  inp.addEventListener('blur', () => setTimeout(() => drop.classList.remove('open'), 150));
+  inp.addEventListener('keydown', ev => {
+    if (!drop.classList.contains('open')) return;
+    const items = [...drop.querySelectorAll('.sdrop-item')];
+    if (!items.length) return;
+    if (ev.key === 'ArrowDown') {
+      ev.preventDefault();
+      drop._activeIdx = Math.min((drop._activeIdx ?? -1) + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle('sd-active', i === drop._activeIdx));
+    } else if (ev.key === 'ArrowUp') {
+      ev.preventDefault();
+      drop._activeIdx = Math.max((drop._activeIdx ?? 0) - 1, 0);
+      items.forEach((el, i) => el.classList.toggle('sd-active', i === drop._activeIdx));
+    } else if (ev.key === 'Enter' && drop._activeIdx >= 0) {
+      items[drop._activeIdx].dispatchEvent(new MouseEvent('mousedown'));
+    } else if (ev.key === 'Escape') {
+      drop.classList.remove('open');
+    }
+  });
+});
 
 // RENDER DIRECTORY
 // ============================================================
