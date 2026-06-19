@@ -1057,17 +1057,32 @@ function suggestDir() {
   const drop = document.getElementById('searchDrop');
   const q = inp.value.trim().toLowerCase();
   if (!q || !db.length) { drop.classList.remove('open'); return; }
+  // Town suggestions: unique towns matching the query
+  const townMatches = [...new Set(db.map(e => e.town))]
+    .filter(t => t && t.toLowerCase().includes(q))
+    .sort((a, b) => (a.toLowerCase().startsWith(q) ? 0 : 1) - (b.toLowerCase().startsWith(q) ? 0 : 1))
+    .slice(0, 3);
+  const townItems = townMatches.map(t =>
+    `<div class="sdrop-item sdrop-town" onmousedown="pickSuggestTown('${t.replace(/'/g,"\\'")}')">
+      <div class="sdrop-icon" style="background:#E8F4F0;color:#1A6B8A"><i class="ti ti-map-pin"></i></div>
+      <div><div class="sdrop-name">${t}</div><div class="sdrop-sub">Browse all businesses in ${t}</div></div>
+    </div>`
+  ).join('');
+
+  // Business name suggestions
+  const bizSlots = 8 - townMatches.length;
   const matches = db
-    .filter(e => e.bname.toLowerCase().includes(q))
+    .filter(e => e.bname.toLowerCase().includes(q) || e.town.toLowerCase().includes(q))
     .sort((a, b) => {
-      const an = a.bname.toLowerCase().startsWith(q) ? 0 : 1;
-      const bn = b.bname.toLowerCase().startsWith(q) ? 0 : 1;
-      return an - bn || a.bname.localeCompare(b.bname);
+      const score = e => (e.bname.toLowerCase().startsWith(q) ? 0 : e.bname.toLowerCase().includes(q) ? 1 : 2);
+      return score(a) - score(b) || a.bname.localeCompare(b.bname);
     })
-    .slice(0, 8);
-  if (!matches.length) { drop.classList.remove('open'); return; }
+    .filter(e => !townMatches.includes(e.town) || e.bname.toLowerCase().includes(q))
+    .slice(0, bizSlots);
+
+  if (!townItems && !matches.length) { drop.classList.remove('open'); return; }
   drop._activeIdx = -1;
-  drop.innerHTML = matches.map(e => {
+  const bizItems = matches.map(e => {
     const icon = e.logo
       ? `<div class="sdrop-icon"><img src="${e.logo}" alt=""></div>`
       : `<div class="sdrop-icon"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
@@ -1075,6 +1090,8 @@ function suggestDir() {
       ${icon}<div><div class="sdrop-name">${e.bname}</div><div class="sdrop-sub">${cap(e.cat)} · ${e.town}</div></div>
     </div>`;
   }).join('');
+  drop.innerHTML = townItems + bizItems;
+  if (!drop.innerHTML.trim()) { drop.classList.remove('open'); return; }
   drop.classList.add('open');
 }
 
@@ -1082,6 +1099,12 @@ function pickSuggest(id) {
   const e = db.find(x => x.id === id);
   if (!e) return;
   document.getElementById('dirSearch').value = e.bname;
+  document.getElementById('searchDrop').classList.remove('open');
+  renderDir();
+}
+
+function pickSuggestTown(town) {
+  document.getElementById('dirSearch').value = town;
   document.getElementById('searchDrop').classList.remove('open');
   renderDir();
 }
