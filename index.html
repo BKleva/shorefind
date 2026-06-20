@@ -1080,15 +1080,27 @@ function suggestDir() {
     </div>`
   ).join('');
 
-  // Business name suggestions
+  // Business suggestions — search all fields
   const bizSlots = 8 - townMatches.length;
   const matches = db
-    .filter(e => e.bname.toLowerCase().includes(q) || e.town.toLowerCase().includes(q))
+    .filter(e => matchesQuery(e, q))
     .sort((a, b) => {
-      const score = e => (e.bname.toLowerCase().startsWith(q) ? 0 : e.bname.toLowerCase().includes(q) ? 1 : 2);
+      const score = e => {
+        if (e.bname.toLowerCase().startsWith(q)) return 0;
+        if (e.bname.toLowerCase().includes(q))   return 1;
+        if (e.town.toLowerCase().includes(q))    return 2;
+        return 3;
+      };
       return score(a) - score(b) || a.bname.localeCompare(b.bname);
     })
-    .filter(e => !townMatches.includes(e.town) || e.bname.toLowerCase().includes(q))
+    .filter(e => {
+      // If the only match is the primary town and that town already has a town suggestion, skip
+      if (!townMatches.includes(e.town)) return true;
+      return [e.bname, e.address, e.description, e.service, e.tagline, e.hours, e.cat, e.county]
+        .some(f => f && f.toLowerCase().includes(q)) ||
+        (e.extra_locations||[]).some(l => (l.address||'').toLowerCase().includes(q) || (l.label||'').toLowerCase().includes(q)) ||
+        (e.highlights||[]).some(h => (h.title||'').toLowerCase().includes(q) || (h.text||'').toLowerCase().includes(q));
+    })
     .slice(0, bizSlots);
 
   if (!townItems && !matches.length) { drop.classList.remove('open'); return; }
@@ -1144,6 +1156,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ============================================================
+// SMART SEARCH MATCH
+// ============================================================
+function matchesQuery(e, q) {
+  if (!q) return true;
+  const plain = [e.bname, e.cat, e.town, e.county, e.address, e.service, e.tagline, e.description, e.hours];
+  if (plain.some(f => f && f.toLowerCase().includes(q))) return true;
+  if ((e.extra_locations || []).some(l =>
+    (l.address && l.address.toLowerCase().includes(q)) ||
+    (l.label   && l.label.toLowerCase().includes(q))
+  )) return true;
+  if ((e.highlights || []).some(h =>
+    (h.title && h.title.toLowerCase().includes(q)) ||
+    (h.text  && h.text.toLowerCase().includes(q))
+  )) return true;
+  return false;
+}
+
 // RENDER DIRECTORY
 // ============================================================
 function renderDir() {
@@ -1152,7 +1182,7 @@ function renderDir() {
     if (e.status !== 'active') return false;
     if (dirCounty !== 'all' && e.county !== dirCounty) return false;
     if (dirCat !== 'all' && e.cat !== dirCat) return false;
-    if (q && !e.bname.toLowerCase().includes(q) && !e.cat.includes(q) && !e.town.toLowerCase().includes(q)) return false;
+    if (q && !matchesQuery(e, q)) return false;
     return true;
   });
   const d = new Date(); const daySeed = d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
