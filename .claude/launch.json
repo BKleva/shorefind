@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Shoreworks Dev",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8080"],
+      "port": 8080
+    },
+    {
+      "name": "WebDesignSite",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8081", "--directory", "C:\\Users\\bklev\\OneDrive\\Shore Works Web Solutions"],
+      "port": 8081
+    }
+    ,{
+      "name": "WaxPacksThrowbacks",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8082", "--directory", "C:\\Users\\bklev\\OneDrive\\Wax, Packs, & Throwbacks"],
+      "port": 8082
+    }
+  ]
+}
