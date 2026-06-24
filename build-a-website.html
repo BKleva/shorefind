@@ -127,6 +127,11 @@ footer{border-top:1px solid #DDD8CE;padding:2.5rem 2rem;max-width:1100px;margin:
 .foot-logo em{color:#4BB8B8;font-style:italic}
 footer p{font-size:12px;color:#888}
 
+@media(max-width:900px){
+  .about-grid{grid-template-columns:1fr}
+  .headshot-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:2rem}
+  .headshot-wrap img{width:180px;height:220px}
+}
 @media(max-width:768px){
   .why-grid{grid-template-columns:1fr}
   .why-visual{display:none}
@@ -134,8 +139,7 @@ footer p{font-size:12px;color:#888}
   .hero{padding:3rem 1.5rem}
   .section{padding:3.5rem 1.5rem}
   .about-section{padding:3rem 1.5rem}
-  .about-grid{grid-template-columns:1fr}
-  .headshot-wrap{display:none}
+  .headshot-wrap img{width:140px;height:170px}
   .spotlight-inner{grid-template-columns:1fr}
   .spotlight-card{display:none}
 }
