@@ -10,8 +10,8 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:#D4C9AE}
-body{margin:0;overflow-x:hidden;color:#1a1a1a;background:linear-gradient(to bottom,rgba(253,250,240,.75) 0%,rgba(245,235,215,.68) 50%,rgba(236,225,200,.65) 100%),url('https://images.unsplash.com/photo-1686562919000-812eecd59aa4?w=1920&q=80') center/cover fixed no-repeat;font-family:'Sora',sans-serif;min-height:100vh;font-size:14px}
+html{background:#D4C9AE;overflow-x:hidden;max-width:100vw}
+body{margin:0;overflow-x:hidden;max-width:100vw;color:#1a1a1a;background:linear-gradient(to bottom,rgba(253,250,240,.75) 0%,rgba(245,235,215,.68) 50%,rgba(236,225,200,.65) 100%),url('https://images.unsplash.com/photo-1686562919000-812eecd59aa4?w=1920&q=80') center/cover fixed no-repeat;font-family:'Sora',sans-serif;min-height:100vh;font-size:14px}
 .app{max-width:1200px;margin:0 auto;padding:0 2rem 4rem}
 .page{display:none}.page.active{display:block}
 div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
@@ -394,6 +394,9 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
   .contact-info h2{font-size:28px}
 }
 
+@media(max-width:860px){
+  .app{padding:0 1rem 4rem}
+}
 @media(max-width:600px){
   /* Layout */
   .app{padding:0 1rem 3rem}
@@ -433,7 +436,7 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 
   /* Detail page */
   .det-name{font-size:32px}
-  .det-desc p.clamped,.det-tagline.clamped{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .det-desc .clamped,.det-tagline.clamped{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
   .det-tagline.clamped{margin-bottom:.75rem}
   .det-desc-toggle{display:inline-block}
   .det-gallery{height:56vw;min-height:220px;max-height:320px}
@@ -1287,6 +1290,25 @@ function pairLinked(arr) {
 }
 function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
+function formatDesc(text) {
+  if (!text) return '';
+  const e = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const lines = e.split('\n');
+  let html = '', inList = false;
+  for (const line of lines) {
+    const bullet = line.match(/^[-•*]\s+(.+)$/);
+    if (bullet) {
+      if (!inList) { html += '<ul style="margin:4px 0 4px 20px;padding:0">'; inList = true; }
+      html += `<li>${bullet[1]}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += line.trim() === '' ? '<br>' : line + '<br>';
+    }
+  }
+  if (inList) html += '</ul>';
+  return html.replace(/(<br>\s*)+$/, '');
+}
+
 function mapsUrl(e) {
   const q = [e.address || e.bname, e.town, e.county, 'NJ'].filter(Boolean).join(', ');
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
@@ -1316,7 +1338,7 @@ function openFeatCard(id) {
   const icon = e.logo ? `<div class="fc-icon" style="width:56px;height:56px"><img src="${e.logo}" alt="${esc(e.bname)} logo"></div>` : `<div class="fc-icon" style="width:56px;height:56px"><i class="ti ${CATI[e.cat]||'ti-building'}"></i></div>`;
   document.getElementById('feat-modal-content').innerHTML = `
     <div class="fm-head">${icon}<div><span class="fc-ribbon">Featured</span><p class="fm-name">${e.bname}</p><p class="fc-cat">${cap(e.cat)}${e.service ? ' · ' + esc(e.service) : ''}</p></div></div>
-    ${e.description ? `<p class="fm-desc">${e.description}</p>` : ''}
+    ${e.description ? `<div class="fm-desc">${formatDesc(e.description)}</div>` : ''}
     <div class="fm-row"><i class="ti ti-map-pin"></i><a href="${mapsUrl(e)}" target="_blank">${e.address ? esc(e.address) + ', ' : ''}${e.town} — ${e.county}</a></div>
     ${e.hours ? `<div class="fm-row"><i class="ti ti-clock"></i><span>${e.hours}</span></div>` : ''}
     ${e.phone ? `<div class="fm-row"><i class="ti ti-phone"></i><a href="tel:${e.phone.replace(/\D/g,'')}">${e.phone}</a></div>` : ''}
@@ -1638,7 +1660,7 @@ function showDetail(id) {
     ${gallery}
     <div class="det-body">
       <div class="det-main">
-        ${e.description ? `<div class="det-desc" style="margin-top:0"><i class="ti ti-quote"></i><div style="flex:1"><p class="clamped" id="det-desc-text">${e.description}</p><span class="det-desc-toggle" onclick="toggleClamp('det-desc-text',this)">Read more ↓</span></div></div>` : ''}
+        ${e.description ? `<div class="det-desc" style="margin-top:0"><i class="ti ti-quote"></i><div style="flex:1"><div class="clamped" id="det-desc-text">${formatDesc(e.description)}</div><span class="det-desc-toggle" onclick="toggleClamp('det-desc-text',this)">Read more ↓</span></div></div>` : ''}
         ${hl.length ? `<span class="det-sec-lbl" style="margin-top:1.5rem">What people love</span><div class="det-hl-list">${hl.map(h=>`<div class="det-hl-item"><div class="det-hl-ico" style="flex-shrink:0"><i class="ti ${h.icon||'ti-star'}"></i></div><div><p class="det-hl-title">${h.title}</p><p class="det-hl-text">${h.text}</p></div></div>`).join('')}</div>` : ''}
       </div>
       <div class="det-sidebar-col">
