@@ -1369,10 +1369,17 @@ function toggleClamp(id, el) {
 
 function toggleDesc(el) {
   const card = el.closest('.feat-card,.local-card');
-  const full = el.getAttribute('data-full');
+  const id = parseInt(el.getAttribute('data-id'));
+  const e = db.find(x => x.id === id);
+  const full = e?.description || '';
   const descEl = card.querySelector('.card-desc');
   const expanded = el.getAttribute('data-expanded') === '1';
-  descEl.textContent = expanded ? full.slice(0,140)+'…' : full;
+  if (expanded) {
+    const plain = full.replace(/^[\s]*[-•·*▪◦‣▸–—]\s*/gm,'').replace(/\r?\n+/g,' ').trim();
+    descEl.textContent = plain.slice(0,140)+'…';
+  } else {
+    descEl.innerHTML = formatDesc(full);
+  }
   el.textContent = expanded ? 'Read more ↓' : 'Show less ↑';
   el.setAttribute('data-expanded', expanded ? '0' : '1');
 }
@@ -1380,7 +1387,9 @@ function toggleDesc(el) {
 const truncDesc = (id, text, cls) => {
   if (!text) return '';
   const short = text.length > 140;
-  return `<p class="card-desc ${cls}" style="font-size:12px;color:#444;line-height:1.7;margin-bottom:6px;margin-top:4px">${short ? text.slice(0,140)+'…' : text}</p>${short ? `<span onclick="toggleDesc(this)" data-full="${esc(text)}" data-expanded="0" style="font-size:11px;color:#1A6B8A;cursor:pointer;font-weight:500">Read more ↓</span>` : ''}`;
+  const plain = text.replace(/^[\s]*[-•·*▪◦‣▸–—]\s*/gm,'').replace(/\r?\n+/g,' ').trim();
+  const preview = short ? plain.slice(0,140)+'…' : plain;
+  return `<div class="card-desc ${cls}" style="font-size:12px;color:#444;line-height:1.7;margin-bottom:6px;margin-top:4px">${short ? preview : formatDesc(text)}</div>${short ? `<span onclick="toggleDesc(this)" data-id="${id}" data-expanded="0" style="font-size:11px;color:#1A6B8A;cursor:pointer;font-weight:500">Read more ↓</span>` : ''}`;
 };
 
 // ============================================================
