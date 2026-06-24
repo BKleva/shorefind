@@ -1292,14 +1292,17 @@ function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
 function formatDesc(text) {
   if (!text) return '';
-  const e = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  const lines = e.split('\n');
+  // Normalize line endings (Windows \r\n, old Mac \r)
+  const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const escaped = normalized.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const lines = escaped.split('\n');
   let html = '', inList = false;
   for (const line of lines) {
-    const bullet = line.match(/^[-•*]\s+(.+)$/);
+    // Match any common bullet: - • * · ▪ ◦ ‣ ▸ – — followed by space or tab
+    const bullet = line.match(/^\s*[-•·*▪◦‣▸–—]\s*\t?\s*(.+)$/);
     if (bullet) {
       if (!inList) { html += '<ul style="margin:4px 0 4px 20px;padding:0">'; inList = true; }
-      html += `<li>${bullet[1]}</li>`;
+      html += `<li>${bullet[1].trim()}</li>`;
     } else {
       if (inList) { html += '</ul>'; inList = false; }
       html += line.trim() === '' ? '<br>' : line + '<br>';
