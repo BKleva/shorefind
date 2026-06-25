@@ -574,7 +574,7 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
           <li><i class="ti ti-check"></i>Dedicated account support</li>
           <li><i class="ti ti-check"></i>Advertising &amp; promotions</li>
         </ul>
-        <span class="pcta sec" onclick="startSignup('spotlight')">Start free trial</span>
+        <span class="pcta sec" onclick="showPage('contact')">Get in touch →</span>
       </div>
     </div>
     <div style="background:#fff;border-radius:14px;border:1px solid #DDD8CE;padding:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
@@ -627,6 +627,7 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
         <span class="errmsg" id="e-cat" style="display:block;margin-bottom:10px"></span>
         <div class="frow full"><div class="fg"><label class="flbl">Specific service <span style="color:#555;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="su-service" type="text" placeholder="e.g. Wood-fired pizza, HVAC repair, wedding photography"></div></div>
         <div class="frow full" id="su-descrow" style="display:none"><div class="fg"><label class="flbl">Business description</label><textarea class="fta" id="su-desc" placeholder="What makes your business special?"></textarea></div></div>
+        <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Logo URL <span style="color:#555">(optional — direct link to your logo image)</span></label><input class="finput" id="su-logo" type="url" placeholder="https://yourbusiness.com/logo.png"></div></div>
         <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Website <span style="color:#555">(optional)</span></label><input class="finput" id="su-website" type="url" placeholder="https://yourbusiness.com"></div></div>
         <div class="frow">
           <div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Instagram <span style="color:#555">(optional)</span></label><input class="finput" id="su-instagram" type="url" placeholder="https://instagram.com/yourbusiness"></div>
@@ -646,7 +647,7 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
         </div>
         <div class="frow full"><div class="fg"><label class="flbl">Email <span style="color:#555;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="su-email" type="email"><span class="errmsg" id="e-email"></span></div></div>
         <div class="frow full"><div class="fg"><label class="flbl">Phone <span style="color:#555;text-transform:none;font-weight:400">(optional)</span></label><input class="finput" id="su-phone" type="tel"><span class="errmsg" id="e-phone"></span></div></div>
-        <div class="frow full" id="su-hoursrow" style="display:none"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Business hours <span style="color:#555">(Spotlight)</span></label><input class="finput" id="su-hours" type="text" placeholder="Mon–Sat 9am–8pm"></div></div>
+        <div class="frow full" id="su-hoursrow"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Business hours <span style="color:#555">(optional)</span></label><input class="finput" id="su-hours" type="text" placeholder="Mon–Sat 9am–8pm"></div></div>
         <div class="form-actions">
           <span class="btn btn-sec" onclick="goSuStep(1)"><i class="ti ti-arrow-left"></i> Back</span>
           <span class="btn btn-pri" onclick="su2()">Continue <i class="ti ti-arrow-right"></i></span>
@@ -1396,7 +1397,7 @@ function updatePlanUI(plan) {
   document.querySelectorAll('.plan-switch-btn').forEach(b => b.classList.remove('active'));
   const activeBtn = document.getElementById('psb-' + plan);
   if (activeBtn) activeBtn.classList.add('active');
-  document.getElementById('su-hoursrow').style.display = (plan === 'spotlight') ? 'grid' : 'none';
+  document.getElementById('su-hoursrow').style.display = 'grid';
   const price = annual ? PRICES[plan].a : PRICES[plan].m;
   const priceLabel = fromAdmin ? 'Complimentary' : (price === 0 ? 'Free' : `$${price}/mo${annual?' · annual':''}`);
   const priceColor = fromAdmin ? '#4BB8B8' : (price === 0 ? '#555' : '#4BB8B8');
@@ -1405,13 +1406,16 @@ function updatePlanUI(plan) {
     : '';
 }
 
-function switchPlan(plan) { updatePlanUI(plan); }
-
+function switchPlan(plan) {
+  if (plan === 'spotlight' && !fromAdmin) { showPage('contact'); return; }
+  updatePlanUI(plan);
+}
 
 function startSignup(plan, isAdmin) {
+  if (plan === 'spotlight' && !isAdmin) { showPage('contact'); return; }
   selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
-  ['su-bname','su-county','su-town','su-address','su-service','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['su-bname','su-county','su-town','su-address','su-service','su-logo','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('rv-alert').innerHTML = '';
   document.getElementById('su-descrow').style.display = 'grid';
@@ -1491,6 +1495,7 @@ async function submitSu() {
     lname:       document.getElementById('su-lname').value.trim(),
     email:       document.getElementById('su-email').value.trim(),
     phone:       document.getElementById('su-phone').value.trim(),
+    logo:        document.getElementById('su-logo').value.trim(),
     website:     document.getElementById('su-website').value.trim(),
     instagram:   document.getElementById('su-instagram').value.trim(),
     facebook:    document.getElementById('su-facebook').value.trim(),
@@ -1501,7 +1506,7 @@ async function submitSu() {
     hours:       document.getElementById('su-hours').value.trim(),
     billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
     price:       price,
-    status:      fromAdmin ? 'active' : (selPlan === 'spotlight' ? 'pending' : 'active'),
+    status:      fromAdmin ? 'active' : 'pending',
     submitted:   new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
   };
   const { data, error } = await sb.from('listings').insert([entry]).select().single();
