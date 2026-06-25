@@ -634,8 +634,15 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
           <div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Facebook <span style="color:#555">(optional)</span></label><input class="finput" id="su-facebook" type="url" placeholder="https://facebook.com/yourbusiness"></div>
         </div>
         <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">TikTok <span style="color:#555">(optional)</span></label><input class="finput" id="su-tiktok" type="url" placeholder="https://tiktok.com/@yourbusiness"></div></div>
-        <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Order / booking URL <span style="color:#555">(optional)</span></label><input class="finput" id="su-orderurl" type="url" placeholder="e.g. DoorDash, UberEats, OpenTable, or your own booking page"></div></div>
+        <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Order / booking URL <span style="color:#555">(optional)</span></label><input class="finput" id="su-orderurl" type="url" placeholder="e.g. your own booking or ordering page"></div></div>
         <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Reservations URL <span style="color:#555">(optional)</span></label><input class="finput" id="su-reserveurl" type="url" placeholder="e.g. OpenTable, Resy, or your own reservations page"></div></div>
+        <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Membership URL <span style="color:#555">(optional)</span></label><input class="finput" id="su-memberurl" type="url" placeholder="e.g. members.yourbusiness.com"></div></div>
+        <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;margin:10px 0 6px">Ordering platforms <span style="font-weight:400;text-transform:none;color:#aaa">(dining only)</span></div>
+        <div class="frow">
+          <div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">DoorDash <span style="color:#555">(optional)</span></label><input class="finput" id="su-doordash" type="url" placeholder="doordash.com/…"></div>
+          <div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">UberEats <span style="color:#555">(optional)</span></label><input class="finput" id="su-ubereats" type="url" placeholder="ubereats.com/…"></div>
+        </div>
+        <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Toast <span style="color:#555">(optional)</span></label><input class="finput" id="su-toast" type="url" placeholder="toasttab.com/…"></div></div>
         <div class="form-actions"><span class="btn btn-pri" onclick="su1()">Continue <i class="ti ti-arrow-right"></i></span></div>
       </div>
       <div class="step" id="su-step2">
@@ -1415,7 +1422,7 @@ function startSignup(plan, isAdmin) {
   if (plan === 'spotlight' && !isAdmin) { showPage('contact'); return; }
   selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
-  ['su-bname','su-county','su-town','su-address','su-service','su-logo','su-fname','su-lname','su-email','su-phone','su-website','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['su-bname','su-county','su-town','su-address','su-service','su-logo','su-website','su-instagram','su-facebook','su-tiktok','su-orderurl','su-reserveurl','su-memberurl','su-doordash','su-ubereats','su-toast','su-fname','su-lname','su-email','su-phone','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('rv-alert').innerHTML = '';
   document.getElementById('su-descrow').style.display = 'grid';
@@ -1502,6 +1509,10 @@ async function submitSu() {
     tiktok:      document.getElementById('su-tiktok').value.trim(),
     order_url:   document.getElementById('su-orderurl').value.trim(),
     reserve_url: document.getElementById('su-reserveurl').value.trim(),
+    member_url:  document.getElementById('su-memberurl').value.trim(),
+    doordash:    document.getElementById('su-doordash').value.trim(),
+    ubereats:    document.getElementById('su-ubereats').value.trim(),
+    toast:       document.getElementById('su-toast').value.trim(),
     description: document.getElementById('su-desc').value.trim(),
     hours:       document.getElementById('su-hours').value.trim(),
     billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
