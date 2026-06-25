@@ -1842,9 +1842,16 @@ async function submitContact() {
   const btn = document.getElementById('cf-submit-btn');
   btn.textContent='Sending…'; btn.style.pointerEvents='none';
   try {
-    const res = await fetch('/.netlify/functions/contact', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ fname, lname, email, phone, type, message })
+    const fd = new FormData();
+    fd.append('name',     `${fname} ${lname}`);
+    fd.append('email',    email);
+    if (phone)   fd.append('phone',   phone);
+    fd.append('type',     type);
+    fd.append('message',  message);
+    fd.append('_subject', `[${type}] Message from ${fname} ${lname}`);
+    fd.append('_captcha', 'false');
+    const res = await fetch('https://formsubmit.co/ben@shoreworksnj.com', {
+      method: 'POST', body: fd, headers: { 'Accept': 'application/json' }
     });
     if (!res.ok) throw new Error('Server error');
     document.getElementById('cf-form-wrap').style.display = 'none';
