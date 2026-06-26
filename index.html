@@ -851,7 +851,7 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
   <!-- FOOTER -->
   <footer style="margin-top:4rem;padding:1.5rem 0;border-top:1px solid #DDD8CE;display:flex;align-items:center;justify-content:space-between">
     <span style="font-size:11px;color:#555">© 2026 Shoreworks Catalog</span>
-    <span id="footer-admin-link" style="font-size:11px;color:#bbb;cursor:pointer" onclick="openAuthModal()">Admin</span>
+    <span id="footer-admin-link" style="display:none"></span>
     <span id="footer-logout-link" style="font-size:11px;color:#1A6B8A;cursor:pointer;display:none" onclick="doLogout()"><i class="ti ti-logout"></i> Sign out</span>
   </footer>
 
@@ -1350,7 +1350,10 @@ function closeFeatCard() {
   document.body.style.overflow = '';
   if (location.hash.startsWith('#feat=')) history.pushState(null, '', location.pathname);
 }
-document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeFeatCard(); });
+document.addEventListener('keydown', ev => {
+  if (ev.key === 'Escape') closeFeatCard();
+  if (ev.ctrlKey && ev.shiftKey && ev.key === 'L') { ev.preventDefault(); openAuthModal(); }
+});
 
 function toggleClamp(id, el) {
   const p = document.getElementById(id);
@@ -1890,10 +1893,8 @@ async function checkAdmin() {
 function updateAdminUI() {
   document.getElementById('nav-admin').style.display = isAdmin ? '' : 'none';
   document.getElementById('nav-pricing').style.display = isAdmin ? '' : 'none';
-  const lnk = document.getElementById('footer-admin-link');
-  const out  = document.getElementById('footer-logout-link');
-  if (lnk) lnk.style.display = isAdmin ? 'none' : '';
-  if (out) out.style.display  = isAdmin ? '' : 'none';
+  const out = document.getElementById('footer-logout-link');
+  if (out) out.style.display = isAdmin ? '' : 'none';
 }
 
 function openAuthModal() {
