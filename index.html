@@ -459,6 +459,9 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
   .social-link i{display:none}
   .card-links-row{gap:4px}
 }
+#back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;width:42px;height:42px;border-radius:50%;background:#1A6B8A;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(26,107,138,.35);opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;pointer-events:none}
+#back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#back-to-top:hover{background:#155a75}
 </style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">
@@ -847,6 +850,8 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
       </div>
     </div>
   </div>
+
+  <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><i class="ti ti-arrow-up"></i></button>
 
   <!-- FOOTER -->
   <footer style="margin-top:4rem;padding:1.5rem 0;border-top:1px solid #DDD8CE;display:flex;align-items:center;justify-content:space-between">
@@ -1350,6 +1355,9 @@ function closeFeatCard() {
   document.body.style.overflow = '';
   if (location.hash.startsWith('#feat=')) history.pushState(null, '', location.pathname);
 }
+window.addEventListener('scroll', () => {
+  document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
 document.addEventListener('keydown', ev => {
   if (ev.key === 'Escape') closeFeatCard();
   if (ev.ctrlKey && ev.shiftKey && ev.key === 'L') { ev.preventDefault(); openAuthModal(); }
