@@ -472,7 +472,7 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
 <body>
 <div class="app">
   <nav class="nav">
-    <div class="logo" onclick="showPage('dir')">Shore<em>works</em><span class="logo-sub">Catalog</span></div>
+    <div class="logo" onclick="showPage('dir')" ondblclick="return false" id="site-logo">Shore<em>works</em><span class="logo-sub">Catalog</span></div>
     <div class="nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
       <span class="nb" id="nav-pricing" onclick="showPage('pricing')" style="display:none">Pricing</span>
@@ -1354,6 +1354,14 @@ document.addEventListener('keydown', ev => {
   if (ev.key === 'Escape') closeFeatCard();
   if (ev.ctrlKey && ev.shiftKey && ev.key === 'L') { ev.preventDefault(); openAuthModal(); }
 });
+(function() {
+  let taps = 0, t;
+  document.getElementById('site-logo').addEventListener('click', () => {
+    clearTimeout(t);
+    if (++taps >= 5) { taps = 0; openAuthModal(); }
+    else t = setTimeout(() => { taps = 0; }, 1500);
+  });
+})();
 
 function toggleClamp(id, el) {
   const p = document.getElementById(id);
