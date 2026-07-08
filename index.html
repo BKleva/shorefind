@@ -57,6 +57,9 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .hero-strip .ftag:hover .ficon{color:#4BB8B8}
 .hero-strip .ftag.on{background:rgba(75,184,184,.18);color:#4BB8B8;border-color:#4BB8B8;font-weight:600}
 .hero-strip .ftag.on .ficon{color:#4BB8B8}
+.town-filter-sel{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.28);border-radius:100px;padding:7px 28px 7px 14px;color:rgba(255,255,255,.95);font-size:12px;font-weight:500;font-family:'Sora',sans-serif;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255%2C255%2C255%2C.6)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;min-width:140px;transition:border-color .15s,background .15s}
+.town-filter-sel:focus{border-color:#4BB8B8;background-color:rgba(75,184,184,.12)}
+.town-filter-sel option{background:#0D3D54;color:#fff}
 .filter-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#555;font-weight:600;margin-bottom:6px;display:block}
 .filter-strip{display:flex;gap:6px;flex-wrap:wrap}
 .ftag{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:100px;font-size:12px;font-weight:500;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid #C8C4BB;background:#ffffff;color:#222222;line-height:1;user-select:none;transition:border-color .15s,background .15s,color .15s}
@@ -529,6 +532,16 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
           <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
           </div>
         </div>
+        <div class="hero-filter-row">
+          <span class="hero-filter-lbl">Town</span>
+          <select class="town-filter-sel" id="town-filter" onchange="setTown(this.value)">
+            <option value="all">All towns</option>
+          </select>
+        </div>
+        <div class="hero-filter-row" id="subcat-row" style="display:none">
+          <span class="hero-filter-lbl">Type</span>
+          <div class="filter-strip hero-strip" id="subcat-strip"></div>
+        </div>
       </div>
     </div>
     <div id="dir-spotlight"></div>
@@ -646,6 +659,8 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
           <div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">UberEats <span style="color:#555">(optional)</span></label><input class="finput" id="su-ubereats" type="url" placeholder="ubereats.com/…"></div>
         </div>
         <div class="frow full"><div class="fg"><label style="font-size:12px;color:#333;display:block;margin-bottom:5px">Toast <span style="color:#555">(optional)</span></label><input class="finput" id="su-toast" type="url" placeholder="toasttab.com/…"></div></div>
+        <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 6px">Search keywords <span style="font-weight:400;text-transform:none;color:#aaa">(optional)</span></div>
+        <div class="frow full"><div class="fg"><input class="finput" id="su-tags" type="text" placeholder="e.g. pizza, outdoor seating, family-friendly, BYOB"><span style="font-size:11px;color:#888;margin-top:4px;display:block">Comma-separated words customers might search for when looking for you</span></div></div>
         <div class="form-actions"><span class="btn btn-pri" onclick="su1()">Continue <i class="ti ti-arrow-right"></i></span></div>
       </div>
       <div class="step" id="su-step2">
@@ -1002,7 +1017,7 @@ const SEED = [
 // APP STATE
 // ============================================================
 let annual = false, selPlan = 'featured', selCat = '', fromAdmin = false;
-let dirCounty = 'all', dirCat = 'all';
+let dirCounty = 'all', dirCat = 'all', dirTown = 'all', dirSubcat = 'all';
 let db = [];
 let isAdmin = false;
 
@@ -1041,13 +1056,48 @@ function setCounty(v, el) {
   dirCounty = v;
   document.querySelectorAll('#county-strip .ftag').forEach(x => x.classList.remove('on'));
   el.classList.add('on');
+  dirTown = 'all'; populateTownFilter();
+  dirSubcat = 'all'; document.getElementById('subcat-row').style.display = 'none';
   renderDir();
 }
 function setCat(v, el) {
   dirCat = v;
   document.querySelectorAll('#cat-strip .ftag').forEach(x => x.classList.remove('on'));
   el.classList.add('on');
+  dirSubcat = 'all'; renderSubcatStrip();
   renderDir();
+}
+function setTown(val) {
+  dirTown = val;
+  renderDir();
+}
+function setSubcat(val, el) {
+  document.querySelectorAll('#subcat-strip .ftag').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  dirSubcat = val;
+  renderDir();
+}
+function renderSubcatStrip() {
+  const row = document.getElementById('subcat-row');
+  const strip = document.getElementById('subcat-strip');
+  if (dirCat === 'all') { row.style.display = 'none'; return; }
+  const services = [...new Set(
+    db.filter(e => e.status === 'active' && e.cat === dirCat && e.service).map(e => e.service)
+  )].sort();
+  if (!services.length) { row.style.display = 'none'; return; }
+  strip.innerHTML = `<span class="ftag on" onclick="setSubcat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>` +
+    services.map(s => `<span class="ftag" onclick="setSubcat(${JSON.stringify(s)},this)">${esc(s)}</span>`).join('');
+  row.style.display = '';
+}
+function populateTownFilter() {
+  const sel = document.getElementById('town-filter');
+  const towns = [...new Set(
+    db.filter(e => e.status === 'active' && e.town && (dirCounty === 'all' || e.county === dirCounty)).map(e => e.town)
+  )].sort();
+  const cur = dirTown;
+  sel.innerHTML = '<option value="all">All towns</option>' +
+    towns.map(t => `<option value="${t}"${t === cur ? ' selected' : ''}>${esc(t)}</option>`).join('');
+  if (!towns.includes(dirTown)) dirTown = 'all';
 }
 
 // ============================================================
@@ -1170,7 +1220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================
 function matchesQuery(e, q) {
   if (!q) return true;
-  const plain = [e.bname, e.cat, e.town, e.county, e.address, e.service, e.tagline, e.description, e.hours];
+  const plain = [e.bname, e.cat, e.town, e.county, e.address, e.service, e.tagline, e.description, e.hours, e.search_tags];
   if (plain.some(f => f && f.toLowerCase().includes(q))) return true;
   if ((e.extra_locations || []).some(l =>
     (l.address && l.address.toLowerCase().includes(q)) ||
@@ -1191,6 +1241,8 @@ function renderDir() {
     if (e.status !== 'active') return false;
     if (dirCounty !== 'all' && e.county !== dirCounty) return false;
     if (dirCat !== 'all' && e.cat !== dirCat) return false;
+    if (dirTown !== 'all' && e.town !== dirTown) return false;
+    if (dirSubcat !== 'all' && e.service !== dirSubcat) return false;
     if (q && !matchesQuery(e, q)) return false;
     return true;
   });
@@ -1441,7 +1493,7 @@ function startSignup(plan, isAdmin) {
   if (plan === 'spotlight' && !isAdmin) { showPage('contact'); return; }
   selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
-  ['su-bname','su-county','su-town','su-address','su-service','su-logo','su-website','su-instagram','su-facebook','su-tiktok','su-orderurl','su-reserveurl','su-memberurl','su-doordash','su-ubereats','su-toast','su-fname','su-lname','su-email','su-phone','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['su-bname','su-county','su-town','su-address','su-service','su-logo','su-website','su-instagram','su-facebook','su-tiktok','su-orderurl','su-reserveurl','su-memberurl','su-doordash','su-ubereats','su-toast','su-tags','su-fname','su-lname','su-email','su-phone','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     ['e-bname','e-county','e-town','e-cat','e-fname','e-lname','e-email','e-phone'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
   document.getElementById('rv-alert').innerHTML = '';
   document.getElementById('su-descrow').style.display = 'grid';
@@ -1532,6 +1584,7 @@ async function submitSu() {
     doordash:    document.getElementById('su-doordash').value.trim(),
     ubereats:    document.getElementById('su-ubereats').value.trim(),
     toast:       document.getElementById('su-toast').value.trim(),
+    search_tags: document.getElementById('su-tags').value.trim(),
     description: document.getElementById('su-desc').value.trim(),
     hours:       document.getElementById('su-hours').value.trim(),
     billing:     fromAdmin ? 'comp' : (price === 0 ? 'free' : (annual ? 'annual' : 'monthly')),
@@ -1585,7 +1638,7 @@ function renderAdmin() {
     tbody.appendChild(tr);
     const etr = document.createElement('tr'); etr.id = 'editrow-' + e.id; etr.className = 'edit-row';
     const lbl = t => `<label style="font-size:10px;font-weight:600;color:#333;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px">${t}</label>`;
-    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('Street address')}<input class="einput" id="ei-address-${e.id}" value="${esc(e.address||'')}" placeholder="123 Shore Rd"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','fitness','retail','auto','beauty','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Specific service')}<input class="einput" id="ei-service-${e.id}" value="${esc(e.service||'')}" placeholder="e.g. HVAC repair"></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<textarea class="einput" id="ei-desc-${e.id}" rows="8" style="resize:vertical;min-height:150px;font-family:inherit;line-height:1.6;white-space:pre-wrap">${esc(e.description||'')}</textarea></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div><div>${lbl('Instagram URL')}<input class="einput" id="ei-instagram-${e.id}" value="${esc(e.instagram||'')}" type="url" placeholder="instagram.com/…"></div><div>${lbl('Facebook URL')}<input class="einput" id="ei-facebook-${e.id}" value="${esc(e.facebook||'')}" type="url" placeholder="facebook.com/…"></div><div>${lbl('TikTok URL')}<input class="einput" id="ei-tiktok-${e.id}" value="${esc(e.tiktok||'')}" type="url" placeholder="tiktok.com/@…"></div><div>${lbl('Order / Booking URL')}<input class="einput" id="ei-orderurl-${e.id}" value="${esc(e.order_url||'')}" type="url" placeholder="doordash.com/… or booking link"></div><div>${lbl('Reservations URL')}<input class="einput" id="ei-reserveurl-${e.id}" value="${esc(e.reserve_url||'')}" type="url" placeholder="opentable.com/… or resy.com/…"></div><div>${lbl('Membership URL')}<input class="einput" id="ei-memberurl-${e.id}" value="${esc(e.member_url||'')}" type="url" placeholder="e.g. members.yourbusiness.com"></div></div>${(e.cat==='dining')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div style="border-top:1px solid #EEE;padding-top:12px;margin-top:4px"><div>${lbl("Link to listing ID")}<input class="einput" id="ei-linkedto-${e.id}" type="number" value="${e.linked_to||''}" placeholder="Pair with another listing's ID"></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
+    etr.innerHTML = `<td colspan="7"><div class="edit-grid"><div>${lbl('Business name')}<input class="einput" id="ei-bname-${e.id}" value="${esc(e.bname)}"></div><div>${lbl('Town')}<input class="einput" id="ei-town-${e.id}" value="${esc(e.town)}"></div><div>${lbl('Street address')}<input class="einput" id="ei-address-${e.id}" value="${esc(e.address||'')}" placeholder="123 Shore Rd"></div><div>${lbl('County')}<select class="esel" id="ei-county-${e.id}"><option ${e.county==='Atlantic County'?'selected':''}>Atlantic County</option><option ${e.county==='Cape May County'?'selected':''}>Cape May County</option></select></div><div>${lbl('Category')}<select class="esel" id="ei-cat-${e.id}">${['dining','home','fitness','retail','auto','beauty','services'].map(c=>`<option value="${c}" ${e.cat===c?'selected':''}>${cap(c)}</option>`).join('')}</select></div><div>${lbl('Specific service')}<input class="einput" id="ei-service-${e.id}" value="${esc(e.service||'')}" placeholder="e.g. HVAC repair"></div><div>${lbl('Tier')}<select class="esel" id="ei-plan-${e.id}"><option value="featured" ${e.plan==='featured'?'selected':''}>Featured</option><option value="spotlight" ${e.plan==='spotlight'?'selected':''}>Spotlight</option></select></div><div>${lbl('Status')}<select class="esel" id="ei-status-${e.id}"><option value="active" ${e.status==='active'?'selected':''}>Active</option><option value="pending" ${e.status==='pending'?'selected':''}>Pending</option><option value="hidden" ${e.status==='hidden'?'selected':''}>Hidden</option></select></div><div style="grid-column:1/-1">${lbl('Logo URL <span style="font-weight:400;text-transform:none">— paste a direct image link (optional)</span>')}<input class="einput" id="ei-logo-${e.id}" value="${esc(e.logo||'')}" type="url" placeholder="https://yourbusiness.com/logo.png"></div><div style="grid-column:1/-1">${lbl('Description')}<textarea class="einput" id="ei-desc-${e.id}" rows="8" style="resize:vertical;min-height:150px;font-family:inherit;line-height:1.6;white-space:pre-wrap">${esc(e.description||'')}</textarea></div><div style="grid-column:1/-1">${lbl('Website')}<input class="einput" id="ei-website-${e.id}" value="${esc(e.website||'')}"></div><div>${lbl('Hours')}<input class="einput" id="ei-hours-${e.id}" value="${esc(e.hours||'')}"></div><div>${lbl('First name')}<input class="einput" id="ei-fname-${e.id}" value="${esc(e.fname||'')}"></div><div>${lbl('Last name')}<input class="einput" id="ei-lname-${e.id}" value="${esc(e.lname||'')}"></div><div>${lbl('Phone')}<input class="einput" id="ei-phone-${e.id}" value="${esc(e.phone||'')}"></div><div>${lbl('Email')}<input class="einput" id="ei-email-${e.id}" value="${esc(e.email||'')}"></div><div>${lbl('Instagram URL')}<input class="einput" id="ei-instagram-${e.id}" value="${esc(e.instagram||'')}" type="url" placeholder="instagram.com/…"></div><div>${lbl('Facebook URL')}<input class="einput" id="ei-facebook-${e.id}" value="${esc(e.facebook||'')}" type="url" placeholder="facebook.com/…"></div><div>${lbl('TikTok URL')}<input class="einput" id="ei-tiktok-${e.id}" value="${esc(e.tiktok||'')}" type="url" placeholder="tiktok.com/@…"></div><div>${lbl('Order / Booking URL')}<input class="einput" id="ei-orderurl-${e.id}" value="${esc(e.order_url||'')}" type="url" placeholder="doordash.com/… or booking link"></div><div>${lbl('Reservations URL')}<input class="einput" id="ei-reserveurl-${e.id}" value="${esc(e.reserve_url||'')}" type="url" placeholder="opentable.com/… or resy.com/…"></div><div>${lbl('Membership URL')}<input class="einput" id="ei-memberurl-${e.id}" value="${esc(e.member_url||'')}" type="url" placeholder="e.g. members.yourbusiness.com"></div><div style="grid-column:1/-1">${lbl('Search keywords')}<input class="einput" id="ei-tags-${e.id}" value="${esc(e.search_tags||'')}" placeholder="e.g. pizza, outdoor seating, BYOB, family-friendly"><span style="font-size:10px;color:#888;margin-top:3px;display:block">Comma-separated words customers might search for</span></div></div>${(e.cat==='dining')?`<div style="border-top:1px solid #F0EDE6;padding-top:10px;margin-top:2px"><div style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Ordering Platforms</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div>${lbl('DoorDash URL')}<input class="einput" id="ei-doordash-${e.id}" value="${esc(e.doordash||'')}" type="url" placeholder="doordash.com/…"></div><div>${lbl('UberEats URL')}<input class="einput" id="ei-ubereats-${e.id}" value="${esc(e.ubereats||'')}" type="url" placeholder="ubereats.com/…"></div><div>${lbl('Toast URL')}<input class="einput" id="ei-toast-${e.id}" value="${esc(e.toast||'')}" type="url" placeholder="toasttab.com/…"></div></div></div>`:''}<div style="border-top:1px solid #EEE;padding-top:12px;margin-top:4px"><div>${lbl("Link to listing ID")}<input class="einput" id="ei-linkedto-${e.id}" type="number" value="${e.linked_to||''}" placeholder="Pair with another listing's ID"></div></div><div class="ea"><span class="btn btn-pri" style="padding:7px 16px;font-size:11px" onclick="saveEd(${e.id})"><i class="ti ti-check"></i> Save</span><span class="btn btn-sec" style="padding:7px 16px;font-size:11px" onclick="togEdit(${e.id})">Cancel</span></div></td>`;
     tbody.appendChild(etr);
   });
 }
@@ -1621,7 +1674,8 @@ async function saveEd(id) {
     order_url:   document.getElementById('ei-orderurl-'+id)?.value.trim() || '',
     reserve_url: document.getElementById('ei-reserveurl-'+id)?.value.trim() || '',
     member_url:  document.getElementById('ei-memberurl-'+id)?.value.trim() || '',
-    linked_to:   parseInt(document.getElementById('ei-linkedto-'+id)?.value)||null
+    linked_to:   parseInt(document.getElementById('ei-linkedto-'+id)?.value)||null,
+    search_tags: document.getElementById('ei-tags-'+id)?.value.trim() || ''
   };
   const { error } = await sb.from('listings').update(updates).eq('id', id);
   if (error) { alert('Save failed: ' + error.message); return; }
@@ -1945,6 +1999,7 @@ async function doLogin() {
   closeAuthModal();
   updateAdminUI();
   await loadDB();
+  populateTownFilter();
   renderDir();
   renderAdmin();
   showPage('admin');
@@ -1955,6 +2010,7 @@ async function doLogout() {
   isAdmin = false;
   updateAdminUI();
   await loadDB();
+  populateTownFilter();
   renderDir();
   showPage('dir');
 }
@@ -1989,6 +2045,7 @@ window.addEventListener('popstate', () => {
 async function init() {
   await checkAdmin();
   await loadDB();
+  populateTownFilter();
   renderDir();
   if (isAdmin) renderAdmin();
   handleHash();
