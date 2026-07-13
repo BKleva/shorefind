@@ -58,18 +58,30 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .svc-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:#0D3D54;margin-bottom:.6rem}
 .svc-desc{font-size:13px;color:#556677;line-height:1.75}
 
-/* PROCESS */
-.process-section{background:#0D3D54;padding:4rem 2rem}
-.process-inner{max-width:1100px;margin:0 auto}
-.process-section .section-tag{color:#4BB8B8}
-.process-section .section-tag::before{background:#4BB8B8}
-.process-section .section-title{color:#fff}
-.process-section .section-title em{color:#4BB8B8}
-.process-section .section-sub{color:rgba(255,255,255,.72);margin-bottom:3.5rem}
-.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem}
-.step-num{font-family:'Playfair Display',serif;font-size:3rem;color:rgba(75,184,184,.25);font-weight:400;line-height:1;margin-bottom:.5rem}
-.step-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:.5rem}
-.step-desc{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7}
+/* PORTFOLIO */
+.portfolio-section{background:#F5F0E8;padding:4rem 2rem}
+.portfolio-inner{max-width:1100px;margin:0 auto}
+.portfolio-carousel{position:relative;margin-top:3rem;padding:0 32px}
+.portfolio-track-wrap{overflow:hidden}
+.portfolio-track{display:flex;gap:1.5rem;transition:transform .45s cubic-bezier(.25,.46,.45,.94);will-change:transform}
+.port-card{flex-shrink:0;background:#fff;border-radius:20px;border:1px solid #E8E3D8;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .22s}
+.port-card:hover{box-shadow:0 16px 48px rgba(13,61,84,.12)}
+.port-preview{width:100%;display:block;flex-shrink:0}
+.port-info{padding:1.5rem;flex:1;display:flex;flex-direction:column}
+.port-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:#EBF4F8;color:#1A6B8A;display:inline-block;margin-bottom:.6rem}
+.port-title{font-family:'Playfair Display',serif;font-size:19px;color:#0D3D54;margin-bottom:.3rem}
+.port-url{font-size:11px;color:#4BB8B8;margin-bottom:.65rem;font-weight:500}
+.port-desc{font-size:13px;color:#556677;line-height:1.7;flex:1}
+.port-link{display:inline-flex;align-items:center;gap:6px;margin-top:1rem;padding:8px 20px;border-radius:100px;background:#0D3D54;color:#fff;text-decoration:none;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;align-self:flex-start;transition:background .15s}
+.port-link:hover{background:#0a2f40}
+.port-arrow{position:absolute;top:38%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid #E2DACE;box-shadow:0 4px 18px rgba(13,61,84,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0D3D54;font-size:1.15rem;transition:all .18s;z-index:5;padding:0;font-family:inherit;line-height:1}
+.port-arrow:hover:not(:disabled){background:#0D3D54;color:#fff;border-color:#0D3D54;box-shadow:0 6px 24px rgba(13,61,84,.18)}
+.port-arrow:disabled{opacity:.2;pointer-events:none}
+.port-arrow-left{left:0}
+.port-arrow-right{right:0}
+.port-dots{display:flex;justify-content:center;gap:8px;margin-top:1.5rem}
+.port-dot{width:8px;height:8px;border-radius:50%;background:#D8D3C8;cursor:pointer;transition:background .2s,transform .2s;border:none;padding:0}
+.port-dot.on{background:#0D3D54;transform:scale(1.25)}
 
 /* WHY */
 .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
@@ -135,7 +147,7 @@ footer p{font-size:12px;color:#888}
   .headshot-wrap img{width:180px;height:220px}
   .hero{padding:3rem 2rem 2.5rem}
   .section,.about-section,.cta-section{padding:3rem 2rem}
-  .process-section,.spotlight-section{padding:3rem 2rem}
+  .portfolio-section,.spotlight-section{padding:3rem 2rem}
 }
 @media(max-width:768px){
   .why-grid{grid-template-columns:1fr}
@@ -145,7 +157,11 @@ footer p{font-size:12px;color:#888}
   .nav-links a{font-size:11px;padding:5px 11px;display:inline-block}
   .hero{padding:2.5rem 1.25rem 2rem}
   .section,.about-section,.cta-section{padding:2.5rem 1.25rem}
-  .process-section,.spotlight-section{padding:2.5rem 1.25rem}
+  .portfolio-section,.spotlight-section{padding:2.5rem 1.25rem}
+  .portfolio-carousel{padding:0 28px}
+  .port-card{flex:0 0 100%}
+  .port-arrow-left{left:0}
+  .port-arrow-right{right:0}
   .headshot-wrap img{width:140px;height:170px}
   .spotlight-inner{grid-template-columns:1fr}
   .spotlight-card{display:none}
@@ -159,7 +175,7 @@ footer p{font-size:12px;color:#888}
   <div class="nav-links">
     <a href="#about" class="always">About</a>
     <a href="#services">Services</a>
-    <a href="#process">Process</a>
+    <a href="#portfolio">Portfolio</a>
     <a href="#why">Why Us</a>
     <a href="/" class="catalog">← Directory</a>
     <a href="build-contact.html" class="cta">Contact</a>
@@ -416,34 +432,122 @@ footer p{font-size:12px;color:#888}
   </div>
 </section>
 
-<!-- PROCESS -->
-<section class="process-section" id="process">
-  <div class="process-inner">
-    <div class="section-tag">How It Works</div>
-    <h2 class="section-title">From idea to <em>live site</em><br>in four steps</h2>
-    <p class="section-sub">A straightforward process designed to get you online quickly — with as much or as little involvement from you as you'd like.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-title">Discovery Call</div>
-        <p class="step-desc">We talk through your goals, your business, and what you need your website to do for you.</p>
+<!-- PORTFOLIO -->
+<section class="portfolio-section" id="portfolio">
+  <div class="portfolio-inner">
+    <div class="section-tag">Our Work</div>
+    <h2 class="section-title">Sites we've <em>built</em></h2>
+    <p class="section-sub">Real projects for real local businesses — custom-designed, handcrafted, and built to perform.</p>
+    <div class="portfolio-carousel">
+      <button class="port-arrow port-arrow-left" id="port-prev" onclick="portMove(-1)" disabled aria-label="Previous"><i class="ti ti-chevron-left"></i></button>
+      <div class="portfolio-track-wrap">
+        <div class="portfolio-track" id="port-track">
+
+      <!-- Wax Packs & Throwbacks -->
+      <div class="port-card">
+        <svg class="port-preview" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="wptg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D1B2A"/><stop offset="100%" stop-color="#162840"/></linearGradient></defs>
+          <rect width="400" height="220" fill="url(#wptg)"/>
+          <circle cx="370" cy="60" r="80" fill="rgba(245,197,24,.05)"/>
+          <!-- browser chrome -->
+          <rect width="400" height="26" fill="#060f1a"/>
+          <circle cx="13" cy="13" r="4" fill="#FF6058"/><circle cx="26" cy="13" r="4" fill="#FFC130"/><circle cx="39" cy="13" r="4" fill="#27C93F"/>
+          <rect x="58" y="7" width="180" height="12" rx="6" fill="rgba(255,255,255,.12)"/>
+          <rect x="63" y="10" width="110" height="6" rx="3" fill="rgba(255,255,255,.2)"/>
+          <!-- nav -->
+          <rect x="0" y="26" width="400" height="30" fill="#0a1520"/>
+          <rect x="14" y="33" width="110" height="14" rx="3" fill="rgba(245,197,24,.15)"/>
+          <rect x="18" y="36" width="100" height="9" rx="2" fill="#F5C518"/>
+          <rect x="180" y="39" width="30" height="7" rx="2" fill="rgba(255,255,255,.22)"/>
+          <rect x="220" y="39" width="38" height="7" rx="2" fill="rgba(255,255,255,.22)"/>
+          <rect x="268" y="39" width="30" height="7" rx="2" fill="rgba(255,255,255,.22)"/>
+          <rect x="308" y="34" width="78" height="16" rx="8" fill="#E8500A"/>
+          <rect x="317" y="38" width="60" height="7" rx="3" fill="rgba(255,255,255,.5)"/>
+          <!-- hero -->
+          <rect x="0" y="56" width="400" height="72" fill="#0D1B2A"/>
+          <text x="20" y="70" font-family="Sora,sans-serif" font-size="7" font-weight="600" fill="rgba(245,197,24,.7)" letter-spacing="1.5">LINWOOD, NEW JERSEY</text>
+          <text x="20" y="84" font-family="Playfair Display,serif" font-size="14" fill="#F5C518">WAX,</text>
+          <text x="20" y="99" font-family="Playfair Display,serif" font-size="14" fill="#fff">PACKS, <tspan fill="#E8500A">&amp;</tspan></text>
+          <text x="20" y="114" font-family="Playfair Display,serif" font-size="14" fill="#fff"><tspan fill="#F5C518">THROW</tspan>BACKS</text>
+          <text x="20" y="125" font-family="Sora,sans-serif" font-size="6.5" fill="rgba(255,255,255,.45)">Your premier hobby destination on the Jersey Shore</text>
+          <!-- card grid -->
+          <rect x="0" y="128" width="400" height="92" fill="#0f2235"/>
+          <rect x="14" y="138" width="54" height="74" rx="6" fill="#1a3350"/><rect x="16" y="140" width="50" height="36" rx="4" fill="rgba(232,80,10,.35)"/><rect x="20" y="181" width="40" height="6" rx="2" fill="rgba(255,255,255,.28)"/><rect x="20" y="190" width="28" height="6" rx="2" fill="rgba(245,197,24,.65)"/>
+          <rect x="76" y="138" width="54" height="74" rx="6" fill="#1a3350"/><rect x="78" y="140" width="50" height="36" rx="4" fill="rgba(245,197,24,.22)"/><rect x="82" y="181" width="40" height="6" rx="2" fill="rgba(255,255,255,.28)"/><rect x="82" y="190" width="28" height="6" rx="2" fill="rgba(245,197,24,.65)"/>
+          <rect x="138" y="138" width="54" height="74" rx="6" fill="#1a3350"/><rect x="140" y="140" width="50" height="36" rx="4" fill="rgba(75,184,184,.22)"/><rect x="144" y="181" width="40" height="6" rx="2" fill="rgba(255,255,255,.28)"/><rect x="144" y="190" width="28" height="6" rx="2" fill="rgba(245,197,24,.65)"/>
+          <rect x="200" y="138" width="54" height="74" rx="6" fill="#1a3350"/><rect x="202" y="140" width="50" height="36" rx="4" fill="rgba(232,80,10,.22)"/><rect x="206" y="181" width="40" height="6" rx="2" fill="rgba(255,255,255,.28)"/><rect x="206" y="190" width="28" height="6" rx="2" fill="rgba(245,197,24,.65)"/>
+          <rect x="262" y="138" width="54" height="74" rx="6" fill="#1a3350"/><rect x="264" y="140" width="50" height="36" rx="4" fill="rgba(245,197,24,.18)"/><rect x="268" y="181" width="40" height="6" rx="2" fill="rgba(255,255,255,.28)"/><rect x="268" y="190" width="28" height="6" rx="2" fill="rgba(245,197,24,.65)"/>
+          <rect x="324" y="138" width="64" height="74" rx="6" fill="rgba(232,80,10,.18)"/>
+          <rect x="334" y="160" width="44" height="14" rx="7" fill="#E8500A"/>
+          <rect x="338" y="164" width="36" height="6" rx="3" fill="rgba(255,255,255,.5)"/>
+          <rect x="334" y="180" width="44" height="7" rx="3" fill="rgba(255,255,255,.1)"/>
+        </svg>
+        <div class="port-info">
+          <span class="port-tag">Retail · Sports Cards</span>
+          <div class="port-title">Wax, Packs &amp; Throwbacks</div>
+          <div class="port-url">waxpacksandthrowbacks.com</div>
+          <p class="port-desc">Full-featured site for a South Jersey trading card shop — custom branding, event listings, staff profiles, hours, and a fully mobile-responsive layout.</p>
+          <a href="https://waxpacksandthrowbacks.com" class="port-link" target="_blank"><i class="ti ti-external-link"></i> Visit Site</a>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-title">Design & Review</div>
-        <p class="step-desc">We build a custom design for your approval — revisions included until you love it.</p>
+
+      <!-- Shore Works Catalog -->
+      <div class="port-card">
+        <svg class="port-preview" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="swcg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D3D54"/><stop offset="100%" stop-color="#1A6B8A"/></linearGradient></defs>
+          <rect width="400" height="220" fill="#EDE5D4"/>
+          <!-- browser chrome -->
+          <rect width="400" height="26" fill="#0D3D54"/>
+          <circle cx="13" cy="13" r="4" fill="#FF6058"/><circle cx="26" cy="13" r="4" fill="#FFC130"/><circle cx="39" cy="13" r="4" fill="#27C93F"/>
+          <rect x="58" y="7" width="180" height="12" rx="6" fill="rgba(255,255,255,.15)"/>
+          <rect x="63" y="10" width="120" height="6" rx="3" fill="rgba(255,255,255,.25)"/>
+          <!-- nav bar -->
+          <rect x="0" y="26" width="400" height="24" fill="rgba(237,229,212,.97)"/>
+          <rect x="14" y="32" width="90" height="10" rx="3" fill="rgba(13,61,84,.2)"/>
+          <rect x="356" y="28" width="32" height="18" rx="9" fill="#4BB8B8"/>
+          <!-- ocean hero -->
+          <rect x="0" y="50" width="400" height="86" fill="url(#swcg)"/>
+          <circle cx="340" cy="64" r="70" fill="rgba(75,184,184,.07)"/>
+          <text x="18" y="65" font-family="Sora,sans-serif" font-size="6" font-weight="600" fill="rgba(75,184,184,.85)" letter-spacing="1.5">SOUTH JERSEY'S PREMIER LOCAL DIRECTORY</text>
+          <text x="18" y="80" font-family="Playfair Display,serif" font-size="14" fill="#fff">Find the <tspan font-style="italic" fill="#4BB8B8">best</tspan> of the shore</text>
+          <text x="18" y="94" font-family="Sora,sans-serif" font-size="6.5" fill="rgba(255,255,255,.5)">Curated, verified local businesses across Atlantic &amp; Cape May counties.</text>
+          <!-- search bar -->
+          <rect x="18" y="110" width="230" height="18" rx="9" fill="#fff" opacity=".95"/>
+          <rect x="252" y="110" width="52" height="18" rx="9" fill="#4BB8B8"/>
+          <!-- filter strip -->
+          <rect x="0" y="136" width="400" height="30" fill="#EDE5D4"/>
+          <rect x="18" y="143" width="48" height="14" rx="7" fill="#4BB8B8"/>
+          <rect x="72" y="143" width="60" height="14" rx="7" fill="rgba(255,255,255,.85)"/>
+          <rect x="138" y="143" width="52" height="14" rx="7" fill="rgba(255,255,255,.85)"/>
+          <rect x="196" y="143" width="56" height="14" rx="7" fill="rgba(255,255,255,.85)"/>
+          <rect x="258" y="143" width="46" height="14" rx="7" fill="rgba(255,255,255,.85)"/>
+          <!-- listing cards -->
+          <rect x="18" y="172" width="174" height="42" rx="8" fill="#fff"/>
+          <rect x="26" y="179" width="20" height="20" rx="5" fill="#EBF4F8"/>
+          <rect x="52" y="181" width="90" height="8" rx="3" fill="rgba(13,61,84,.7)"/>
+          <rect x="52" y="193" width="60" height="6" rx="2" fill="rgba(13,61,84,.25)"/>
+          <rect x="26" y="204" width="38" height="8" rx="4" fill="rgba(75,184,184,.45)"/>
+          <rect x="70" y="204" width="32" height="8" rx="4" fill="rgba(75,184,184,.3)"/>
+          <rect x="202" y="172" width="180" height="42" rx="8" fill="#fff"/>
+          <rect x="210" y="179" width="20" height="20" rx="5" fill="#EBF4F8"/>
+          <rect x="236" y="181" width="100" height="8" rx="3" fill="rgba(13,61,84,.7)"/>
+          <rect x="236" y="193" width="65" height="6" rx="2" fill="rgba(13,61,84,.25)"/>
+          <rect x="210" y="204" width="38" height="8" rx="4" fill="rgba(75,184,184,.45)"/>
+          <rect x="254" y="204" width="32" height="8" rx="4" fill="rgba(75,184,184,.3)"/>
+        </svg>
+        <div class="port-info">
+          <span class="port-tag">Directory · Local Business</span>
+          <div class="port-title">Shore Works Catalog</div>
+          <div class="port-url">shoreworksnj.com</div>
+          <p class="port-desc">A local business directory for Atlantic &amp; Cape May counties — Supabase-backed listings, approval workflow, admin dashboard, and advanced search and filter.</p>
+          <a href="/" class="port-link"><i class="ti ti-external-link"></i> Visit Site</a>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-title">Build & Test</div>
-        <p class="step-desc">Your site is developed, tested across devices, and optimized for speed and search engines.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <div class="step-title">Launch & Support</div>
-        <p class="step-desc">We go live and stay available — ongoing support, updates, and maintenance when you need it.</p>
-      </div>
-    </div>
+      </div><!-- /portfolio-track -->
+      </div><!-- /portfolio-track-wrap -->
+      <button class="port-arrow port-arrow-right" id="port-next" onclick="portMove(1)" aria-label="Next"><i class="ti ti-chevron-right"></i></button>
+      <div class="port-dots" id="port-dots"></div>
+    </div><!-- /portfolio-carousel -->
   </div>
 </section>
 
@@ -520,6 +624,49 @@ footer p{font-size:12px;color:#888}
   <div class="foot-logo">Shore<em>works</em> <span style="font-size:13px;font-weight:400;color:#1A6B8A">Web Solutions</span></div>
   <p>© 2026 Shore Works. All rights reserved.</p>
 </footer>
+
+<script>
+(function(){
+  var idx = 0;
+  function portUpdate() {
+    var track = document.getElementById('port-track');
+    if (!track) return;
+    var cards = track.querySelectorAll('.port-card');
+    if (!cards.length) return;
+    var gap = 24;
+    var wrapW = track.parentElement.offsetWidth;
+    var perView = window.innerWidth > 768 ? 2 : 1;
+    var cardW = Math.floor((wrapW - gap * (perView - 1)) / perView);
+    cards.forEach(function(c){ c.style.width = cardW + 'px'; });
+    var maxIdx = Math.max(0, cards.length - perView);
+    idx = Math.max(0, Math.min(idx, maxIdx));
+    track.style.transform = 'translateX(-' + (idx * (cardW + gap)) + 'px)';
+    var prev = document.getElementById('port-prev');
+    var next = document.getElementById('port-next');
+    if (prev) prev.disabled = idx === 0;
+    if (next) next.disabled = idx >= maxIdx;
+    var dotsEl = document.getElementById('port-dots');
+    if (dotsEl && !dotsEl.children.length) {
+      for (var i = 0; i < cards.length; i++) {
+        var d = document.createElement('button');
+        d.className = 'port-dot' + (i === 0 ? ' on' : '');
+        d.setAttribute('aria-label', 'Slide ' + (i + 1));
+        d.setAttribute('data-i', i);
+        d.addEventListener('click', function(){ portGoto(+this.getAttribute('data-i')); });
+        dotsEl.appendChild(d);
+      }
+    }
+    if (dotsEl) {
+      dotsEl.querySelectorAll('.port-dot').forEach(function(d, i){ d.classList.toggle('on', i === idx); });
+    }
+  }
+  window.portMove = function(dir) { idx += dir; portUpdate(); };
+  window.portGoto = function(i) { idx = i; portUpdate(); };
+  window.addEventListener('resize', portUpdate);
+  if (document.readyState !== 'loading') portUpdate();
+  else document.addEventListener('DOMContentLoaded', portUpdate);
+})();
+</script>
 
 </body>
 </html>

@@ -19,5 +19,29 @@
       "runtimeArgs": ["-m", "http.server", "8082", "--directory", "C:\\Users\\bklev\\OneDrive\\Wax, Packs, & Throwbacks"],
       "port": 8082
     }
+    ,{
+      "name": "360Auto",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8083", "--directory", "C:\\Users\\bklev\\OneDrive\\360 Auto"],
+      "port": 8083
+    }
+    ,{
+      "name": "RosesGardenGrill",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8084", "--directory", "C:\\Users\\bklev\\OneDrive\\Roses"],
+      "port": 8084
+    }
+    ,{
+      "name": "360AutoV2",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8085", "--directory", "C:\\Users\\bklev\\OneDrive\\360 Auto\\version2"],
+      "port": 8085
+    }
+    ,{
+      "name": "EuroMarket",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8086", "--directory", "C:\\Users\\bklev\\OneDrive\\Euro Market"],
+      "port": 8086
+    }
   ]
 }
