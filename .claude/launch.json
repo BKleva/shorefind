@@ -43,5 +43,11 @@
       "runtimeArgs": ["-m", "http.server", "8086", "--directory", "C:\\Users\\bklev\\OneDrive\\Euro Market"],
       "port": 8086
     }
+    ,{
+      "name": "ChicBoutique",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8087", "--directory", "C:\\Users\\bklev\\OneDrive\\Chic"],
+      "port": 8087
+    }
   ]
 }
