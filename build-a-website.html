@@ -67,6 +67,7 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .port-card{flex-shrink:0;background:#fff;border-radius:20px;border:1px solid #E8E3D8;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .22s}
 .port-card:hover{box-shadow:0 16px 48px rgba(13,61,84,.12)}
 .port-preview{width:100%;height:220px;display:block;flex-shrink:0;object-fit:cover;object-position:top}
+.port-preview-logo{object-fit:contain;background:#F5F0E8;padding:1.5rem}
 .port-info{padding:1.5rem;flex:1;display:flex;flex-direction:column}
 .port-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:#EBF4F8;color:#1A6B8A;display:inline-block;margin-bottom:.6rem}
 .port-title{font-family:'Playfair Display',serif;font-size:19px;color:#0D3D54;margin-bottom:.3rem}
@@ -162,6 +163,7 @@ footer p{font-size:12px;color:#888}
   .port-card{flex:0 0 100%}
   .port-arrow-left{left:0}
   .port-arrow-right{right:0}
+  .port-preview-logo{height:160px}
   .headshot-wrap img{width:140px;height:170px}
   .spotlight-inner{grid-template-columns:1fr}
   .spotlight-card{display:none}
@@ -485,7 +487,7 @@ footer p{font-size:12px;color:#888}
 
       <!-- Shore Works Catalog -->
       <div class="port-card">
-        <img class="port-preview" src="assets/portfolio/shorefind-logo.png" alt="Shore Works Catalog website">
+        <img class="port-preview port-preview-logo" src="assets/portfolio/shorefind-logo.png" alt="Shore Works Catalog website">
         <div class="port-info">
           <span class="port-tag">Directory · Local Business</span>
           <div class="port-title">Shore Works Catalog</div>
