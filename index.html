@@ -465,6 +465,12 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
 #back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;width:42px;height:42px;border-radius:50%;background:#1A6B8A;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(26,107,138,.35);opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;pointer-events:none}
 #back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
 #back-to-top:hover{background:#155a75}
+#sticky-search{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(13,61,84,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:10px 2rem;transform:translateY(-100%);transition:transform .3s cubic-bezier(.25,.46,.45,.94);box-shadow:0 4px 24px rgba(13,61,84,.25)}
+#sticky-search.visible{transform:translateY(0)}
+#sticky-search-inner{max-width:520px;margin:0 auto}
+#sticky-search .search-bar{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+#sticky-search .search-bar input{color:#fff}
+#sticky-search .search-bar input::placeholder{color:rgba(255,255,255,.38)}
 </style>
 <!-- Microsoft Clarity -->
 <script type="text/javascript">
@@ -489,6 +495,14 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
       <span class="nb solid" onclick="startSignup('featured')">List Your Business</span>
     </div>
   </nav>
+  <div id="sticky-search">
+    <div id="sticky-search-inner">
+      <div class="search-bar">
+        <input type="text" id="stickySearch" placeholder="Search businesses…" autocomplete="off">
+        <button class="search-btn-el" onclick="renderDir()">Search</button>
+      </div>
+    </div>
+  </div>
 
   <!-- DIRECTORY -->
   <div id="page-dir" class="page active">
@@ -503,7 +517,7 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
       <div class="hero-right">
         <div class="search-wrap">
           <div class="search-bar">
-            <input type="text" id="dirSearch" placeholder="Search businesses…" oninput="suggestDir();renderDir()" autocomplete="off">
+            <input type="text" id="dirSearch" placeholder="Search businesses…" oninput="var s=document.getElementById('stickySearch');if(s)s.value=this.value;suggestDir();renderDir()" autocomplete="off">
             <button class="search-btn-el" onclick="renderDir()">Search</button>
           </div>
           <div class="search-drop" id="searchDrop"></div>
@@ -1409,6 +1423,15 @@ function closeFeatCard() {
 }
 window.addEventListener('scroll', () => {
   document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+  var hero = document.querySelector('.dir-hero');
+  var sticky = document.getElementById('sticky-search');
+  if (hero && sticky) sticky.classList.toggle('visible', hero.getBoundingClientRect().bottom < 0);
+});
+document.getElementById('stickySearch').addEventListener('input', function() {
+  var main = document.getElementById('dirSearch');
+  if (main) main.value = this.value;
+  suggestDir();
+  renderDir();
 });
 document.addEventListener('keydown', ev => {
   if (ev.key === 'Escape') closeFeatCard();
