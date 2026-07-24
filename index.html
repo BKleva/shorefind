@@ -501,6 +501,16 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
         <input type="text" id="stickySearch" placeholder="Search businesses…" autocomplete="off">
         <button class="search-btn-el" onclick="renderDir()">Search</button>
       </div>
+      <div class="filter-strip hero-strip" id="sticky-cat-strip" style="margin-top:8px;padding-bottom:2px">
+        <span class="ftag on" data-cat="all" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
+        <span class="ftag" data-cat="dining" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
+        <span class="ftag" data-cat="home" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
+        <span class="ftag" data-cat="fitness" onclick="setCat('fitness',this)"><span class="ficon"><i class="ti ti-barbell"></i></span>Fitness</span>
+        <span class="ftag" data-cat="retail" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
+        <span class="ftag" data-cat="auto" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
+        <span class="ftag" data-cat="beauty" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
+        <span class="ftag" data-cat="services" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
+      </div>
     </div>
   </div>
 
@@ -535,15 +545,14 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
         <div class="hero-filter-row">
           <span class="hero-filter-lbl">Category</span>
           <div class="filter-strip hero-strip" id="cat-strip">
-          <span class="ftag on" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
-          <span class="ftag" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
-          <span class="ftag" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
-          <span class="ftag" onclick="setCat('fitness',this)"><span class="ficon"><i class="ti ti-barbell"></i></span>Fitness</span>
-          <span class="ftag" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
-          <span class="ftag" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
-          <span class="ftag" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
-
-          <span class="ftag" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
+          <span class="ftag on" data-cat="all" onclick="setCat('all',this)"><span class="ficon"><i class="ti ti-layout-grid"></i></span>All</span>
+          <span class="ftag" data-cat="dining" onclick="setCat('dining',this)"><span class="ficon"><i class="ti ti-tools-kitchen-2"></i></span>Dining</span>
+          <span class="ftag" data-cat="home" onclick="setCat('home',this)"><span class="ficon"><i class="ti ti-home"></i></span>Home</span>
+          <span class="ftag" data-cat="fitness" onclick="setCat('fitness',this)"><span class="ficon"><i class="ti ti-barbell"></i></span>Fitness</span>
+          <span class="ftag" data-cat="retail" onclick="setCat('retail',this)"><span class="ficon"><i class="ti ti-shopping-bag"></i></span>Retail</span>
+          <span class="ftag" data-cat="auto" onclick="setCat('auto',this)"><span class="ficon"><i class="ti ti-car"></i></span>Auto</span>
+          <span class="ftag" data-cat="beauty" onclick="setCat('beauty',this)"><span class="ficon"><i class="ti ti-scissors"></i></span>Beauty</span>
+          <span class="ftag" data-cat="services" onclick="setCat('services',this)"><span class="ficon"><i class="ti ti-briefcase"></i></span>Services</span>
           </div>
         </div>
         <div class="hero-filter-row">
@@ -1076,8 +1085,9 @@ function setCounty(v, el) {
 }
 function setCat(v, el) {
   dirCat = v;
-  document.querySelectorAll('#cat-strip .ftag').forEach(x => x.classList.remove('on'));
-  el.classList.add('on');
+  document.querySelectorAll('#cat-strip .ftag, #sticky-cat-strip .ftag').forEach(x => {
+    x.classList.toggle('on', x.dataset.cat === v);
+  });
   dirSubcat = 'all'; renderSubcatStrip();
   renderDir();
 }
