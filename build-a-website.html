@@ -61,7 +61,7 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 /* PORTFOLIO */
 .portfolio-section{background:#F5F0E8;padding:4rem 2rem}
 .portfolio-inner{max-width:1100px;margin:0 auto}
-.portfolio-carousel{position:relative;margin-top:3rem;padding:0 32px}
+.portfolio-carousel{position:relative;margin-top:3rem}
 .portfolio-track-wrap{overflow:hidden}
 .portfolio-track{display:flex;gap:1.5rem;transition:transform .45s cubic-bezier(.25,.46,.45,.94);will-change:transform}
 .port-card{flex-shrink:0;background:#fff;border-radius:20px;border:1px solid #E8E3D8;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .22s}
@@ -76,11 +76,6 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .port-desc{font-size:13px;color:#556677;line-height:1.7;flex:1}
 .port-link{display:inline-flex;align-items:center;gap:6px;margin-top:1rem;padding:8px 20px;border-radius:100px;background:#0D3D54;color:#fff;text-decoration:none;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;align-self:flex-start;transition:background .15s}
 .port-link:hover{background:#0a2f40}
-.port-arrow{position:absolute;top:38%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid #E2DACE;box-shadow:0 4px 18px rgba(13,61,84,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0D3D54;font-size:1.15rem;transition:all .18s;z-index:5;padding:0;font-family:inherit;line-height:1}
-.port-arrow:hover:not(:disabled){background:#0D3D54;color:#fff;border-color:#0D3D54;box-shadow:0 6px 24px rgba(13,61,84,.18)}
-.port-arrow:disabled{opacity:.2;pointer-events:none}
-.port-arrow-left{left:0}
-.port-arrow-right{right:0}
 .port-dots{display:flex;justify-content:center;gap:8px;margin-top:1.5rem}
 .port-dot{width:8px;height:8px;border-radius:50%;background:#D8D3C8;cursor:pointer;transition:background .2s,transform .2s;border:none;padding:0}
 .port-dot.on{background:#0D3D54;transform:scale(1.25)}
@@ -160,10 +155,7 @@ footer p{font-size:12px;color:#888}
   .hero{padding:2.5rem 1.25rem 2rem}
   .section,.about-section,.cta-section{padding:2.5rem 1.25rem}
   .portfolio-section,.spotlight-section{padding:2.5rem 1.25rem}
-  .portfolio-carousel{padding:0 28px}
   .port-card{flex:0 0 100%}
-  .port-arrow-left{left:0}
-  .port-arrow-right{right:0}
   .headshot-wrap img{width:140px;height:170px}
   .spotlight-inner{grid-template-columns:1fr}
   .spotlight-card{display:none}
@@ -469,7 +461,6 @@ footer p{font-size:12px;color:#888}
     <h2 class="section-title">Sites we've <em>built</em></h2>
     <p class="section-sub">Real projects for real local businesses — custom-designed, handcrafted, and built to perform.</p>
     <div class="portfolio-carousel">
-      <button class="port-arrow port-arrow-left" id="port-prev" onclick="portMove(-1)" disabled aria-label="Previous"><i class="ti ti-chevron-left"></i></button>
       <div class="portfolio-track-wrap">
         <div class="portfolio-track" id="port-track">
 
@@ -498,7 +489,6 @@ footer p{font-size:12px;color:#888}
       </div>
       </div><!-- /portfolio-track -->
       </div><!-- /portfolio-track-wrap -->
-      <button class="port-arrow port-arrow-right" id="port-next" onclick="portMove(1)" aria-label="Next"><i class="ti ti-chevron-right"></i></button>
       <div class="port-dots" id="port-dots"></div>
     </div><!-- /portfolio-carousel -->
   </div>
@@ -595,10 +585,6 @@ footer p{font-size:12px;color:#888}
     var maxIdx = Math.max(0, cards.length - perView);
     idx = Math.max(0, Math.min(idx, maxIdx));
     track.style.transform = 'translateX(-' + (idx * (cardW + gap)) + 'px)';
-    var prev = document.getElementById('port-prev');
-    var next = document.getElementById('port-next');
-    if (prev) prev.disabled = idx === 0;
-    if (next) next.disabled = idx >= maxIdx;
     var dotsEl = document.getElementById('port-dots');
     if (dotsEl && !dotsEl.children.length) {
       for (var i = 0; i < cards.length; i++) {
@@ -614,7 +600,6 @@ footer p{font-size:12px;color:#888}
       dotsEl.querySelectorAll('.port-dot').forEach(function(d, i){ d.classList.toggle('on', i === idx); });
     }
   }
-  window.portMove = function(dir) { idx += dir; portUpdate(); };
   window.portGoto = function(i) { idx = i; portUpdate(); };
   window.addEventListener('resize', portUpdate);
   if (document.readyState !== 'loading') portUpdate();
