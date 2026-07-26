@@ -16,10 +16,11 @@ body{margin:0;overflow-x:hidden;max-width:100vw;color:#1a1a1a;background:linear-
 .page{display:none}.page.active{display:block}
 div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 
-.nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;margin-bottom:2rem;border-bottom:1px solid #DDD8CE;flex-wrap:wrap;gap:8px}
+.nav{position:relative;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;margin-bottom:2rem;border-bottom:1px solid #DDD8CE;flex-wrap:wrap;gap:8px}
 .logo{font-family:'Playfair Display',serif;font-size:20px;color:#0D3D54;cursor:pointer;flex-shrink:0}
 .logo em{color:#4BB8B8;font-style:italic}
 .nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-toggle{display:none;background:#fff;border:1px solid #DDD8CE;border-radius:8px;padding:6px 10px;font-size:18px;line-height:1;cursor:pointer;color:#0D3D54}
 .nb{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #DDD8CE;transition:all .15s;font-family:'Sora',sans-serif;display:inline-block;text-align:center;user-select:none;color:#333;background:#fff}
 .nb:hover,.nb.active{border-color:#1A6B8A;color:#0D3D54;background:#e8f5fb}
 .nb.solid{background:#0D3D54;color:#fff;border-color:#0D3D54}
@@ -412,6 +413,10 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
   .nav{margin-bottom:1.25rem}
   .nb{font-size:11px;padding:6px 11px}
   .nb.solid{padding:6px 13px}
+  .nav-toggle{display:inline-flex;align-items:center}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:6px;background:#fff;border:1px solid #DDD8CE;border-radius:12px;padding:10px;margin-top:6px;box-shadow:0 16px 32px rgba(13,61,84,.15);z-index:80}
+  .nav-links.open{display:flex}
+  .nav-links .nb{width:100%;text-align:left}
 
   /* Hero */
   .dir-hero{padding:2rem 1.5rem 2rem;border-radius:18px;grid-template-columns:1fr;gap:1rem;overflow:visible}
@@ -485,14 +490,15 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
 <div class="app">
   <nav class="nav">
     <div class="logo" onclick="showPage('dir')" ondblclick="return false" id="site-logo">Shore<em>works</em><span class="logo-sub">Catalog</span></div>
-    <div class="nav-links">
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" onclick="document.getElementById('main-nav-links').classList.toggle('open')"><i class="ti ti-menu-2"></i></button>
+    <div class="nav-links" id="main-nav-links">
       <span class="nb" id="nav-dir" onclick="showPage('dir')">Directory</span>
       <span class="nb" id="nav-pricing" onclick="showPage('pricing')" style="display:none">Pricing</span>
       <span class="nb" id="nav-about" onclick="showPage('about')">About</span>
       <span class="nb" id="nav-contact" onclick="showPage('contact')">Contact</span>
       <span class="nb" id="nav-admin" onclick="showPage('admin')" style="display:none">Admin</span>
       <a href="/build-a-website.html" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Build a Website</a>
-      <a href="/reviews" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Reviews</a>
+      <a href="/reviews" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Get Google Reviews</a>
       <span class="nb solid" onclick="startSignup('featured')">List Your Business</span>
     </div>
   </nav>
