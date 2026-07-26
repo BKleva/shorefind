@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Review Collector</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<style>
+  :root{ --navy:#0D3D54; --teal:#4BB8B8; --cream:#FAF8F4; --line:#DDD8CE; --ink:#0F1923; --muted:#6b7280; --red:#b3413c; }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink)}
+  .box{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px;box-shadow:0 20px 40px rgba(13,61,84,.08)}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 24px}
+  .tabs{display:flex;gap:4px;background:var(--cream);border-radius:10px;padding:4px;margin-bottom:22px}
+  .tabs button{flex:1;border:none;background:none;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+  .tabs button.active{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 6px}
+  input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px}
+  input:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+  button.submit{width:100%;margin-top:22px;background:var(--navy);color:#fff;border:none;padding:12px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer}
+  button.submit:disabled{opacity:.6;cursor:default}
+  .msg{font-size:13px;margin-top:14px;padding:10px 12px;border-radius:8px}
+  .msg.error{background:#fbeceb;color:var(--red)}
+  .msg.ok{background:#eaf6f0;color:#1a7a4a}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+  .hidden{display:none}
+  a{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<div class="box" id="authBox">
+  <h1>Review Collector</h1>
+  <p class="sub">Sign in to manage your review requests.</p>
+  <div id="configWarning" class="msg error hidden">Supabase isn't configured yet — fill in the real project URL and anon key in <code>config.js</code>.</div>
+  <div class="tabs">
+    <button id="tabLogin" class="active">Log in</button>
+    <button id="tabSignup">Sign up</button>
+  </div>
+  <form id="authForm">
+    <label>Email</label>
+    <input type="email" id="email" required autocomplete="email">
+    <label>Password</label>
+    <input type="password" id="password" required autocomplete="current-password" minlength="6">
+    <button class="submit" type="submit" id="authSubmit">Log in</button>
+  </form>
+  <div id="authMsg"></div>
+</div>
+
+<div class="box hidden" id="onboardBox">
+  <h1>Set up your business</h1>
+  <p class="sub">One-time setup — you can change this later in Settings.</p>
+  <form id="onboardForm">
+    <label>Business name</label>
+    <input type="text" id="bizName" required>
+    <label>Google Place ID <span style="font-weight:400">(optional for now)</span></label>
+    <input type="text" id="placeId" placeholder="ChIJ...">
+    <p class="hint">Find yours with Google's <a href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" rel="noopener">Place ID Finder</a> — search your business name, copy the ID shown. You can add this later if you don't have it handy.</p>
+    <button class="submit" type="submit" id="onboardSubmit">Create business</button>
+  </form>
+  <div id="onboardMsg"></div>
+</div>
+
+<script>
+const cfg = window.REVIEW_COLLECTOR_CONFIG;
+let sb = null;
+try { sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY); }
+catch (e) { document.getElementById('configWarning').classList.remove('hidden'); }
+
+let mode = 'login';
+const tabLogin = document.getElementById('tabLogin');
+const tabSignup = document.getElementById('tabSignup');
+const authSubmit = document.getElementById('authSubmit');
+const authMsg = document.getElementById('authMsg');
+
+tabLogin.onclick = () => { mode = 'login'; tabLogin.classList.add('active'); tabSignup.classList.remove('active'); authSubmit.textContent = 'Log in'; authMsg.innerHTML = ''; };
+tabSignup.onclick = () => { mode = 'signup'; tabSignup.classList.add('active'); tabLogin.classList.remove('active'); authSubmit.textContent = 'Sign up'; authMsg.innerHTML = ''; };
+
+document.getElementById('authForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!sb) { document.getElementById('configWarning').classList.remove('hidden'); return; }
+  authSubmit.disabled = true;
+  authMsg.innerHTML = '';
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  const { data, error } = mode === 'login'
+    ? await sb.auth.signInWithPassword({ email, password })
+    : await sb.auth.signUp({ email, password });
+
+  authSubmit.disabled = false;
+
+  if (error) {
+    authMsg.innerHTML = `<div class="msg error">${error.message}</div>`;
+    return;
+  }
+  if (mode === 'signup' && !data.session) {
+    authMsg.innerHTML = `<div class="msg ok">Check your email to confirm your account, then log in.</div>`;
+    return;
+  }
+  await routeAfterAuth();
+});
+
+async function routeAfterAuth() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+
+  const { data: businesses } = await sb.from('businesses').select('id').eq('owner_user_id', user.id).limit(1);
+  if (businesses && businesses.length) {
+    window.location.href = 'dashboard.html';
+  } else {
+    document.getElementById('authBox').classList.add('hidden');
+    document.getElementById('onboardBox').classList.remove('hidden');
+  }
+}
+
+document.getElementById('onboardForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById('onboardSubmit');
+  submitBtn.disabled = true;
+  const onboardMsg = document.getElementById('onboardMsg');
+  onboardMsg.innerHTML = '';
+
+  const { data: { user } } = await sb.auth.getUser();
+  const name = document.getElementById('bizName').value.trim();
+  const google_place_id = document.getElementById('placeId').value.trim() || null;
+
+  const { error } = await sb.from('businesses').insert({ owner_user_id: user.id, name, google_place_id });
+  submitBtn.disabled = false;
+
+  if (error) {
+    onboardMsg.innerHTML = `<div class="msg error">${error.message}</div>`;
+    return;
+  }
+  window.location.href = 'dashboard.html';
+});
+
+// If already logged in, skip straight to routing.
+if (sb) sb.auth.getSession().then(({ data }) => { if (data.session) routeAfterAuth(); });
+</script>
+</body>
+</html>

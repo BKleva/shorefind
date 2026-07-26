@@ -49,5 +49,23 @@
       "runtimeArgs": ["-m", "http.server", "8087", "--directory", "C:\\Users\\bklev\\OneDrive\\Chic"],
       "port": 8087
     }
+    ,{
+      "name": "OutdoorImpact",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8088", "--directory", "C:\\Users\\bklev\\OneDrive\\Shorefind\\outdoor-impact"],
+      "port": 8088
+    }
+    ,{
+      "name": "ThomasLacovara",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8089", "--directory", "C:\\Users\\bklev\\OneDrive\\Thomas Lacovara Public Adjusters"],
+      "port": 8089
+    }
+    ,{
+      "name": "ReviewCollector",
+      "runtimeExecutable": "netlify",
+      "runtimeArgs": ["dev", "--dir", "review-collector", "--functions", "review-collector/netlify/functions", "--port", "8090", "--no-open"],
+      "port": 8090
+    }
   ]
 }

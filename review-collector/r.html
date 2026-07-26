@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share your feedback</title>
+<style>
+  :root{ --brand:#0D3D54; --cream:#FAF8F4; --line:#DDD8CE; --ink:#0F1923; --muted:#6b7280; --green:#1a7a4a; }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);padding:24px}
+  .box{width:100%;max-width:420px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:36px 28px;text-align:center;box-shadow:0 20px 40px rgba(13,61,84,.08)}
+  h1{font-size:19px;margin:0 0 6px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 26px}
+  .stars{display:flex;justify-content:center;gap:8px;margin-bottom:8px}
+  .star{font-size:40px;cursor:pointer;color:#ddd;transition:color .15s;user-select:none;line-height:1}
+  .star.filled{color:#e0a000}
+  textarea{width:100%;min-height:100px;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;margin-top:16px;resize:vertical}
+  button.submit{width:100%;margin-top:16px;background:var(--brand);color:#fff;border:none;padding:13px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer}
+  button.submit:disabled{opacity:.6}
+  .single{background:var(--brand);color:#fff;border:none;padding:14px 26px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer}
+  .hidden{display:none}
+  .thanks h1{color:var(--green)}
+  .loading{color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="box" id="box"><p class="loading">Loading…</p></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const token = params.get('rid');
+const box = document.getElementById('box');
+
+function render(html) { box.innerHTML = html; }
+
+async function load() {
+  if (!token) { render(`<h1>Link missing</h1><p class="sub">This review link is incomplete.</p>`); return; }
+
+  let res, data;
+  try {
+    res = await fetch(`/.netlify/functions/get-request?rid=${encodeURIComponent(token)}`);
+    data = await res.json();
+  } catch (e) {
+    render(`<h1>Something went wrong</h1><p class="sub">Please try again in a moment.</p>`);
+    return;
+  }
+
+  if (!res.ok) { render(`<h1>Link not found</h1><p class="sub">This review link isn't valid or has expired.</p>`); return; }
+  if (data.already_responded) { render(`<div class="thanks"><h1>Thanks — already got it!</h1><p class="sub">You've already responded to this request.</p></div>`); return; }
+
+  document.documentElement.style.setProperty('--brand', data.brand_color || '#0D3D54');
+
+  if (!data.gate_enabled) {
+    render(`
+      <h1>${escapeHtml(data.business_name)}</h1>
+      <p class="sub">Thanks for choosing us! Mind leaving a quick Google review?</p>
+      <button class="single" id="goBtn">Leave us a review</button>
+    `);
+    document.getElementById('goBtn').onclick = () => submitResponse(null, null);
+    return;
+  }
+
+  render(`
+    <h1>${escapeHtml(data.business_name)}</h1>
+    <p class="sub">How was your experience?</p>
+    <div class="stars" id="stars">
+      ${[1,2,3,4,5].map(n => `<span class="star" data-n="${n}">★</span>`).join('')}
+    </div>
+    <div id="commentArea"></div>
+  `);
+
+  document.querySelectorAll('.star').forEach(star => {
+    star.onclick = () => selectRating(Number(star.dataset.n));
+  });
+}
+
+function escapeHtml(s) { return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function selectRating(n) {
+  document.querySelectorAll('.star').forEach(s => s.classList.toggle('filled', Number(s.dataset.n) <= n));
+  const commentArea = document.getElementById('commentArea');
+  if (n >= 4) {
+    submitResponse(n, null);
+    return;
+  }
+  commentArea.innerHTML = `
+    <textarea id="commentBox" placeholder="What could we have done better? (optional)"></textarea>
+    <button class="submit" id="submitFeedback">Submit feedback</button>
+  `;
+  document.getElementById('submitFeedback').onclick = () => submitResponse(n, document.getElementById('commentBox').value.trim());
+}
+
+async function submitResponse(rating, comment) {
+  render(`<p class="loading">Submitting…</p>`);
+  try {
+    const res = await fetch('/.netlify/functions/submit-response', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, rating, comment })
+    });
+    const data = await res.json();
+    if (data.redirect) {
+      render(`<p class="loading">Thanks! Taking you to Google…</p>`);
+      window.location.href = data.redirect;
+      return;
+    }
+    render(`<div class="thanks"><h1>Thank you</h1><p class="sub">We appreciate you letting us know — we'll follow up if needed.</p></div>`);
+  } catch (e) {
+    render(`<h1>Something went wrong</h1><p class="sub">Please try again in a moment.</p>`);
+  }
+}
+
+load();
+</script>
+</body>
+</html>
