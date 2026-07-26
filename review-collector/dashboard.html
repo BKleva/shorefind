@@ -11,7 +11,9 @@
   *{box-sizing:border-box}
   body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink)}
   header{background:var(--navy);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
+  header .bizWrap{display:flex;align-items:center;gap:10px}
   header .biz{font-size:16px;font-weight:700}
+  header .headerLogo{height:28px;width:28px;border-radius:6px;object-fit:cover;background:#fff}
   header button{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer}
   nav{display:flex;gap:4px;background:#fff;border-bottom:1px solid var(--line);padding:0 28px}
   nav button{border:none;background:none;padding:14px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
@@ -44,12 +46,19 @@
   .msg.error{background:#fbeceb;color:var(--red)}
   .msg.ok{background:#eaf6f0;color:var(--green)}
   .empty{color:var(--muted);font-size:13px;padding:20px 0;text-align:center}
+  .logoRow{display:flex;align-items:center;gap:16px}
+  .logoPreview{width:64px;height:64px;border-radius:10px;border:1px solid var(--line);object-fit:cover;background:var(--cream)}
+  .logoPreview.empty-state{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center}
+  .hidden{display:none}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="biz" id="bizName">Loading…</div>
+  <div class="bizWrap">
+    <img id="headerLogo" class="headerLogo hidden" alt="">
+    <div class="biz" id="bizName">Loading…</div>
+  </div>
   <button id="signOutBtn">Sign out</button>
 </header>
 
@@ -136,6 +145,18 @@
   <!-- SETTINGS -->
   <div class="panel" id="panel-settings">
     <div class="card">
+      <h2>Branding</h2>
+      <div class="logoRow">
+        <img id="logoPreview" class="logoPreview hidden" alt="Business logo">
+        <div id="logoPreviewEmpty" class="logoPreview empty-state">No logo</div>
+        <div>
+          <input type="file" id="logoInput" accept="image/*">
+          <p class="muted" style="font-size:12px;margin:8px 0 0">Shown on your review request page and in emails to customers.</p>
+        </div>
+      </div>
+      <div id="logoMsg"></div>
+    </div>
+    <div class="card">
       <h2>Business settings</h2>
       <form id="settingsForm">
         <div class="row">
@@ -178,6 +199,7 @@ async function init() {
   document.getElementById('settingsName').value = business.name;
   document.getElementById('settingsPlaceId').value = business.google_place_id || '';
   document.getElementById('settingsGate').checked = business.gate_enabled;
+  applyLogo(business.logo_url);
 
   await loadCustomers();
   await loadRequests();
@@ -287,6 +309,43 @@ async function loadFeedback() {
     </tr>`).join('');
   document.getElementById('feedbackEmpty').style.display = rows.length ? 'none' : 'block';
 }
+
+// ---- Branding ----
+function applyLogo(url) {
+  const headerLogo = document.getElementById('headerLogo');
+  const preview = document.getElementById('logoPreview');
+  const previewEmpty = document.getElementById('logoPreviewEmpty');
+  if (url) {
+    headerLogo.src = url; headerLogo.classList.remove('hidden');
+    preview.src = url; preview.classList.remove('hidden');
+    previewEmpty.classList.add('hidden');
+  } else {
+    headerLogo.classList.add('hidden');
+    preview.classList.add('hidden');
+    previewEmpty.classList.remove('hidden');
+  }
+}
+
+document.getElementById('logoInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const logoMsg = document.getElementById('logoMsg');
+  logoMsg.innerHTML = `<div class="msg">Uploading…</div>`;
+
+  const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+  const path = `${business.id}/logo.${ext}`;
+  const { error: uploadError } = await sb.storage.from('logos').upload(path, file, { upsert: true, contentType: file.type });
+  if (uploadError) { logoMsg.innerHTML = `<div class="msg error">${uploadError.message}</div>`; return; }
+
+  const { data } = sb.storage.from('logos').getPublicUrl(path);
+  const logo_url = `${data.publicUrl}?v=${Date.now()}`;
+  const { error } = await sb.from('businesses').update({ logo_url }).eq('id', business.id);
+  if (error) { logoMsg.innerHTML = `<div class="msg error">${error.message}</div>`; return; }
+
+  business.logo_url = logo_url;
+  applyLogo(logo_url);
+  logoMsg.innerHTML = `<div class="msg ok">Logo updated.</div>`;
+});
 
 // ---- Settings ----
 document.getElementById('settingsForm').addEventListener('submit', async (e) => {

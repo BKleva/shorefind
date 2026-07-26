@@ -11,6 +11,7 @@ create table if not exists businesses (
   google_place_id text,
   gate_enabled boolean not null default true,
   brand_color text default '#0D3D54',
+  logo_url text,
   created_at timestamptz default now()
 );
 
@@ -81,4 +82,31 @@ create policy "owner can view own requests" on review_requests
 create policy "owner can view own feedback" on feedback
   for select using (
     exists (select 1 from businesses b where b.id = feedback.business_id and b.owner_user_id = auth.uid())
+  );
+
+-- Storage bucket for business logos. Public read (so logos render in emails
+-- and on the public r.html page without signed URLs); writes are restricted
+-- to the owning business's own folder, keyed by business id.
+
+insert into storage.buckets (id, name, public)
+values ('logos', 'logos', true)
+on conflict (id) do nothing;
+
+create policy "Public read access to logos" on storage.objects
+  for select using (bucket_id = 'logos');
+
+create policy "Owners can upload their business logo" on storage.objects
+  for insert with check (
+    bucket_id = 'logos'
+    and (storage.foldername(name))[1] in (
+      select id::text from businesses where owner_user_id = auth.uid()
+    )
+  );
+
+create policy "Owners can update their business logo" on storage.objects
+  for update using (
+    bucket_id = 'logos'
+    and (storage.foldername(name))[1] in (
+      select id::text from businesses where owner_user_id = auth.uid()
+    )
   );

@@ -105,6 +105,7 @@ exports.handler = async function (event) {
         `How was your experience with ${business.name}?`,
         `<div style="font-family:sans-serif;max-width:480px;color:#1a1a1a">
           <div style="background:${business.brand_color || '#0D3D54'};border-radius:12px 12px 0 0;padding:24px 28px">
+            ${business.logo_url ? `<img src="${business.logo_url}" alt="${business.name}" style="max-height:36px;max-width:160px;margin-bottom:10px;display:block">` : ''}
             <h2 style="color:#fff;margin:0;font-size:20px">${business.name}</h2>
           </div>
           <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;padding:24px 28px">

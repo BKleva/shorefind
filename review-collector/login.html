@@ -7,12 +7,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <style>
-  :root{ --navy:#0D3D54; --teal:#4BB8B8; --cream:#FAF8F4; --line:#DDD8CE; --ink:#0F1923; --muted:#6b7280; --red:#b3413c; }
+  :root{ --navy:#0D3D54; --teal:#4BB8B8; --cream:#FAF8F4; --line:#DDD8CE; --ink:#0F1923; --muted:#6b7280; --red:#b3413c; --green:#1a7a4a; }
   *{box-sizing:border-box}
   body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink)}
-  .box{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px;box-shadow:0 20px 40px rgba(13,61,84,.08)}
+  .box{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px;box-shadow:0 20px 40px rgba(13,61,84,.08);text-align:left}
+  .box.center{text-align:center}
   h1{font-size:20px;margin:0 0 4px}
-  .sub{color:var(--muted);font-size:13px;margin:0 0 24px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 24px;line-height:1.6}
   .tabs{display:flex;gap:4px;background:var(--cream);border-radius:10px;padding:4px;margin-bottom:22px}
   .tabs button{flex:1;border:none;background:none;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
   .tabs button.active{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -21,12 +22,16 @@
   input:focus{outline:2px solid var(--teal);border-color:var(--teal)}
   button.submit{width:100%;margin-top:22px;background:var(--navy);color:#fff;border:none;padding:12px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer}
   button.submit:disabled{opacity:.6;cursor:default}
+  button.link{background:none;border:none;color:var(--navy);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;padding:0;margin-top:16px}
   .msg{font-size:13px;margin-top:14px;padding:10px 12px;border-radius:8px}
   .msg.error{background:#fbeceb;color:var(--red)}
-  .msg.ok{background:#eaf6f0;color:#1a7a4a}
+  .msg.ok{background:#eaf6f0;color:var(--green)}
   .hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
   .hidden{display:none}
   a{color:var(--navy)}
+  .emoji{font-size:40px;margin-bottom:14px}
+  .spinner{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--teal);border-radius:50%;margin:0 auto 16px;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -44,9 +49,28 @@
     <input type="email" id="email" required autocomplete="email">
     <label>Password</label>
     <input type="password" id="password" required autocomplete="current-password" minlength="6">
+    <div id="confirmPasswordWrap" class="hidden">
+      <label>Confirm password</label>
+      <input type="password" id="confirmPassword" autocomplete="new-password" minlength="6">
+    </div>
     <button class="submit" type="submit" id="authSubmit">Log in</button>
   </form>
   <div id="authMsg"></div>
+</div>
+
+<div class="box center hidden" id="checkEmailBox">
+  <div class="emoji">📬</div>
+  <h1>Check your email</h1>
+  <p class="sub">We sent a confirmation link to <strong id="checkEmailAddress"></strong>. Open it on this device — it'll bring you right back here and sign you in automatically. No need to come back and log in manually.</p>
+  <p class="sub">Didn't get it? Check spam, or go back and sign up again to resend it.</p>
+  <button class="link" id="backToLoginBtn">← Back to login</button>
+</div>
+
+<div class="box center hidden" id="celebrateBox">
+  <div class="emoji">🎉</div>
+  <h1>You're confirmed!</h1>
+  <p class="sub">Signing you in…</p>
+  <div class="spinner"></div>
 </div>
 
 <div class="box hidden" id="onboardBox">
@@ -69,26 +93,57 @@ let sb = null;
 try { sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY); }
 catch (e) { document.getElementById('configWarning').classList.remove('hidden'); }
 
+// Supabase appends auth tokens as a URL hash when redirecting back from the
+// confirmation email link (e.g. #access_token=...&type=signup). Capture that
+// before the client strips it, so we know to show the celebration screen
+// instead of treating this like a normal page load.
+const hashParams = new URLSearchParams(window.location.hash.startsWith('#') ? window.location.hash.slice(1) : '');
+const isEmailConfirmation = hashParams.get('type') === 'signup';
+
+function showBox(id) {
+  ['authBox', 'checkEmailBox', 'celebrateBox', 'onboardBox'].forEach(b => {
+    document.getElementById(b).classList.toggle('hidden', b !== id);
+  });
+}
+
 let mode = 'login';
 const tabLogin = document.getElementById('tabLogin');
 const tabSignup = document.getElementById('tabSignup');
 const authSubmit = document.getElementById('authSubmit');
 const authMsg = document.getElementById('authMsg');
+const confirmPasswordWrap = document.getElementById('confirmPasswordWrap');
+const confirmPasswordInput = document.getElementById('confirmPassword');
 
-tabLogin.onclick = () => { mode = 'login'; tabLogin.classList.add('active'); tabSignup.classList.remove('active'); authSubmit.textContent = 'Log in'; authMsg.innerHTML = ''; };
-tabSignup.onclick = () => { mode = 'signup'; tabSignup.classList.add('active'); tabLogin.classList.remove('active'); authSubmit.textContent = 'Sign up'; authMsg.innerHTML = ''; };
+tabLogin.onclick = () => {
+  mode = 'login'; tabLogin.classList.add('active'); tabSignup.classList.remove('active');
+  authSubmit.textContent = 'Log in'; authMsg.innerHTML = '';
+  confirmPasswordWrap.classList.add('hidden'); confirmPasswordInput.required = false;
+};
+tabSignup.onclick = () => {
+  mode = 'signup'; tabSignup.classList.add('active'); tabLogin.classList.remove('active');
+  authSubmit.textContent = 'Sign up'; authMsg.innerHTML = '';
+  confirmPasswordWrap.classList.remove('hidden'); confirmPasswordInput.required = true;
+};
+
+document.getElementById('backToLoginBtn').onclick = () => { showBox('authBox'); };
 
 document.getElementById('authForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!sb) { document.getElementById('configWarning').classList.remove('hidden'); return; }
-  authSubmit.disabled = true;
   authMsg.innerHTML = '';
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
 
+  if (mode === 'signup' && password !== confirmPasswordInput.value) {
+    authMsg.innerHTML = `<div class="msg error">Passwords don't match.</div>`;
+    return;
+  }
+
+  authSubmit.disabled = true;
+
   const { data, error } = mode === 'login'
     ? await sb.auth.signInWithPassword({ email, password })
-    : await sb.auth.signUp({ email, password });
+    : await sb.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/login.html` } });
 
   authSubmit.disabled = false;
 
@@ -97,7 +152,8 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
     return;
   }
   if (mode === 'signup' && !data.session) {
-    authMsg.innerHTML = `<div class="msg ok">Check your email to confirm your account, then log in.</div>`;
+    document.getElementById('checkEmailAddress').textContent = email;
+    showBox('checkEmailBox');
     return;
   }
   await routeAfterAuth();
@@ -111,8 +167,7 @@ async function routeAfterAuth() {
   if (businesses && businesses.length) {
     window.location.href = 'dashboard.html';
   } else {
-    document.getElementById('authBox').classList.add('hidden');
-    document.getElementById('onboardBox').classList.remove('hidden');
+    showBox('onboardBox');
   }
 }
 
@@ -137,8 +192,19 @@ document.getElementById('onboardForm').addEventListener('submit', async (e) => {
   window.location.href = 'dashboard.html';
 });
 
-// If already logged in, skip straight to routing.
-if (sb) sb.auth.getSession().then(({ data }) => { if (data.session) routeAfterAuth(); });
+// On load: if already signed in, route straight in. If we just landed here
+// from an email confirmation link, show the celebration screen first.
+if (sb) {
+  sb.auth.getSession().then(({ data }) => {
+    if (!data.session) return;
+    if (isEmailConfirmation) {
+      showBox('celebrateBox');
+      setTimeout(routeAfterAuth, 1400);
+    } else {
+      routeAfterAuth();
+    }
+  });
+}
 </script>
 </body>
 </html>
