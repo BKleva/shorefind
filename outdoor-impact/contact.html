@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Outdoor Impact</title>
+<meta name="description" content="Get in touch with Outdoor Impact to inquire about billboard rates and availability on Route 4, River Edge, NJ.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700,800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1628'/%3E%3Crect x='5' y='11' width='22' height='9' rx='1.5' fill='%232f6fed'/%3E%3Crect x='15' y='20' width='2' height='7' fill='%232f6fed'/%3E%3C/svg%3E">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy-deep:   #ffffff;
+    --navy:        #f4f7fc;
+    --navy-mid:    #eef2fa;
+    --navy-light:  #f7f9fd;
+    --border:      rgba(16,26,51,0.10);
+    --border-strong: rgba(16,26,51,0.18);
+    --white:       #ffffff;
+    --ink:         #101a33;
+    --dim:         rgba(16,26,51,0.72);
+    --dimmer:      rgba(16,26,51,0.52);
+    --blue:        #2f6fed;
+    --blue-light:  #1d4ed8;
+    --blue-dim:    rgba(47,111,237,0.12);
+
+    --maxw: 1240px;
+    --pad: clamp(1.25rem, 4vw, 3rem);
+    --radius: 14px;
+    --dur: 0.25s;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--navy-deep);
+    color: var(--dim);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img, svg { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+  input, textarea, select { font: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+  section { padding: clamp(3rem, 7vw, 6rem) 0; }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; color: var(--blue-light); margin-bottom: 1rem; }
+
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.1; }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15; }
+  h3 { font-size: 1.2rem; line-height: 1.3; }
+  p { color: var(--dim); }
+  .lede { font-size: clamp(1rem, 1.4vw, 1.12rem); color: var(--dim); max-width: 46ch; }
+
+  .btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.9rem 1.7rem; border-radius: 9px; font-size: 0.88rem; font-weight: 600; white-space: nowrap; transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .icon-circle { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .icon-circle svg { width: 20px; height: 20px; }
+
+  /* ============ NAV ============ */
+  header.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba(26,58,107,0.92); border-bottom: 1px solid rgba(255,255,255,0.14); }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; height: 78px; }
+  .logo { display: flex; align-items: center; gap: 0.65rem; }
+  .logo .text { display: flex; flex-direction: column; line-height: 1.15; }
+  .logo .text .name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; color: #ffffff; }
+  .logo .text .sub { font-size: 0.68rem; color: #8fb4ff; font-weight: 500; letter-spacing: 0.02em; }
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; }
+  .nav-links a:not(.btn) { font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.82); transition: color var(--dur) var(--ease); }
+  .nav-links a:not(.btn):hover { color: #ffffff; }
+  .nav-links a.active { color: #ffffff; }
+  .nav-right { display: flex; align-items: center; gap: 1.6rem; }
+  .burger { display: none; flex-direction: column; gap: 4px; width: 22px; z-index: 250; }
+  .burger span { width: 100%; height: 2px; background: #ffffff; transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+  .burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .mobile-menu { display: none; }
+
+  @media (max-width: 860px) {
+    .nav-links:not(.mobile-only) { display: none; }
+    .nav-right .btn-primary { display: none; }
+    .burger { display: flex; }
+    .mobile-menu { position: fixed; inset: 0 0 auto 0; top: 78px; background: #234a82; border-bottom: 1px solid rgba(255,255,255,0.14); padding: 1.5rem var(--pad) 2rem; display: flex; flex-direction: column; gap: 1.1rem; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); z-index: 199; }
+    .mobile-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .mobile-menu a:not(.btn) { font-size: 1rem; font-weight: 500; color: rgba(255,255,255,0.85); }
+    .mobile-menu .btn { align-self: flex-start; }
+  }
+
+  /* ============ PAGE HEADER ============ */
+  .page-header {
+    padding-top: clamp(7.5rem, 14vw, 10rem);
+    padding-bottom: clamp(2rem, 5vw, 3rem);
+    background: radial-gradient(ellipse 900px 500px at 15% 0%, rgba(47,111,237,0.2), transparent 60%), linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+  }
+
+  /* ============ CONTACT ============ */
+  .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: start; }
+
+  .form-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.6rem, 3vw, 2.4rem); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em; color: var(--dim); margin-bottom: 0.45rem; }
+  .field input, .field textarea, .field select {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    padding: 0.75rem 0.9rem;
+    color: var(--ink);
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--blue-light); background: #ffffff; }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2.4rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23101a33b3' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    background-size: 11px 8px;
+  }
+  .field select option { background: #ffffff; color: var(--ink); }
+
+  .form-msg { font-size: 0.88rem; margin-top: 1rem; display: none; color: var(--blue-light); }
+  .form-msg.show { display: block; }
+
+  .contact-info { display: flex; flex-direction: column; gap: 1.6rem; }
+  .contact-line { display: flex; align-items: center; gap: 1rem; }
+  .contact-line .txt strong { display: block; font-size: 0.95rem; margin-bottom: 0.15rem; }
+  .contact-line .txt span { font-size: 0.88rem; color: var(--dim); }
+
+  @media (max-width: 860px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+
+  /* ============ FOOTER ============ */
+  footer { border-top: 1px solid var(--border); padding: 2.4rem 0; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-tag { font-size: 0.85rem; color: var(--dimmer); text-align: center; }
+  .footer-links { display: flex; gap: 1.6rem; }
+  .footer-links a { font-size: 0.85rem; color: var(--dim); }
+  .footer-links a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copyright { font-size: 0.75rem; color: var(--dimmer); }
+  .footer-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--dimmer);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+  .footer-credit img { height: 15px; width: auto; display: block; opacity: 0.9; transition: opacity var(--dur) var(--ease); }
+  .footer-credit:hover { color: var(--dim); }
+  .footer-credit:hover img { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo">
+      <span class="text"><span class="name">Outdoor Impact</span><span class="sub">Premium Billboard Development</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Portfolio</a>
+      <a href="index.html#about">About Us</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Portfolio</a>
+    <a href="index.html#about">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-header">
+    <div class="wrap">
+      <span class="eyebrow">Get In Touch</span>
+      <h1>Let&rsquo;s get your<br>land developed.</h1>
+      <p class="lede" style="margin-top:1rem;">Tell us about your property and location &mdash; we&rsquo;ll follow up with a passive income offer and development timeline.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap contact-grid">
+      <div class="form-card">
+        <h3 style="margin-bottom:1.4rem;">Request Your Passive Income Offer</h3>
+        <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p style="display:none"><label>Don&rsquo;t fill this out: <input name="bot-field"></label></p>
+          <div class="field-row">
+            <div class="field"><label for="fname">First name</label><input id="fname" name="First name" type="text" required></div>
+            <div class="field"><label for="lname">Last name</label><input id="lname" name="Last name" type="text" required></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="email">Email</label><input id="email" name="Email" type="email" required></div>
+            <div class="field"><label for="phone">Phone</label><input id="phone" name="Phone" type="tel"></div>
+          </div>
+          <div class="field"><label for="company">Property Address</label><input id="company" name="Property Address" type="text"></div>
+          <div class="field">
+            <label for="interest">I&rsquo;m interested in</label>
+            <select id="interest" name="Interest">
+              <option>Developing a billboard on my land</option>
+              <option>General land partnership inquiry</option>
+              <option>Renewing an existing land lease</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="field"><label for="message">Message</label><textarea id="message" name="Message" required></textarea></div>
+          <button type="submit" class="btn btn-primary">Submit My Property
+            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form-msg" id="formMsg">Thanks &mdash; we&rsquo;ve received your message and will be in touch shortly.</p>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-line">
+          <a href="tel:+16095133340" class="icon-circle" aria-label="Call (609) 513-3340"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h3l1.5 4-2 1.5a10 10 0 004.5 4.5l1.5-2 4 1.5v3a1 1 0 01-1 1C7.5 15.5.5 8.5.5 3a1 1 0 011-1z" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg></a>
+          <div class="txt"><strong><a href="tel:+16095133340">(609) 513-3340</a></strong><span>Available any time, day or night</span></div>
+        </div>
+        <div class="contact-line">
+          <a href="mailto:colton.lacovara@gmail.com" class="icon-circle" aria-label="Email colton.lacovara@gmail.com"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="#fff" stroke-width="1.2"/><path d="M2 4l6 5 6-5" stroke="#fff" stroke-width="1.2"/></svg></a>
+          <div class="txt"><strong><a href="mailto:colton.lacovara@gmail.com">colton.lacovara@gmail.com</a></strong><span>We respond quickly, any time of day</span></div>
+        </div>
+        <div class="contact-line">
+          <span class="icon-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="#fff" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.8" stroke="#fff" stroke-width="1.2"/></svg></span>
+          <div class="txt"><strong>New Jersey</strong><span>&amp; Florida</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span class="footer-tag">Premium Locations. Real Passive Income.</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span class="footer-copyright">&copy; 2026 Outdoor Impact. All rights reserved.</span>
+    <a href="https://shoreworksnj.com" target="_blank" rel="noopener" class="footer-credit">Site by <img src="images/shoreworks-logo.png" alt="Shoreworks"></a>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }));
+
+  const form = document.getElementById('contactForm');
+  const formMsg = document.getElementById('formMsg');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString()
+    })
+      .then(() => {
+        formMsg.classList.add('show');
+        form.reset();
+      })
+      .catch(() => {
+        formMsg.textContent = "Something went wrong — please call or email us directly.";
+        formMsg.classList.add('show');
+      });
+  });
+</script>
+
+</body>
+</html>

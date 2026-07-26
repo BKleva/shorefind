@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | Outdoor Impact</title>
+<meta name="description" content="Billboard developments built on partner land across New Jersey and Florida.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700,800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1628'/%3E%3Crect x='5' y='11' width='22' height='9' rx='1.5' fill='%232f6fed'/%3E%3Crect x='15' y='20' width='2' height='7' fill='%232f6fed'/%3E%3C/svg%3E">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy-deep:   #ffffff;
+    --navy:        #f4f7fc;
+    --navy-mid:    #eef2fa;
+    --navy-light:  #f7f9fd;
+    --border:      rgba(16,26,51,0.10);
+    --border-strong: rgba(16,26,51,0.18);
+    --white:       #ffffff;
+    --ink:         #101a33;
+    --dim:         rgba(16,26,51,0.72);
+    --dimmer:      rgba(16,26,51,0.52);
+    --blue:        #2f6fed;
+    --blue-light:  #1d4ed8;
+    --blue-dim:    rgba(47,111,237,0.12);
+
+    --maxw: 1240px;
+    --pad: clamp(1.25rem, 4vw, 3rem);
+    --radius: 14px;
+    --dur: 0.25s;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--navy-deep);
+    color: var(--dim);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img, svg { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+  section { padding: clamp(3rem, 7vw, 6rem) 0; }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; color: var(--blue-light); margin-bottom: 1rem; }
+
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.1; }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15; }
+  h3 { font-size: 1.05rem; line-height: 1.3; }
+  p { color: var(--dim); }
+  .lede { font-size: clamp(1rem, 1.4vw, 1.12rem); color: var(--dim); max-width: 46ch; }
+
+  .btn { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.9rem 1.7rem; border-radius: 9px; font-size: 0.88rem; font-weight: 600; white-space: nowrap; transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ============ NAV ============ */
+  header.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba(26,58,107,0.92); border-bottom: 1px solid rgba(255,255,255,0.14); }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; height: 78px; }
+  .logo { display: flex; align-items: center; gap: 0.65rem; }
+  .logo .text { display: flex; flex-direction: column; line-height: 1.15; }
+  .logo .text .name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; color: #ffffff; }
+  .logo .text .sub { font-size: 0.68rem; color: #8fb4ff; font-weight: 500; letter-spacing: 0.02em; }
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; }
+  .nav-links a:not(.btn) { font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.82); transition: color var(--dur) var(--ease); }
+  .nav-links a:not(.btn):hover { color: #ffffff; }
+  .nav-links a.active { color: #ffffff; }
+  .nav-right { display: flex; align-items: center; gap: 1.6rem; }
+  .burger { display: none; flex-direction: column; gap: 4px; width: 22px; z-index: 250; }
+  .burger span { width: 100%; height: 2px; background: #ffffff; transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+  .burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .mobile-menu { display: none; }
+
+  @media (max-width: 860px) {
+    .nav-links:not(.mobile-only) { display: none; }
+    .nav-right .btn-primary { display: none; }
+    .burger { display: flex; }
+    .mobile-menu { position: fixed; inset: 0 0 auto 0; top: 78px; background: #234a82; border-bottom: 1px solid rgba(255,255,255,0.14); padding: 1.5rem var(--pad) 2rem; display: flex; flex-direction: column; gap: 1.1rem; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); z-index: 199; }
+    .mobile-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .mobile-menu a:not(.btn) { font-size: 1rem; font-weight: 500; color: rgba(255,255,255,0.85); }
+    .mobile-menu .btn { align-self: flex-start; }
+  }
+
+  /* ============ PAGE HEADER ============ */
+  .page-header { padding-top: clamp(7.5rem, 14vw, 10rem); padding-bottom: clamp(2rem, 5vw, 3rem); background: radial-gradient(ellipse 900px 500px at 15% 0%, rgba(47,111,237,0.2), transparent 60%), linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%); }
+
+  /* ============ GALLERY GRID ============ */
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+  @media (max-width: 960px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .gallery-arrow { display: none; }
+
+  @media (max-width: 640px) {
+    .gallery-carousel { position: relative; overflow: hidden; border-radius: var(--radius); }
+    .gallery-grid {
+      display: flex;
+      gap: 0;
+      transition: transform 0.5s var(--ease);
+    }
+    .gallery-grid .campaign-card { flex: 0 0 100%; width: 100%; }
+    .gallery-grid .campaign-card:hover { transform: none; }
+    .gallery-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 35%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(47,111,237,0.85);
+      border: 1px solid var(--border-strong);
+      color: var(--white);
+      z-index: 5;
+    }
+    .gallery-arrow:hover { background: var(--blue); border-color: var(--blue); }
+    .gallery-arrow svg { width: 16px; height: 16px; }
+    .gallery-arrow.prev { left: 0.6rem; }
+    .gallery-arrow.next { right: 0.6rem; }
+  }
+
+  .campaign-card { background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .campaign-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+
+  .campaign-scene { position: relative; aspect-ratio: 16/10; overflow: hidden; background: var(--navy-light); }
+  .campaign-scene img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+
+  .campaign-body { padding: 1.3rem 1.4rem 1.5rem; }
+  .campaign-body .cat { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 0.5rem; }
+  .campaign-body p { font-size: 0.88rem; margin-top: 0.5rem; }
+  .campaign-meta { display: flex; justify-content: space-between; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--dimmer); }
+  .campaign-body > .campaign-meta:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+  /* ============ CTA BAND ============ */
+  .cta-band { text-align: center; background: var(--navy-light); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(2.4rem, 6vw, 3.5rem) 2rem; }
+  .cta-band h2 { margin-bottom: 1.3rem; }
+
+  /* ============ FOOTER ============ */
+  footer { border-top: 1px solid var(--border); padding: 2.4rem 0; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-tag { font-size: 0.85rem; color: var(--dimmer); text-align: center; }
+  .footer-links { display: flex; gap: 1.6rem; }
+  .footer-links a { font-size: 0.85rem; color: var(--dim); }
+  .footer-links a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copyright { font-size: 0.75rem; color: var(--dimmer); }
+  .footer-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--dimmer);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+  .footer-credit img { height: 15px; width: auto; display: block; opacity: 0.9; transition: opacity var(--dur) var(--ease); }
+  .footer-credit:hover { color: var(--dim); }
+  .footer-credit:hover img { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo">
+      <span class="text"><span class="name">Outdoor Impact</span><span class="sub">Premium Billboard Development</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html" class="active">Portfolio</a>
+      <a href="index.html#about">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Portfolio</a>
+    <a href="index.html#about">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-header">
+    <div class="wrap">
+      <span class="eyebrow">Our Portfolio</span>
+      <h1>Developments that made<br>an impact.</h1>
+      <p class="lede" style="margin-top:1rem;">A look at how we&rsquo;ve developed billboard structures on partner land across New Jersey and Florida.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+    <div class="gallery-carousel">
+    <div class="gallery-grid" id="galleryGrid">
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/genesis-englewood.jpeg" alt="Genesis of Englewood billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>Route 4 &ndash; Englewood, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/hackensack-team-nj.jpg" alt="Hackensack University Medical Center billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Static Bulletin</span><span>Route 4 &ndash; Englewood, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/jersey-fresh.jpg" alt="Jersey Fresh billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>Route 4 &ndash; Englewood, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/hackensack-hip-knee.png" alt="Hackensack University Medical Center hip and knee billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Static Bulletin</span><span>Route 4 &ndash; Englewood, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/hackensack-childrens.png" alt="Hackensack Meridian Children's Health billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Static Bulletin</span><span>Route 4 &ndash; Englewood, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/i287-boonton-1.png" alt="OUTFRONT digital billboard on I-287">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>I-287 &ndash; Boonton, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/i287-boonton-2.png" alt="The Black Crowes concert billboard on I-287">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>I-287 &ndash; Boonton, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/bramnick-law.png" alt="Bramnick Law digital billboard on I-80">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>I-80 &ndash; Parsippany, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/somerset-patriots-shoutout.png" alt="Digital billboard shout-out on I-80">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>I-80 &ndash; Parsippany, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/new-chapter-recovery.png" alt="New Chapter Recovery digital billboard on I-80">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Static Bulletin</span><span>I-80 &ndash; Parsippany, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/magnolia-home-remodeling.png" alt="Magnolia Home Remodeling digital billboard on I-80">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>I-80 &ndash; Parsippany, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/suny-paramus.png" alt="SUNY digital billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>Route 4 &ndash; Paramus, NJ</span></div>
+        </div>
+      </div>
+
+      <div class="campaign-card">
+        <div class="campaign-scene">
+          <img src="images/the-thorn-paramus.png" alt="The Thorn digital billboard on Route 4">
+        </div>
+        <div class="campaign-body">
+          <div class="campaign-meta"><span>Digital</span><span>Route 4 &ndash; Paramus, NJ</span></div>
+        </div>
+      </div>
+
+    </div>
+    <button class="gallery-arrow prev" id="galleryPrev" aria-label="Previous item">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="gallery-arrow next" id="galleryNext" aria-label="Next item">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band">
+        <span class="eyebrow" style="justify-content:center">Land Opportunities Open</span>
+        <h2>Your property could be our next development.</h2>
+        <a href="contact.html" class="btn btn-primary">Get in Touch
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span class="footer-tag">Premium Locations. Real Passive Income.</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span class="footer-copyright">&copy; 2026 Outdoor Impact. All rights reserved.</span>
+    <a href="https://shoreworksnj.com" target="_blank" rel="noopener" class="footer-credit">Site by <img src="images/shoreworks-logo.png" alt="Shoreworks"></a>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }));
+
+  (function () {
+    const grid = document.getElementById('galleryGrid');
+    const prevBtn = document.getElementById('galleryPrev');
+    const nextBtn = document.getElementById('galleryNext');
+    const cards = Array.from(grid.children);
+    const mq = window.matchMedia('(max-width: 640px)');
+    let index = 0;
+    let timer = null;
+
+    function render() {
+      grid.style.transform = mq.matches ? `translateX(-${index * 100}%)` : '';
+    }
+
+    function goTo(i) {
+      index = (i + cards.length) % cards.length;
+      render();
+    }
+
+    function startAutoplay() {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(index + 1), 5000);
+    }
+
+    function stopAutoplay() {
+      clearInterval(timer);
+      timer = null;
+    }
+
+    prevBtn.addEventListener('click', () => { goTo(index - 1); startAutoplay(); });
+    nextBtn.addEventListener('click', () => { goTo(index + 1); startAutoplay(); });
+
+    function syncMode() {
+      render();
+      if (mq.matches) startAutoplay(); else stopAutoplay();
+    }
+
+    (mq.addEventListener ? mq.addEventListener.bind(mq) : mq.addListener.bind(mq))('change', syncMode);
+    syncMode();
+  })();
+</script>
+
+</body>
+</html>

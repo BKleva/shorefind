@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotocon | Label Printing &amp; Packaging Machinery</title>
+<meta name="description" content="Precision-engineered label printing and packaging machinery, installation, training and lifetime support.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23403e3d'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23c9532f' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+
+  /* ============ RESET & BASE ============ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:       #f2f1ed;
+    --cream-dim:   #e9e7e0;
+    --charcoal:    #403e3d;
+    --charcoal-2:  #2a2827;
+    --ink:         #1c1b1a;
+    --white:       #ffffff;
+    --accent:      #c9532f;
+    --accent-dim:  #a8452668;
+    --line:        rgba(64,62,61,0.12);
+    --line-strong: rgba(64,62,61,0.22);
+    --shadow: 0 1px 2px rgba(28,27,26,0.04), 0 8px 24px rgba(28,27,26,0.06);
+
+    --maxw: 1240px;
+    --pad: clamp(1.25rem, 4vw, 3rem);
+    --radius: 10px;
+    --dur: 0.25s;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.5;
+    overflow-x: hidden;
+    overflow-anchor: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+  input, textarea { font: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+
+  section { padding: clamp(3.5rem, 8vw, 7rem) 0; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.04; }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.1; }
+  h3 { font-size: 1.25rem; line-height: 1.3; }
+  p { color: var(--charcoal); }
+  .lede { font-size: clamp(1rem, 1.4vw, 1.15rem); color: rgba(64,62,61,0.85); max-width: 46ch; }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .btn-primary { background: var(--ink); color: var(--white); }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-outline { border: 1px solid var(--line-strong); color: var(--ink); }
+  .btn-outline:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
+  .btn-accent { background: var(--accent); color: var(--white); }
+  .btn-accent:hover { background: var(--ink); }
+  .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .icon-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+    flex-shrink: 0;
+  }
+  .icon-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .icon-btn:disabled { opacity: 0.3; cursor: default; }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  /* ============ NAV ============ */
+  header.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(242,241,237,0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  header.nav.scrolled { background: rgba(242,241,237,0.94); border-bottom-color: var(--line); }
+
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+  }
+
+  .logo { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--ink); }
+  .logo .mark {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .logo .mark::after {
+    content: "";
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; }
+  .nav-links > li { position: relative; }
+  .nav-links a.top-link {
+    font-size: 0.86rem; font-weight: 500; color: var(--charcoal);
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.4rem 0;
+    transition: color var(--dur) var(--ease);
+  }
+  .nav-links a.top-link:hover { color: var(--ink); }
+  .nav-links .caret { width: 9px; height: 9px; transition: transform var(--dur) var(--ease); }
+  .has-dropdown.open .caret { transform: rotate(180deg); }
+
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 0.6rem;
+    min-width: 240px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .has-dropdown.open .dropdown { opacity: 1; visibility: visible; }
+  .dropdown a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--charcoal);
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .dropdown a:hover { background: var(--cream); color: var(--ink); }
+
+  .nav-cta { display: flex; align-items: center; gap: 1rem; }
+  .nav-cta .btn-outline { padding: 0.7rem 1.3rem; }
+
+  .burger {
+    display: none;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .burger span { width: 16px; height: 1.5px; background: var(--ink); transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+  .burger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 76px 0 0 0;
+    background: var(--cream);
+    z-index: 190;
+    overflow-y: auto;
+    padding: 1.5rem var(--pad) 3rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .mobile-menu.open { opacity: 1; visibility: visible; }
+  .mobile-menu ul { display: flex; flex-direction: column; }
+  .mobile-menu a { display: block; padding: 1rem 0; font-size: 1.15rem; font-weight: 500; border-bottom: 1px solid var(--line); }
+  .mobile-menu a.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.95rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: none;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding-top: calc(76px + clamp(2rem,6vw,4rem));
+    padding-bottom: clamp(2rem, 6vw, 4rem);
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero h1 { margin-bottom: 1.3rem; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero .lede { margin-bottom: 2.2rem; max-width: 42ch; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .hero-art { position: relative; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; }
+  .hero-art svg { width: 100%; height: 100%; }
+  .ring-slow { animation: spin 100s linear infinite; transform-origin: center; }
+  .ring-slower { animation: spin 160s linear infinite reverse; transform-origin: center; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-stats {
+    display: flex;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: clamp(1.5rem, 4vw, 2.5rem);
+    border-top: 1px solid var(--line);
+  }
+  .hero-stats div strong { display: block; font-size: clamp(1.5rem, 3vw, 2.1rem); color: var(--ink); font-weight: 700; }
+  .hero-stats div span { font-size: 0.8rem; color: rgba(64,62,61,0.7); }
+
+  /* ============ INTRO ============ */
+  .intro { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .intro-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2rem,5vw,4rem); align-items: start; }
+  .intro-grid .lede { max-width: 56ch; margin-bottom: 1.75rem; }
+
+  /* ============ PRODUCTS ============ */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    flex-wrap: wrap;
+  }
+  .section-head h2 { max-width: 20ch; }
+
+  .carousel-controls { display: flex; gap: 0.6rem; }
+
+  .carousel-track {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+  }
+  .carousel-track::-webkit-scrollbar { display: none; }
+
+  .product-card {
+    scroll-snap-align: start;
+    flex: 0 0 clamp(260px, 32vw, 340px);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .product-card:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
+  .product-visual {
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, var(--cream-dim), var(--cream));
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .product-visual svg { width: 46%; opacity: 0.9; }
+  .product-tag {
+    position: absolute; top: 0.9rem; left: 0.9rem;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--ink); color: var(--white);
+    padding: 0.3rem 0.6rem; border-radius: 100px;
+  }
+  .product-body { padding: 1.4rem; }
+  .product-body .cat { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; display: block; }
+  .product-body h3 { margin-bottom: 0.9rem; min-height: 2.5em; }
+  .product-actions { display: flex; gap: 0.6rem; }
+  .product-actions .btn { flex: 1; justify-content: center; padding: 0.65rem 1rem; font-size: 0.78rem; }
+
+  /* ============ STORY ============ */
+  .story-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+  }
+  .story-panel:not(:last-child) { border-bottom: 1px solid var(--line); }
+  .story-panel.reverse .story-visual { order: 2; }
+  .story-visual {
+    aspect-ratio: 5/4;
+    border-radius: var(--radius);
+    background: linear-gradient(160deg, var(--charcoal-2), var(--ink));
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .story-visual .index { position: absolute; top: 1.2rem; left: 1.4rem; font-size: 0.75rem; color: rgba(255,255,255,0.5); font-weight: 600; letter-spacing: 0.08em; }
+  .story-visual svg { width: 55%; }
+  .story-copy p { margin-top: 1.1rem; max-width: 48ch; color: rgba(64,62,61,0.85); }
+  .story-copy .btn { margin-top: 1.6rem; }
+
+  /* ============ SERVICES ============ */
+  .services { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .service-item {
+    background: var(--white);
+    padding: 2.2rem 1.8rem;
+    transition: background var(--dur) var(--ease);
+  }
+  .service-item:hover { background: var(--cream); }
+  .service-item .num { font-size: 0.75rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; display: block; margin-bottom: 1.2rem; }
+  .service-item h3 { margin-bottom: 0.7rem; }
+  .service-item p { font-size: 0.9rem; color: rgba(64,62,61,0.75); }
+
+  /* ============ STATS BAND ============ */
+  .stats-band { background: var(--ink); color: var(--white); }
+  .stats-band .wrap { display: grid; grid-template-columns: 1.1fr repeat(3, 0.7fr); gap: 2rem; align-items: center; }
+  .stats-band h2 { color: var(--white); max-width: 16ch; }
+  .stats-band .lede { color: rgba(255,255,255,0.6); }
+  .stat-block strong { display: block; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--white); }
+  .stat-block span { font-size: 0.82rem; color: rgba(255,255,255,0.55); }
+
+  /* ============ TESTIMONIALS ============ */
+  .testimonials { background: var(--cream-dim); }
+  .testi-track {
+    display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 0.5rem;
+  }
+  .testi-track::-webkit-scrollbar { display: none; }
+  .testi-card {
+    scroll-snap-align: start;
+    flex: 0 0 clamp(280px, 40vw, 420px);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .testi-card .quote { font-size: 0.95rem; color: var(--charcoal); margin-bottom: 1.5rem; }
+  .testi-card .who { display: flex; align-items: center; gap: 0.7rem; }
+  .testi-card .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; }
+  .testi-card .who strong { display: block; font-size: 0.85rem; }
+  .testi-card .who span { font-size: 0.75rem; color: rgba(64,62,61,0.6); }
+
+  /* ============ NEWS ============ */
+  .news-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .news-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--white); transition: border-color var(--dur) var(--ease); }
+  .news-card:hover { border-color: var(--line-strong); }
+  .news-thumb { aspect-ratio: 4/3; background: linear-gradient(135deg, var(--cream-dim), var(--white)); position: relative; display:flex; align-items:center; justify-content:center; }
+  .news-thumb svg { width: 34%; opacity: 0.7; }
+  .news-body { padding: 1.1rem; }
+  .news-body .date { font-size: 0.72rem; color: var(--accent); font-weight: 600; letter-spacing: 0.04em; }
+  .news-body h3 { font-size: 0.98rem; margin-top: 0.5rem; }
+
+  /* ============ CTA ============ */
+  .cta-band { text-align: center; }
+  .cta-band h2 { max-width: 20ch; margin: 0 auto 1.75rem; }
+  .cta-band .btn { padding: 1rem 2.2rem; }
+
+  /* ============ CONTACT ============ */
+  .contact { background: var(--white); border-top: 1px solid var(--line); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); }
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(64,62,61,0.7); margin-bottom: 0.45rem; }
+  .field input, .field textarea {
+    width: 100%;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    background: var(--cream);
+    font-size: 0.92rem;
+    color: var(--ink);
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--ink); background: var(--white); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .field textarea { resize: vertical; min-height: 110px; }
+  .form-msg { font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+  .form-msg.show { display: block; }
+  .form-msg.ok { color: #2f7a3d; }
+
+  .contact-info h3 { margin-bottom: 1rem; }
+  .contact-info .lede { margin-bottom: 2rem; }
+  .contact-line { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 0; border-top: 1px solid var(--line); font-size: 0.92rem; }
+  .contact-line:last-child { border-bottom: 1px solid var(--line); }
+  .contact-line .icon-btn { pointer-events: none; }
+
+  /* ============ FOOTER ============ */
+  footer { background: var(--ink); color: rgba(255,255,255,0.75); padding: 4rem 0 2rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 2rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .footer-brand .logo { color: var(--white); margin-bottom: 1rem; }
+  .footer-brand .logo .mark { background: rgba(255,255,255,0.1); }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.88rem; max-width: 32ch; }
+  .footer-col h4 { color: var(--white); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.1rem; }
+  .footer-col a { display: block; padding: 0.4rem 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); transition: color var(--dur) var(--ease); }
+  .footer-col a:hover { color: var(--white); }
+  .footer-social { display: flex; gap: 0.6rem; margin-top: 0.5rem; }
+  .footer-social .icon-btn { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); width: 38px; height: 38px; }
+  .footer-social .icon-btn:hover { background: var(--accent); border-color: var(--accent); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.45); flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom .links { display: flex; gap: 1.5rem; }
+
+  /* ============ REVEAL ============ */
+  .reveal { opacity: 0; transition: opacity 0.5s var(--ease); }
+  .reveal.in-view { opacity: 1; }
+
+  /* ============ BACK TO TOP ============ */
+  .back-to-top {
+    position: fixed;
+    right: clamp(1rem, 4vw, 1.5rem);
+    bottom: clamp(1rem, 4vw, 1.5rem);
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease);
+    z-index: 150;
+    box-shadow: var(--shadow);
+  }
+  .back-to-top.show { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
+  .back-to-top:hover { background: var(--accent); }
+  .back-to-top svg { width: 18px; height: 18px; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-art { max-width: 380px; margin: 0 auto; order: -1; }
+    .intro-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-band .wrap { grid-template-columns: 1fr; text-align: left; gap: 2rem; }
+    .stats-band .stat-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .news-grid { grid-template-columns: repeat(2, 1fr); }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 860px) {
+    .nav-links, .nav-cta .btn-outline { display: none; }
+    .burger { display: inline-flex; }
+    .mobile-menu { display: block; }
+    .story-panel { grid-template-columns: 1fr; }
+    .story-panel.reverse .story-visual { order: 0; }
+  }
+
+  @media (max-width: 640px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; row-gap: 1.5rem; }
+    .field-row { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="wrap nav-row">
+    <a href="#home" class="logo"><span class="mark"></span>ROTOCON</a>
+
+    <nav>
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <a href="#products" class="top-link">Machines
+            <svg class="caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+          <div class="dropdown">
+            <a href="#products">Flexo Presses</a>
+            <a href="#products">Finishing &amp; Rewinding</a>
+            <a href="#products">Ancillary Equipment</a>
+            <a href="#products">View All Machines</a>
+          </div>
+        </li>
+        <li><a href="#services" class="top-link">Service</a></li>
+        <li class="has-dropdown">
+          <a href="#story" class="top-link">About
+            <svg class="caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+          <div class="dropdown">
+            <a href="#story">About Rotocon</a>
+            <a href="team.html">Our Team</a>
+            <a href="#testimonials">Testimonials</a>
+          </div>
+        </li>
+        <li><a href="#news" class="top-link">News</a></li>
+        <li><a href="#contact" class="top-link">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-outline">Get a Quote</a>
+      <button class="burger" id="burgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#products">Machines</a></li>
+    <li><a href="#services">Service</a></li>
+    <li><a href="#story">About</a></li>
+    <li><a href="team.html">Our Team</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="btn btn-primary">Get a Quote</a>
+</div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Precision built.<br>Printing <em>perfected.</em></h1>
+        <p class="lede">Label printing and packaging machinery engineered for accuracy, speed, and years of dependable uptime — backed by a team that stays with you long after installation.</p>
+        <div class="hero-ctas">
+          <a href="#products" class="btn btn-primary">Explore Machines
+            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#contact" class="btn btn-outline">Book a Consultation</a>
+        </div>
+
+        <div class="hero-stats">
+          <div><strong>40+</strong><span>Years of expertise</span></div>
+          <div><strong>5</strong><span>Global service branches</span></div>
+          <div><strong>800+</strong><span>Machines in operation</span></div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 320 320" fill="none">
+          <circle class="ring-slower" cx="160" cy="160" r="140" stroke="var(--line-strong)" stroke-width="1" stroke-dasharray="2 8"/>
+          <circle cx="160" cy="160" r="108" stroke="var(--line)" stroke-width="1"/>
+          <circle class="ring-slow" cx="160" cy="160" r="78" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="1 10" stroke-linecap="round"/>
+          <circle cx="160" cy="160" r="46" fill="var(--ink)"/>
+          <circle cx="160" cy="160" r="8" fill="var(--accent)"/>
+          <line x1="160" y1="20" x2="160" y2="52" stroke="var(--charcoal)" stroke-width="1.5"/>
+          <line x1="160" y1="268" x2="160" y2="300" stroke="var(--charcoal)" stroke-width="1.5"/>
+          <line x1="20" y1="160" x2="52" y2="160" stroke="var(--charcoal)" stroke-width="1.5"/>
+          <line x1="268" y1="160" x2="300" y2="160" stroke="var(--charcoal)" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <div class="wrap intro-grid reveal">
+      <div>
+        <span class="eyebrow">Engineered to Inspire</span>
+        <h2>We don't just build machines — we craft solutions.</h2>
+      </div>
+      <div>
+        <p class="lede">From precise cutting to high-fidelity printing, every Rotocon machine is designed to make your production line faster, steadier, and easier to run. Decades of engineering experience sit behind each detail, so you can focus on the work — not the machinery.</p>
+        <a href="#products" class="btn btn-outline">Find a Machine
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Featured Machines</span>
+          <h2>Built for the production floor.</h2>
+        </div>
+        <div class="carousel-controls">
+          <button class="icon-btn" id="prodPrev" aria-label="Previous"><svg viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L6.5 2.5M2 7L6.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="icon-btn" id="prodNext" aria-label="Next"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <div class="carousel-track reveal" id="prodTrack">
+        <article class="product-card">
+          <div class="product-visual">
+            <span class="product-tag">S-Series</span>
+            <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="30" width="80" height="40" rx="4" stroke="var(--charcoal)" stroke-width="1.5"/><circle cx="30" cy="50" r="10" stroke="var(--accent)" stroke-width="1.5"/><circle cx="70" cy="50" r="10" stroke="var(--accent)" stroke-width="1.5"/><line x1="40" y1="50" x2="60" y2="50" stroke="var(--charcoal)" stroke-width="1.5"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="cat">Flexo Press</span>
+            <h3>Rotocon Flex S-Series Servo Flexo Press</h3>
+            <div class="product-actions">
+              <a href="#contact" class="btn btn-outline">Details</a>
+              <a href="#contact" class="btn btn-primary">Contact</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-visual">
+            <span class="product-tag">Care</span>
+            <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="28" stroke="var(--charcoal)" stroke-width="1.5"/><circle cx="50" cy="50" r="14" stroke="var(--accent)" stroke-width="1.5"/><path d="M50 22V10M50 90V78M78 50H90M10 50H22" stroke="var(--charcoal)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="cat">Ancillary Equipment</span>
+            <h3>Rotocon Clean Anilox Roller Cleaner</h3>
+            <div class="product-actions">
+              <a href="#contact" class="btn btn-outline">Details</a>
+              <a href="#contact" class="btn btn-primary">Contact</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-visual">
+            <span class="product-tag">Mount</span>
+            <svg viewBox="0 0 100 100" fill="none"><rect x="20" y="20" width="60" height="60" rx="6" stroke="var(--charcoal)" stroke-width="1.5"/><rect x="34" y="34" width="32" height="32" rx="3" stroke="var(--accent)" stroke-width="1.5"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="cat">Ancillary Equipment</span>
+            <h3>Rotocon Mount Plate Mounting System</h3>
+            <div class="product-actions">
+              <a href="#contact" class="btn btn-outline">Details</a>
+              <a href="#contact" class="btn btn-primary">Contact</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-visual">
+            <span class="product-tag">Rewind</span>
+            <svg viewBox="0 0 100 100" fill="none"><circle cx="30" cy="35" r="12" stroke="var(--charcoal)" stroke-width="1.5"/><circle cx="70" cy="35" r="12" stroke="var(--charcoal)" stroke-width="1.5"/><circle cx="30" cy="70" r="12" stroke="var(--accent)" stroke-width="1.5"/><circle cx="70" cy="70" r="12" stroke="var(--accent)" stroke-width="1.5"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="cat">Finishing &amp; Rewinding</span>
+            <h3>Rotocon Wind 4-Spindle Turret Rewinder</h3>
+            <div class="product-actions">
+              <a href="#contact" class="btn btn-outline">Details</a>
+              <a href="#contact" class="btn btn-primary">Contact</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-visual">
+            <span class="product-tag">Hybrid</span>
+            <svg viewBox="0 0 100 100" fill="none"><rect x="12" y="40" width="76" height="20" rx="4" stroke="var(--charcoal)" stroke-width="1.5"/><circle cx="30" cy="50" r="6" fill="var(--accent)"/><circle cx="50" cy="50" r="6" fill="var(--charcoal)"/><circle cx="70" cy="50" r="6" fill="var(--accent)"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="cat">Flexo Press</span>
+            <h3>Rotocon Hybrid Printing &amp; Converting System</h3>
+            <div class="product-actions">
+              <a href="#contact" class="btn btn-outline">Details</a>
+              <a href="#contact" class="btn btn-primary">Contact</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story">
+    <div class="wrap">
+      <div class="story-panel reveal">
+        <div class="story-visual">
+          <span class="index">01</span>
+          <svg viewBox="0 0 200 160" fill="none"><rect x="30" y="30" width="140" height="100" rx="6" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/><path d="M50 90L85 60L110 85L150 45" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="150" cy="45" r="4" fill="var(--accent)"/></svg>
+        </div>
+        <div class="story-copy">
+          <span class="eyebrow">The Rotocon Story</span>
+          <h2>Packaging is more than a product.</h2>
+          <p>It's the first chapter of a story. We partner with manufacturers to bring that story to life — combining precision engineering, tailored configurations, and aftersales care so your business can grow with confidence.</p>
+        </div>
+      </div>
+
+      <div class="story-panel reverse reveal">
+        <div class="story-visual">
+          <span class="index">02</span>
+          <svg viewBox="0 0 200 160" fill="none"><circle cx="100" cy="80" r="42" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/><circle cx="100" cy="80" r="22" stroke="var(--accent)" stroke-width="1.5"/><circle cx="100" cy="80" r="5" fill="var(--accent)"/></svg>
+        </div>
+        <div class="story-copy">
+          <span class="eyebrow">Your Vision, Precisely Wrapped</span>
+          <h2>Great packaging captures attention at a glance.</h2>
+          <p>It's not just ink and material — it's about building trust the moment a product is picked up. Rotocon's machinery gives your designs the finish and consistency they deserve, run after run.</p>
+        </div>
+      </div>
+
+      <div class="story-panel reveal">
+        <div class="story-visual">
+          <span class="index">03</span>
+          <svg viewBox="0 0 200 160" fill="none"><rect x="40" y="50" width="120" height="14" rx="7" stroke="var(--accent)" stroke-width="1.5"/><rect x="40" y="78" width="90" height="14" rx="7" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/><rect x="40" y="106" width="60" height="14" rx="7" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/></svg>
+        </div>
+        <div class="story-copy">
+          <span class="eyebrow">Printing, Perfected</span>
+          <h2>Efficiency, reliability, and results you can measure.</h2>
+          <p>Every Rotocon system is built to cut costs through efficiency, reduce downtime through reliability, and elevate the finished product with high-performance technology.</p>
+          <a href="#contact" class="btn btn-outline">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Service Commitment</span>
+          <h2>Support that doesn't end at delivery.</h2>
+        </div>
+        <p class="lede">Whether it's training, maintenance, or a rapid response to a technical issue, our team stays with you long after your machine is installed.</p>
+      </div>
+
+      <div class="services-grid reveal">
+        <div class="service-item">
+          <span class="num">01</span>
+          <h3>Machine Sourcing &amp; Sales</h3>
+          <p>Cost-effective label production and finishing solutions, from new builds to carefully inspected pre-owned presses.</p>
+        </div>
+        <div class="service-item">
+          <span class="num">02</span>
+          <h3>Installation &amp; Commissioning</h3>
+          <p>Certified technicians handle setup end-to-end, so your equipment runs flawlessly from day one.</p>
+        </div>
+        <div class="service-item">
+          <span class="num">03</span>
+          <h3>Maintenance &amp; Warranty</h3>
+          <p>Logistics, installation, training, and ongoing support — including upgrade paths as your needs grow.</p>
+        </div>
+        <div class="service-item">
+          <span class="num">04</span>
+          <h3>Training &amp; Education</h3>
+          <p>Hands-on and virtual sessions tailored to your equipment, so your operators run with confidence.</p>
+        </div>
+        <div class="service-item">
+          <span class="num">05</span>
+          <h3>Tailored Consultation</h3>
+          <p>Personalized, turnkey advice to help you choose the right configuration for your production line.</p>
+        </div>
+        <div class="service-item">
+          <span class="num">06</span>
+          <h3>Global Footprint</h3>
+          <p>Headquartered with branches across three continents, so support is never far from your floor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-band">
+    <div class="wrap reveal">
+      <div>
+        <span class="eyebrow" style="color:var(--accent)">Global Network</span>
+        <h2>One network. Worldwide reach.</h2>
+        <p class="lede">Headquartered with branches spanning North America, Europe, Africa, and Asia.</p>
+      </div>
+      <div class="stat-row" style="display:contents">
+        <div class="stat-block"><strong>40+</strong><span>Years of experience</span></div>
+        <div class="stat-block"><strong>5</strong><span>Branches worldwide</span></div>
+        <div class="stat-block"><strong>800+</strong><span>Machines in use</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Client Voices</span>
+          <h2>Trusted by printers worldwide.</h2>
+        </div>
+        <div class="carousel-controls">
+          <button class="icon-btn" id="testiPrev" aria-label="Previous"><svg viewBox="0 0 14 14" fill="none"><path d="M12 7H2M2 7L6.5 2.5M2 7L6.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="icon-btn" id="testiNext" aria-label="Next"><svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+
+      <div class="testi-track reveal" id="testiTrack">
+        <article class="testi-card">
+          <p class="quote">"Rotocon could cover every requirement from a single source — folding, rewinding, die-cutting — without needing third-party interfaces. We didn't find a better price-to-performance ratio on the market."</p>
+          <div class="who"><span class="avatar">MK</span><div><strong>Maren Koch</strong><span>Production Director, Neulabel GmbH</span></div></div>
+        </article>
+        <article class="testi-card">
+          <p class="quote">"Upgrading to a dedicated roll-to-roll press alongside the independent die-cutter unlocked massive efficiencies for our line."</p>
+          <div class="who"><span class="avatar">DP</span><div><strong>David Preston</strong><span>Plant Manager, Coastal Print Co.</span></div></div>
+        </article>
+        <article class="testi-card">
+          <p class="quote">"Since installation we've had no major issues — and when we've needed support, the turnaround has always been fast."</p>
+          <div class="who"><span class="avatar">SA</span><div><strong>Sipho Adams</strong><span>Operations Lead, Delta Labels</span></div></div>
+        </article>
+        <article class="testi-card">
+          <p class="quote">"With growing demand, we needed more capacity. The flatbed press was cost-effective, reliable, and robust from week one."</p>
+          <div class="who"><span class="avatar">JR</span><div><strong>Julia Ranieri</strong><span>Founder, Ranieri Packaging</span></div></div>
+        </article>
+        <article class="testi-card">
+          <p class="quote">"It's more than a supplier relationship — it's a partnership. The technical know-how behind the product is what sets them apart."</p>
+          <div class="who"><span class="avatar">TN</span><div><strong>Tom Ngu</strong><span>Technical Buyer, VR Print</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">News &amp; Insights</span>
+          <h2>What's new at Rotocon.</h2>
+        </div>
+        <a href="#" class="btn btn-outline">View All</a>
+      </div>
+
+      <div class="news-grid reveal">
+        <article class="news-card">
+          <div class="news-thumb"><svg viewBox="0 0 60 60" fill="none"><rect x="10" y="10" width="40" height="40" rx="4" stroke="var(--charcoal)" stroke-width="1.5"/><path d="M18 38L26 26L34 34L44 20" stroke="var(--accent)" stroke-width="1.5"/></svg></div>
+          <div class="news-body"><span class="date">June 2026</span><h3>Rotocon exhibits new S-Series press at Print Americas</h3></div>
+        </article>
+        <article class="news-card">
+          <div class="news-thumb"><svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="18" stroke="var(--charcoal)" stroke-width="1.5"/><circle cx="30" cy="30" r="6" fill="var(--accent)"/></svg></div>
+          <div class="news-body"><span class="date">May 2026</span><h3>Powering a converter's next chapter of growth</h3></div>
+        </article>
+        <article class="news-card">
+          <div class="news-thumb"><svg viewBox="0 0 60 60" fill="none"><rect x="14" y="20" width="32" height="20" rx="3" stroke="var(--accent)" stroke-width="1.5"/></svg></div>
+          <div class="news-body"><span class="date">May 2026</span><h3>Celebrating this year's emerging label design talent</h3></div>
+        </article>
+        <article class="news-card">
+          <div class="news-thumb"><svg viewBox="0 0 60 60" fill="none"><path d="M15 40L30 15L45 40Z" stroke="var(--charcoal)" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+          <div class="news-body"><span class="date">April 2026</span><h3>New distribution partnership expands regional coverage</h3></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="wrap reveal">
+      <span class="eyebrow" style="justify-content:center">Start a Project</span>
+      <h2>Your vision, precisely wrapped.</h2>
+      <a href="#contact" class="btn btn-accent">Start a Project</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap contact-grid reveal">
+      <div>
+        <span class="eyebrow">Get in Touch</span>
+        <h2 style="margin-bottom:1.75rem;">Let's talk about your line.</h2>
+
+        <form id="contactForm">
+          <div class="field-row">
+            <div class="field"><label for="fname">First name</label><input id="fname" type="text" required></div>
+            <div class="field"><label for="lname">Last name</label><input id="lname" type="text" required></div>
+          </div>
+          <div class="field"><label for="email">Email</label><input id="email" type="email" required></div>
+          <div class="field"><label for="message">Message</label><textarea id="message" required></textarea></div>
+          <button type="submit" class="btn btn-primary">Send Request
+            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form-msg ok" id="formMsg">Thanks — we've received your message and will be in touch shortly.</p>
+        </form>
+      </div>
+
+      <div class="contact-info">
+        <h3>Contact</h3>
+        <p class="lede">Use the form, give us a call, or send an email — we'll route your request to the right specialist.</p>
+
+        <div class="contact-line">
+          <span class="icon-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h3l1.5 4-2 1.5a10 10 0 004.5 4.5l1.5-2 4 1.5v3a1 1 0 01-1 1C7.5 15.5.5 8.5.5 3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
+          +1 (609) 555-0148
+        </div>
+        <div class="contact-line">
+          <span class="icon-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M2 4l6 5 6-5" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          info@rotocon.com
+        </div>
+        <div class="contact-line">
+          <span class="icon-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          Mon – Fri, 8am – 6pm ET
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo"><span class="mark"></span>ROTOCON</a>
+        <p>Precision-engineered label printing and packaging machinery, with the training and support to keep it running.</p>
+        <div class="footer-social">
+          <a href="#" class="icon-btn" aria-label="LinkedIn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.8 5.6h2.4V13H2.8V5.6zM4 2.4a1.4 1.4 0 110 2.8 1.4 1.4 0 010-2.8zM6.8 5.6h2.3v1h.03c.32-.6 1.1-1.24 2.27-1.24C13.7 5.36 14 6.9 14 8.9V13h-2.4V9.4c0-.86-.02-1.97-1.2-1.97-1.2 0-1.38.94-1.38 1.9V13H6.8V5.6z"/></svg></a>
+          <a href="#" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3.5" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2.6" stroke="currentColor" stroke-width="1.2"/><circle cx="11.3" cy="4.7" r="0.7" fill="currentColor"/></svg></a>
+          <a href="#" class="icon-btn" aria-label="YouTube"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.7 6.2v3.6l3-1.8z" fill="currentColor"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Sitemap</h4>
+        <a href="#home">Home</a>
+        <a href="#products">Machines</a>
+        <a href="#services">Service</a>
+        <a href="#story">About</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="team.html">Our Team</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:+16095550148">+1 (609) 555-0148</a>
+        <a href="mailto:info@rotocon.com">info@rotocon.com</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Rotocon. All rights reserved.</span>
+      <div class="links">
+        <a href="#">Terms of Sale</a>
+        <a href="#">Privacy Notice</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 16 16" fill="none"><path d="M8 13V3M8 3L3.5 7.5M8 3L12.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+  // Always start at the top on load/refresh, ignoring any restored scroll position or URL hash
+  function forceScrollTop() {
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    html.style.scrollBehavior = prevBehavior;
+  }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  forceScrollTop();
+  window.addEventListener('load', forceScrollTop);
+  window.addEventListener('pageshow', forceScrollTop);
+
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Nav scroll state
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 12);
+  }, { passive: true });
+
+  // Back to top
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > 600);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Mobile menu
+  const burger = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }));
+
+  // Dropdowns (click-to-toggle, works on touch too)
+  const dropdownWraps = document.querySelectorAll('.has-dropdown');
+  dropdownWraps.forEach(wrap => {
+    const toggle = wrap.querySelector('.top-link');
+    toggle.addEventListener('click', (e) => {
+      if (window.innerWidth <= 860) return;
+      e.preventDefault();
+      const isOpen = wrap.classList.contains('open');
+      dropdownWraps.forEach(w => w.classList.remove('open'));
+      wrap.classList.toggle('open', !isOpen);
+    });
+  });
+  document.addEventListener('click', (e) => {
+    dropdownWraps.forEach(wrap => {
+      if (!wrap.contains(e.target)) wrap.classList.remove('open');
+    });
+  });
+
+  // Generic horizontal carousel controller
+  function carousel(trackId, prevId, nextId) {
+    const track = document.getElementById(trackId);
+    const prev = document.getElementById(prevId);
+    const next = document.getElementById(nextId);
+    if (!track) return;
+    const scrollAmount = () => track.firstElementChild.getBoundingClientRect().width + 20;
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+  carousel('prodTrack', 'prodPrev', 'prodNext');
+  carousel('testiTrack', 'testiPrev', 'testiNext');
+
+  // Scroll reveal (opacity-only, no slide)
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Contact form (front-end only demo)
+  const form = document.getElementById('contactForm');
+  const formMsg = document.getElementById('formMsg');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    formMsg.classList.add('show');
+    form.reset();
+  });
+</script>
+
+</body>
+</html>

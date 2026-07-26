@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Team | Rotocon</title>
+<meta name="description" content="Meet the engineers, technicians, and specialists behind Rotocon's label printing and packaging machinery.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23403e3d'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23c9532f' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+
+  /* ============ RESET & BASE ============ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:       #f2f1ed;
+    --cream-dim:   #e9e7e0;
+    --charcoal:    #403e3d;
+    --charcoal-2:  #2a2827;
+    --ink:         #1c1b1a;
+    --white:       #ffffff;
+    --accent:      #c9532f;
+    --accent-dim:  #a8452668;
+    --line:        rgba(64,62,61,0.12);
+    --line-strong: rgba(64,62,61,0.22);
+    --shadow: 0 1px 2px rgba(28,27,26,0.04), 0 8px 24px rgba(28,27,26,0.06);
+
+    --maxw: 1240px;
+    --pad: clamp(1.25rem, 4vw, 3rem);
+    --radius: 10px;
+    --dur: 0.25s;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.5;
+    overflow-x: hidden;
+    overflow-anchor: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+
+  section { padding: clamp(3.5rem, 8vw, 7rem) 0; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 18px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.06; }
+  h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); line-height: 1.15; }
+  h3 { font-size: 1.1rem; line-height: 1.3; }
+  p { color: var(--charcoal); }
+  .lede { font-size: clamp(1rem, 1.4vw, 1.15rem); color: rgba(64,62,61,0.85); max-width: 46ch; }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .btn-primary { background: var(--ink); color: var(--white); }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-outline { border: 1px solid var(--line-strong); color: var(--ink); }
+  .btn-outline:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
+  .btn-accent { background: var(--accent); color: var(--white); }
+  .btn-accent:hover { background: var(--ink); }
+  .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .icon-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+    flex-shrink: 0;
+  }
+  .icon-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  /* ============ NAV ============ */
+  header.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(242,241,237,0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  header.nav.scrolled { background: rgba(242,241,237,0.94); border-bottom-color: var(--line); }
+
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+  }
+
+  .logo { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--ink); }
+  .logo .mark {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .logo .mark::after {
+    content: "";
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; }
+  .nav-links > li { position: relative; }
+  .nav-links a.top-link {
+    font-size: 0.86rem; font-weight: 500; color: var(--charcoal);
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.4rem 0;
+    transition: color var(--dur) var(--ease);
+  }
+  .nav-links a.top-link:hover, .nav-links a.top-link.active { color: var(--ink); }
+  .nav-links .caret { width: 9px; height: 9px; transition: transform var(--dur) var(--ease); }
+  .has-dropdown.open .caret { transform: rotate(180deg); }
+
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 0.6rem;
+    min-width: 240px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .has-dropdown.open .dropdown { opacity: 1; visibility: visible; }
+  .dropdown a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--charcoal);
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .dropdown a:hover, .dropdown a.active { background: var(--cream); color: var(--ink); }
+
+  .nav-cta { display: flex; align-items: center; gap: 1rem; }
+  .nav-cta .btn-outline { padding: 0.7rem 1.3rem; }
+
+  .burger {
+    display: none;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .burger span { width: 16px; height: 1.5px; background: var(--ink); transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+  .burger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 76px 0 0 0;
+    background: var(--cream);
+    z-index: 190;
+    overflow-y: auto;
+    padding: 1.5rem var(--pad) 3rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .mobile-menu.open { opacity: 1; visibility: visible; }
+  .mobile-menu ul { display: flex; flex-direction: column; }
+  .mobile-menu a { display: block; padding: 1rem 0; font-size: 1.15rem; font-weight: 500; border-bottom: 1px solid var(--line); }
+  .mobile-menu a.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 0.95rem 1.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-bottom: none;
+  }
+
+  /* ============ PAGE HERO ============ */
+  .page-hero {
+    padding-top: calc(76px + clamp(2rem,6vw,3.5rem));
+    padding-bottom: clamp(1.5rem, 4vw, 2rem);
+  }
+  .page-hero .lede { margin-top: 1rem; }
+
+  .hero-stats {
+    display: flex;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-top: clamp(2rem, 5vw, 3rem);
+    padding-top: clamp(1.5rem, 4vw, 2rem);
+    border-top: 1px solid var(--line);
+  }
+  .hero-stats div strong { display: block; font-size: clamp(1.5rem, 3vw, 2.1rem); color: var(--ink); font-weight: 700; }
+  .hero-stats div span { font-size: 0.8rem; color: rgba(64,62,61,0.7); }
+
+  /* ============ TEAM GRID ============ */
+  .dept-block:not(:last-child) { margin-bottom: clamp(3rem, 6vw, 4.5rem); }
+  .dept-head { margin-bottom: clamp(1.5rem, 3vw, 2rem); max-width: 60ch; }
+  .dept-head p { color: rgba(64,62,61,0.7); margin-top: 0.5rem; }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .person-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .person-card:hover { border-color: var(--line-strong); box-shadow: var(--shadow); }
+  .person-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 1.1rem;
+  }
+  .person-card h3 { margin-bottom: 0.2rem; }
+  .person-role { display: block; font-size: 0.78rem; color: var(--accent); font-weight: 600; margin-bottom: 0.9rem; }
+  .person-bio { font-size: 0.88rem; color: rgba(64,62,61,0.75); }
+  .person-loc {
+    margin-top: 1.1rem; padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.75rem; color: rgba(64,62,61,0.6);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .person-loc svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  /* ============ CTA ============ */
+  .cta-band { text-align: center; background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .cta-band h2 { max-width: 24ch; margin: 0 auto 0.75rem; }
+  .cta-band .lede { margin: 0 auto 1.75rem; text-align: center; }
+  .cta-band .btn { padding: 1rem 2.2rem; }
+
+  /* ============ FOOTER ============ */
+  footer { background: var(--ink); color: rgba(255,255,255,0.75); padding: 4rem 0 2rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 2rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .footer-brand .logo { color: var(--white); margin-bottom: 1rem; }
+  .footer-brand .logo .mark { background: rgba(255,255,255,0.1); }
+  .footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.88rem; max-width: 32ch; }
+  .footer-col h4 { color: var(--white); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.1rem; }
+  .footer-col a { display: block; padding: 0.4rem 0; font-size: 0.88rem; color: rgba(255,255,255,0.6); transition: color var(--dur) var(--ease); }
+  .footer-col a:hover { color: var(--white); }
+  .footer-social { display: flex; gap: 0.6rem; margin-top: 0.5rem; }
+  .footer-social .icon-btn { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); width: 38px; height: 38px; }
+  .footer-social .icon-btn:hover { background: var(--accent); border-color: var(--accent); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.45); flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom .links { display: flex; gap: 1.5rem; }
+
+  /* ============ REVEAL ============ */
+  .reveal { opacity: 0; transition: opacity 0.5s var(--ease); }
+  .reveal.in-view { opacity: 1; }
+
+  /* ============ BACK TO TOP ============ */
+  .back-to-top {
+    position: fixed;
+    right: clamp(1rem, 4vw, 1.5rem);
+    bottom: clamp(1rem, 4vw, 1.5rem);
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease);
+    z-index: 150;
+    box-shadow: var(--shadow);
+  }
+  .back-to-top.show { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
+  .back-to-top:hover { background: var(--accent); }
+  .back-to-top svg { width: 18px; height: 18px; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 860px) {
+    .nav-links, .nav-cta .btn-outline { display: none; }
+    .burger { display: inline-flex; }
+    .mobile-menu { display: block; }
+  }
+
+  @media (max-width: 640px) {
+    .team-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; row-gap: 1.5rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="wrap nav-row">
+    <a href="index.html#home" class="logo"><span class="mark"></span>ROTOCON</a>
+
+    <nav>
+      <ul class="nav-links">
+        <li class="has-dropdown">
+          <a href="index.html#products" class="top-link">Machines
+            <svg class="caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+          <div class="dropdown">
+            <a href="index.html#products">Flexo Presses</a>
+            <a href="index.html#products">Finishing &amp; Rewinding</a>
+            <a href="index.html#products">Ancillary Equipment</a>
+            <a href="index.html#products">View All Machines</a>
+          </div>
+        </li>
+        <li><a href="index.html#services" class="top-link">Service</a></li>
+        <li class="has-dropdown">
+          <a href="index.html#story" class="top-link active">About
+            <svg class="caret" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+          <div class="dropdown">
+            <a href="index.html#story">About Rotocon</a>
+            <a href="team.html" class="active">Our Team</a>
+            <a href="index.html#testimonials">Testimonials</a>
+          </div>
+        </li>
+        <li><a href="index.html#news" class="top-link">News</a></li>
+        <li><a href="index.html#contact" class="top-link">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="index.html#contact" class="btn btn-outline">Get a Quote</a>
+      <button class="burger" id="burgerBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html#products">Machines</a></li>
+    <li><a href="index.html#services">Service</a></li>
+    <li><a href="index.html#story">About</a></li>
+    <li><a href="team.html">Our Team</a></li>
+    <li><a href="index.html#testimonials">Testimonials</a></li>
+    <li><a href="index.html#news">News</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <a href="index.html#contact" class="btn btn-primary">Get a Quote</a>
+</div>
+
+<main>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Our Team</span>
+      <h1>The people behind every Rotocon machine.</h1>
+      <p class="lede">From first sketch to final installation, our engineers, technicians, and specialists are the ones who make precision printing possible — and who stay with you long after the machine ships.</p>
+
+      <div class="hero-stats">
+        <div><strong>60+</strong><span>Team members worldwide</span></div>
+        <div><strong>5</strong><span>Branches across 3 continents</span></div>
+        <div><strong>40+</strong><span>Combined years in flexo</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section id="leadership">
+    <div class="wrap">
+      <div class="dept-block reveal">
+        <div class="dept-head">
+          <span class="eyebrow">Leadership</span>
+          <h2>Setting the direction.</h2>
+          <p>Guiding strategy, operations, and growth across every Rotocon branch.</p>
+        </div>
+        <div class="team-grid">
+          <article class="person-card">
+            <div class="person-avatar">MF</div>
+            <h3>Markus Feldt</h3>
+            <span class="person-role">Managing Director</span>
+            <p class="person-bio">Over 20 years in industrial print engineering, Markus leads Rotocon's global strategy and product roadmap.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Hamburg, Germany</div>
+          </article>
+          <article class="person-card">
+            <div class="person-avatar">ND</div>
+            <h3>Naledi Dlamini</h3>
+            <span class="person-role">Chief Operating Officer</span>
+            <p class="person-bio">Oversees manufacturing and supply chain across all five branches, keeping delivery timelines tight and quality consistent.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Cape Town, South Africa</div>
+          </article>
+          <article class="person-card">
+            <div class="person-avatar">EC</div>
+            <h3>Ellen Cho</h3>
+            <span class="person-role">VP of Sales</span>
+            <p class="person-bio">Partners with converters across North America to match the right press configuration to every production line.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Chicago, USA</div>
+          </article>
+        </div>
+      </div>
+
+      <!-- ENGINEERING -->
+      <div class="dept-block reveal">
+        <div class="dept-head">
+          <span class="eyebrow">Engineering &amp; Production</span>
+          <h2>Building the machines.</h2>
+          <p>Designing, testing, and assembling every press before it ever reaches the floor.</p>
+        </div>
+        <div class="team-grid">
+          <article class="person-card">
+            <div class="person-avatar">PM</div>
+            <h3>Piet van der Merwe</h3>
+            <span class="person-role">Head of Mechanical Engineering</span>
+            <p class="person-bio">Leads the design team behind the Flex S-Series and Hybrid platforms, with a focus on servo precision.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Cape Town, South Africa</div>
+          </article>
+          <article class="person-card">
+            <div class="person-avatar">AR</div>
+            <h3>Anika Roth</h3>
+            <span class="person-role">Lead Electrical Engineer</span>
+            <p class="person-bio">Builds the control systems and automation logic that keep Rotocon presses running at speed.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Hamburg, Germany</div>
+          </article>
+          <article class="person-card">
+            <div class="person-avatar">FC</div>
+            <h3>Farai Chikwava</h3>
+            <span class="person-role">Production Manager</span>
+            <p class="person-bio">Manages the assembly floor and final testing for every machine before it ships.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Johannesburg, South Africa</div>
+          </article>
+        </div>
+      </div>
+
+      <!-- SERVICE -->
+      <div class="dept-block reveal">
+        <div class="dept-head">
+          <span class="eyebrow">Service &amp; Support</span>
+          <h2>Staying by your side.</h2>
+          <p>Training, maintenance, and rapid response — long after installation day.</p>
+        </div>
+        <div class="team-grid">
+          <article class="person-card">
+            <div class="person-avatar">DR</div>
+            <h3>Diego Ramos</h3>
+            <span class="person-role">Global Service Director</span>
+            <p class="person-bio">Coordinates the field technician network and rapid-response support across every region.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Chicago, USA</div>
+          </article>
+          <article class="person-card">
+            <div class="person-avatar">PN</div>
+            <h3>Priya Nair</h3>
+            <span class="person-role">Training Lead, Rototraining</span>
+            <p class="person-bio">Designs the hands-on and virtual training programs that get new operators up to speed fast.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Durban, South Africa</div>
+          </article>
+          <article class="person-card">
+            <div class="person-avatar">TA</div>
+            <h3>Tomás Alves</h3>
+            <span class="person-role">Regional Service Manager, Asia</span>
+            <p class="person-bio">Keeps installations and maintenance on schedule for converters across the region.</p>
+            <div class="person-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="6.5" r="1.6" stroke="currentColor" stroke-width="1.2"/></svg>Singapore</div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <div class="wrap reveal">
+      <span class="eyebrow" style="justify-content:center">Careers</span>
+      <h2>Want to build precision with us?</h2>
+      <p class="lede">We're always looking for engineers, technicians, and specialists who care about getting the details right.</p>
+      <a href="index.html#contact" class="btn btn-accent">Get in Touch</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html#home" class="logo"><span class="mark"></span>ROTOCON</a>
+        <p>Precision-engineered label printing and packaging machinery, with the training and support to keep it running.</p>
+        <div class="footer-social">
+          <a href="#" class="icon-btn" aria-label="LinkedIn"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M2.8 5.6h2.4V13H2.8V5.6zM4 2.4a1.4 1.4 0 110 2.8 1.4 1.4 0 010-2.8zM6.8 5.6h2.3v1h.03c.32-.6 1.1-1.24 2.27-1.24C13.7 5.36 14 6.9 14 8.9V13h-2.4V9.4c0-.86-.02-1.97-1.2-1.97-1.2 0-1.38.94-1.38 1.9V13H6.8V5.6z"/></svg></a>
+          <a href="#" class="icon-btn" aria-label="Instagram"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3.5" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2.6" stroke="currentColor" stroke-width="1.2"/><circle cx="11.3" cy="4.7" r="0.7" fill="currentColor"/></svg></a>
+          <a href="#" class="icon-btn" aria-label="YouTube"><svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M6.7 6.2v3.6l3-1.8z" fill="currentColor"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Sitemap</h4>
+        <a href="index.html#home">Home</a>
+        <a href="index.html#products">Machines</a>
+        <a href="index.html#services">Service</a>
+        <a href="index.html#story">About</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="team.html">Our Team</a>
+        <a href="index.html#testimonials">Testimonials</a>
+        <a href="index.html#news">News</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:+16095550148">+1 (609) 555-0148</a>
+        <a href="mailto:info@rotocon.com">info@rotocon.com</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Rotocon. All rights reserved.</span>
+      <div class="links">
+        <a href="#">Terms of Sale</a>
+        <a href="#">Privacy Notice</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg viewBox="0 0 16 16" fill="none"><path d="M8 13V3M8 3L3.5 7.5M8 3L12.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+  // Always start at the top on load/refresh, ignoring any restored scroll position or URL hash
+  function forceScrollTop() {
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    html.style.scrollBehavior = prevBehavior;
+  }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  forceScrollTop();
+  window.addEventListener('load', forceScrollTop);
+  window.addEventListener('pageshow', forceScrollTop);
+
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Nav scroll state
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 12);
+  }, { passive: true });
+
+  // Back to top
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > 600);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Mobile menu
+  const burger = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }));
+
+  // Dropdowns (click-to-toggle, works on touch too)
+  const dropdownWraps = document.querySelectorAll('.has-dropdown');
+  dropdownWraps.forEach(wrap => {
+    const toggle = wrap.querySelector('.top-link');
+    toggle.addEventListener('click', (e) => {
+      if (window.innerWidth <= 860) return;
+      e.preventDefault();
+      const isOpen = wrap.classList.contains('open');
+      dropdownWraps.forEach(w => w.classList.remove('open'));
+      wrap.classList.toggle('open', !isOpen);
+    });
+  });
+  document.addEventListener('click', (e) => {
+    dropdownWraps.forEach(wrap => {
+      if (!wrap.contains(e.target)) wrap.classList.remove('open');
+    });
+  });
+
+  // Scroll reveal (opacity-only, no slide)
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

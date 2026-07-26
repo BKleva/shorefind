@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outdoor Impact | Premium Billboard Development</title>
+<meta name="description" content="We pay New Jersey and Florida landowners passive income to develop premium billboard structures on their property. Turn your land into real, ongoing income.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700,800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1628'/%3E%3Crect x='5' y='11' width='22' height='9' rx='1.5' fill='%232f6fed'/%3E%3Crect x='15' y='20' width='2' height='7' fill='%232f6fed'/%3E%3C/svg%3E">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy-deep:   #ffffff;
+    --navy:        #f4f7fc;
+    --navy-mid:    #eef2fa;
+    --navy-light:  #f7f9fd;
+    --card:        rgba(16,26,51,0.03);
+    --border:      rgba(16,26,51,0.10);
+    --border-strong: rgba(16,26,51,0.18);
+    --white:       #ffffff;
+    --ink:         #101a33;
+    --dim:         rgba(16,26,51,0.72);
+    --dimmer:      rgba(16,26,51,0.52);
+    --blue:        #2f6fed;
+    --blue-light:  #1d4ed8;
+    --blue-dim:    rgba(47,111,237,0.12);
+    --hero-text:   #ffffff;
+    --hero-dim:    rgba(255,255,255,0.85);
+
+    --maxw: 1240px;
+    --pad: clamp(1.25rem, 4vw, 3rem);
+    --radius: 14px;
+    --dur: 0.25s;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--navy-deep);
+    color: var(--dim);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img, svg { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+  input, textarea, select { font: inherit; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+  section { padding: clamp(3rem, 7vw, 6rem) 0; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--blue-light);
+    margin-bottom: 1rem;
+  }
+
+  h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
+  h1 { font-size: clamp(2.6rem, 6.5vw, 4.4rem); line-height: 1.05; }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15; }
+  h3 { font-size: 1.2rem; line-height: 1.3; }
+  p { color: var(--dim); }
+  .lede { font-size: clamp(1rem, 1.4vw, 1.12rem); color: var(--dim); max-width: 46ch; }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.7rem;
+    border-radius: 9px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: var(--blue-light); transform: translateY(-1px); }
+  .btn-outline { border: 1px solid var(--border-strong); color: var(--ink); }
+  .btn-outline:hover { border-color: var(--blue-light); background: var(--blue-dim); }
+  .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .icon-circle {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-circle svg { width: 20px; height: 20px; }
+  .icon-circle.sm { width: 38px; height: 38px; }
+  .icon-circle.sm svg { width: 16px; height: 16px; }
+
+  /* ============ NAV ============ */
+  header.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(26,58,107,0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  header.nav.scrolled { background: rgba(26,58,107,0.92); border-bottom-color: rgba(255,255,255,0.14); }
+
+  .nav-row { display: flex; align-items: center; justify-content: space-between; height: 78px; }
+
+  .logo { display: flex; align-items: center; gap: 0.65rem; }
+  .logo .text { display: flex; flex-direction: column; line-height: 1.15; }
+  .logo .text .name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; color: #ffffff; }
+  .logo .text .sub { font-size: 0.68rem; color: #8fb4ff; font-weight: 500; letter-spacing: 0.02em; }
+
+  .nav-links { display: flex; align-items: center; gap: 2.1rem; }
+  .nav-links a:not(.btn) {
+    font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.82);
+    transition: color var(--dur) var(--ease);
+  }
+  .nav-links a:not(.btn):hover { color: #ffffff; }
+  .nav-links a.active { color: #ffffff; }
+
+  .nav-right { display: flex; align-items: center; gap: 1.6rem; }
+
+  .burger { display: none; flex-direction: column; gap: 4px; width: 22px; z-index: 250; }
+  .burger span { width: 100%; height: 2px; background: #ffffff; transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease); }
+  .burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .mobile-menu { display: none; }
+
+  @media (max-width: 860px) {
+    .nav-links:not(.mobile-only) { display: none; }
+    .nav-right .btn-primary { display: none; }
+    .burger { display: flex; }
+    .mobile-menu {
+      position: fixed; inset: 0 0 auto 0;
+      top: 78px;
+      background: #234a82;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      padding: 1.5rem var(--pad) 2rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+      transform: translateY(-8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+      z-index: 199;
+    }
+    .mobile-menu.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .mobile-menu a:not(.btn) { font-size: 1rem; font-weight: 500; color: rgba(255,255,255,0.85); }
+    .mobile-menu .btn { align-self: flex-start; }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    padding-top: clamp(7.5rem, 14vw, 10rem);
+    background:
+      radial-gradient(ellipse 900px 500px at 15% 0%, rgba(47,111,237,0.28), transparent 60%),
+      linear-gradient(180deg, rgba(26,58,107,0.55) 0%, rgba(35,74,130,0.5) 55%, rgba(44,87,152,0.55) 100%),
+      url('images/headimg.png');
+    background-size: auto, auto, 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #1a3a6b;
+    min-height: clamp(600px, 80vh, 860px);
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero-copy { padding-left: clamp(1rem, 6vw, 4.5rem); }
+  .hero-copy p.lede { margin: 1.4rem 0 2.2rem; }
+  .hero-loc { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .hero-loc svg { width: 14px; height: 14px; }
+  .hero h1, .hero .lede, .hero .eyebrow, .scene-text { text-shadow: 0 2px 4px rgba(0,0,0,0.85), 0 4px 20px rgba(0,0,0,0.7); }
+  .hero h1 { color: var(--hero-text); }
+  .hero .lede { color: var(--hero-dim); }
+  .hero .eyebrow { color: var(--hero-text); }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-copy { padding-left: 0; }
+    .scene-text { display: none; }
+    .hero { padding-bottom: 5.5rem; }
+  }
+
+  /* ---- hero side text ---- */
+  .scene-text { color: var(--hero-text); padding-left: clamp(1rem, 5vw, 3.5rem); }
+  .scene-text h3 { font-size: clamp(1.7rem, 3.6vw, 2.3rem); margin-bottom: 0.8rem; color: var(--hero-text); }
+  .scene-text .scene-tag { color: var(--hero-dim); font-size: 1.1rem; margin-bottom: 1.7rem; }
+  .scene-stats { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+  .scene-stats li { font-size: 1.08rem; color: var(--hero-dim); padding-left: 1.5rem; position: relative; }
+  .scene-stats li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--blue-light); }
+
+  /* ============ INFO BAR ============ */
+  .info-bar {
+    position: relative;
+    margin-top: -3.5rem;
+    z-index: 5;
+  }
+  .info-card {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(1.5rem, 3vw, 2.2rem);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+  .info-item { display: flex; align-items: center; gap: 1rem; }
+  .info-item h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .info-item p { font-size: 0.88rem; color: var(--dim); margin: 0; }
+
+  @media (max-width: 760px) {
+    .info-card { grid-template-columns: 1fr; }
+  }
+
+  /* ============ TEAM ============ */
+  .team-wrap { text-align: center; }
+  .team-wrap .lede { margin-left: auto; margin-right: auto; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 320px));
+    justify-content: center;
+    gap: clamp(3rem, 9vw, 7rem);
+    margin-top: 6.5rem;
+  }
+  .team-photo {
+    width: clamp(220px, 24vw, 300px); height: clamp(220px, 24vw, 300px);
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1.3rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+  }
+  .team-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .team-card h3 { font-size: 1.25rem; }
+  .team-card .role { font-size: 0.95rem; color: var(--blue-light); margin-top: 0.35rem; }
+  .team-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+  .team-contact .row { font-size: 1rem; font-weight: 700; color: var(--ink); }
+  .team-contact .row a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--blue); transition: color var(--dur) var(--ease); }
+  .team-contact .row a:hover { color: var(--blue-light); }
+  .team-contact .label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.15rem; }
+
+  @media (max-width: 560px) {
+    .team-grid { grid-template-columns: 1fr; margin-top: 2.5rem; gap: 2rem; }
+    .team-card {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      text-align: left;
+    }
+    .team-photo { width: 128px; height: 128px; margin: 0; flex-shrink: 0; }
+    .team-info { flex: 1; }
+    .team-card h3 { margin-bottom: 0.6rem; }
+    .team-contact { align-items: flex-start; margin-top: 0; }
+    .team-card .role { margin-top: 0.1rem; margin-bottom: 0.6rem; }
+  }
+
+  @media (min-width: 561px) {
+    #about { padding-bottom: 2rem; }
+    #about + section { padding-top: 2rem; }
+  }
+
+  /* ============ CALL BAND ============ */
+  .call-band {
+    background: var(--navy-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(1.6rem, 3vw, 2.2rem) clamp(1.6rem, 3vw, 2.4rem);
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .call-band .left { display: flex; align-items: center; gap: 1.1rem; }
+  .call-band h3 { font-size: clamp(1.1rem, 2vw, 1.3rem); }
+  .call-band h3 a { color: var(--blue-light); }
+  .call-band p { margin: 0.2rem 0 0; font-size: 0.9rem; }
+
+  /* ============ FOOTER ============ */
+  footer { border-top: 1px solid var(--border); padding: 2.4rem 0; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-tag { font-size: 0.85rem; color: var(--dimmer); text-align: center; }
+  .footer-links { display: flex; gap: 1.6rem; }
+  .footer-links a { font-size: 0.85rem; color: var(--dim); }
+  .footer-links a:hover { color: var(--ink); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copyright { font-size: 0.75rem; color: var(--dimmer); }
+  .footer-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--dimmer);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+  .footer-credit img { height: 15px; width: auto; display: block; opacity: 0.9; transition: opacity var(--dur) var(--ease); }
+  .footer-credit:hover { color: var(--dim); }
+  .footer-credit:hover img { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo">
+      <span class="text"><span class="name">Outdoor Impact</span><span class="sub">Premium Billboard Development</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="gallery.html">Portfolio</a>
+      <a href="index.html#about">About Us</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Portfolio</a>
+    <a href="index.html#about">About Us</a>
+    <a href="contact.html">Contact</a>
+    <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy reveal in">
+        <span class="eyebrow hero-loc">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6.5" r="1.8" stroke="currentColor" stroke-width="1.3"/></svg>
+          Have Land? Get Paid.
+        </span>
+        <h1>Outdoor<br><span style="color:#8fb4ff">Impact</span>, LLC</h1>
+        <p class="lede">We pay New Jersey and Florida landowners passive income for the right to develop premium billboard structures on their property along high-traffic corridors &mdash; turning unused roadside land into steady, ongoing income.</p>
+        <a href="contact.html" class="btn btn-primary">Get in Touch
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="scene-text reveal in">
+        <h3>Billboard Opportunities</h3>
+        <p class="scene-tag">Premium Locations. Real Passive Income.</p>
+        <ul class="scene-stats">
+          <li>New Jersey&rsquo;s Top Developers</li>
+          <li>Premier Billboards</li>
+          <li>High Visibility</li>
+          <li>Millions of Impressions</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap info-bar">
+    <div class="info-card reveal">
+      <div class="info-item">
+        <span class="icon-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M8 15s5-4.5 5-8.5a5 5 0 00-10 0C3 10.5 8 15 8 15z" stroke="#fff" stroke-width="1.3"/><circle cx="8" cy="6.5" r="1.8" stroke="#fff" stroke-width="1.3"/></svg></span>
+        <div>
+          <h4>Land We&rsquo;re Seeking</h4>
+          <p>High-traffic corridors across New Jersey and Florida</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="icon-circle"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="10" height="10" rx="1.5" stroke="#fff" stroke-width="1.3"/></svg></span>
+        <div>
+          <h4>Development Type</h4>
+          <p>Static &amp; digital billboard structures</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="icon-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M2 6V2h4M14 2h-4M2 10v4h4M14 14h-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div>
+          <h4>Passive Income</h4>
+          <p>Competitive lease payments, paid to you</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="wrap team-wrap reveal">
+      <span class="eyebrow" style="justify-content:center">About Us</span>
+      <h2>The team behind Outdoor Impact</h2>
+      <p class="lede" style="margin:0.8rem auto 0; max-width:62ch;">In order to achieve the greatest level of developmental success, we retain the most prominent law firms and attorneys in New Jersey and Florida. As part of our strategy to enhance success, we employ the most experienced and knowledgeable engineering and design teams. These teams specialize in the billboard approval process and development.</p>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-photo"><img src="images/thomas-lacovara-new.jpg" alt="Thomas Lacovara" style="object-position: center 20%;"></div>
+          <div class="team-info">
+            <h3>Thomas Lacovara</h3>
+            <p class="role">Owner &amp; CFO</p>
+            <div class="team-contact">
+              <span class="row"><span class="label">Phone</span><a href="tel:+16095131980">(609) 513-1980</a></span>
+              <span class="row"><span class="label">Email</span><a href="mailto:tlacfire@gmail.com">tlacfire@gmail.com</a></span>
+            </div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-photo"><img src="images/colt-lacovara-new.jpg" alt="Colt Lacovara" style="object-position: center 20%;"></div>
+          <div class="team-info">
+            <h3>Colt Lacovara</h3>
+            <p class="role">Co-Owner &amp; Senior Property Consultant</p>
+            <div class="team-contact">
+              <span class="row"><span class="label">Phone</span><a href="tel:+16095133340">(609) 513-3340</a></span>
+              <span class="row"><span class="label">Email</span><a href="mailto:colton.lacovara@gmail.com">colton.lacovara@gmail.com</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="call-band reveal">
+        <div class="left">
+          <a href="tel:+16095133340" class="icon-circle" aria-label="Call (609) 513-3340"><svg viewBox="0 0 16 16" fill="none"><path d="M3 2h3l1.5 4-2 1.5a10 10 0 004.5 4.5l1.5-2 4 1.5v3a1 1 0 01-1 1C7.5 15.5.5 8.5.5 3a1 1 0 011-1z" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg></a>
+          <div>
+            <h3>Call <a href="tel:+16095133340">(609) 513-3340</a> to start earning passive income</h3>
+            <p>Turn your property into a steady source of income.</p>
+          </div>
+        </div>
+        <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span class="footer-tag">Premium Locations. Real Passive Income.</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span class="footer-copyright">&copy; 2026 Outdoor Impact. All rights reserved.</span>
+    <a href="https://shoreworksnj.com" target="_blank" rel="noopener" class="footer-credit">Site by <img src="images/shoreworks-logo.png" alt="Shoreworks"></a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 12);
+  });
+
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }));
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
