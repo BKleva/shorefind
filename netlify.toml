@@ -12,6 +12,12 @@
   force = true
 
 [[redirects]]
+  from = "/reviews.html"
+  to = "/reviews"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/reviews"
   to = "https://shoreworks-review-collector.netlify.app/index.html"
   status = 200

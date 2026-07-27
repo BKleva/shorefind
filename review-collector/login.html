@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>if (location.pathname === '/reviews' || location.pathname.indexOf('/reviews/') === 0) document.write('<base href="' + location.origin + '/reviews/">');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Log in — Review Collector</title>
@@ -144,7 +145,7 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
 
   const { data, error } = mode === 'login'
     ? await sb.auth.signInWithPassword({ email, password })
-    : await sb.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/login.html` } });
+    : await sb.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}${window.location.pathname.startsWith('/reviews/') ? '/reviews' : ''}/login.html` } });
 
   authSubmit.disabled = false;
 
