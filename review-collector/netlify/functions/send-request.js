@@ -37,6 +37,8 @@ async function sendEmail(to, subject, html) {
   });
 }
 
+const DEFAULT_PROMPT = 'Thanks for choosing us! Mind sharing a quick word about your experience?';
+
 async function sendSms(to, body) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const auth = process.env.TWILIO_AUTH_TOKEN;
@@ -97,6 +99,7 @@ exports.handler = async function (event) {
     if (!insertRes.ok) { results.push({ customer_id: customer.id, ok: false, error: 'insert failed' }); continue; }
 
     const link = `${siteUrl}/r.html?rid=${token}`;
+    const prompt = business.review_prompt || DEFAULT_PROMPT;
     const sendErrors = [];
 
     if ((channel === 'email' || channel === 'both') && customer.email) {
@@ -109,7 +112,7 @@ exports.handler = async function (event) {
             <h2 style="color:#fff;margin:0;font-size:20px">${business.name}</h2>
           </div>
           <div style="background:#fff;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;padding:24px 28px">
-            <p style="font-size:14px;line-height:1.6">Hi ${customer.name || ''}, thanks for choosing ${business.name}! Mind sharing a quick word about your experience?</p>
+            <p style="font-size:14px;line-height:1.6">Hi ${customer.name || ''}, ${prompt}</p>
             <a href="${link}" style="display:inline-block;margin-top:12px;background:${business.brand_color || '#0D3D54'};color:#fff;padding:11px 24px;border-radius:100px;text-decoration:none;font-size:13px;font-weight:600">Leave feedback</a>
           </div>
         </div>`
@@ -118,7 +121,7 @@ exports.handler = async function (event) {
     }
 
     if ((channel === 'sms' || channel === 'both') && customer.phone) {
-      const r = await sendSms(customer.phone, `${business.name}: thanks for stopping by! Mind sharing a quick word about your experience? ${link}`);
+      const r = await sendSms(customer.phone, `${business.name}: ${prompt} ${link}`);
       if (!r.ok) sendErrors.push('sms');
     }
 

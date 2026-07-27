@@ -60,7 +60,7 @@ async function load() {
     render(`
       ${logoHtml}
       <h1>${escapeHtml(data.business_name)}</h1>
-      <p class="sub">Thanks for choosing us! Mind leaving a quick Google review?</p>
+      <p class="sub">${escapeHtml(data.review_prompt) || 'Thanks for choosing us! Mind leaving a quick Google review?'}</p>
       <button class="single" id="goBtn">Leave us a review</button>
     `);
     document.getElementById('goBtn').onclick = () => submitResponse(null, null);
@@ -70,7 +70,7 @@ async function load() {
   render(`
     ${logoHtml}
     <h1>${escapeHtml(data.business_name)}</h1>
-    <p class="sub">How was your experience?</p>
+    <p class="sub">${escapeHtml(data.review_prompt) || 'How was your experience?'}</p>
     <div class="stars" id="stars">
       ${[1,2,3,4,5].map(n => `<span class="star" data-n="${n}">★</span>`).join('')}
     </div>

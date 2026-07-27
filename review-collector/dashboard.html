@@ -164,6 +164,11 @@
           <div><label>Google Place ID</label><input type="text" id="settingsPlaceId" placeholder="ChIJ..."></div>
         </div>
         <p class="muted" style="font-size:12px;margin:6px 0 0">Find yours with Google's <a href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" rel="noopener">Place ID Finder</a>.</p>
+        <div style="margin-top:16px">
+          <label>Review request message</label>
+          <textarea id="settingsPrompt" placeholder="Thanks for choosing us! Mind sharing a quick word about your experience?"></textarea>
+          <p class="muted" style="font-size:12px;margin:6px 0 0">Shown in the text/email you send, and on the page your customer lands on. Keep it short for SMS.</p>
+        </div>
         <div class="toggle" style="margin-top:16px">
           <input type="checkbox" id="settingsGate" style="width:auto">
           <label style="margin:0">Route low ratings (1-3★) to a private feedback form instead of Google</label>
@@ -198,6 +203,7 @@ async function init() {
   document.getElementById('bizName').textContent = business.name;
   document.getElementById('settingsName').value = business.name;
   document.getElementById('settingsPlaceId').value = business.google_place_id || '';
+  document.getElementById('settingsPrompt').value = business.review_prompt || '';
   document.getElementById('settingsGate').checked = business.gate_enabled;
   applyLogo(business.logo_url);
 
@@ -352,11 +358,12 @@ document.getElementById('settingsForm').addEventListener('submit', async (e) => 
   e.preventDefault();
   const name = document.getElementById('settingsName').value.trim();
   const google_place_id = document.getElementById('settingsPlaceId').value.trim() || null;
+  const review_prompt = document.getElementById('settingsPrompt').value.trim() || null;
   const gate_enabled = document.getElementById('settingsGate').checked;
-  const { error } = await sb.from('businesses').update({ name, google_place_id, gate_enabled }).eq('id', business.id);
+  const { error } = await sb.from('businesses').update({ name, google_place_id, review_prompt, gate_enabled }).eq('id', business.id);
   const settingsMsg = document.getElementById('settingsMsg');
   settingsMsg.innerHTML = error ? `<div class="msg error">${error.message}</div>` : `<div class="msg ok">Saved.</div>`;
-  if (!error) { business.name = name; business.google_place_id = google_place_id; business.gate_enabled = gate_enabled; document.getElementById('bizName').textContent = name; }
+  if (!error) { business.name = name; business.google_place_id = google_place_id; business.review_prompt = review_prompt; business.gate_enabled = gate_enabled; document.getElementById('bizName').textContent = name; }
 });
 
 init();

@@ -12,6 +12,7 @@ create table if not exists businesses (
   gate_enabled boolean not null default true,
   brand_color text default '#0D3D54',
   logo_url text,
+  review_prompt text default 'Thanks for choosing us! Mind sharing a quick word about your experience?',
   created_at timestamptz default now()
 );
 
