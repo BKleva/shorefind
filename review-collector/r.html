@@ -36,6 +36,8 @@ const params = new URLSearchParams(window.location.search);
 const token = params.get('rid');
 const box = document.getElementById('box');
 
+const FN_BASE = window.location.pathname.startsWith('/reviews/') ? '/reviews-api' : '/.netlify/functions';
+
 function render(html) { box.innerHTML = html; }
 
 async function load() {
@@ -43,7 +45,7 @@ async function load() {
 
   let res, data;
   try {
-    res = await fetch(`/.netlify/functions/get-request?rid=${encodeURIComponent(token)}`);
+    res = await fetch(`${FN_BASE}/get-request?rid=${encodeURIComponent(token)}`);
     data = await res.json();
   } catch (e) {
     render(`<h1>Something went wrong</h1><p class="sub">Please try again in a moment.</p>`);
@@ -102,7 +104,7 @@ function selectRating(n) {
 async function submitResponse(rating, comment) {
   render(`<p class="loading">Submitting…</p>`);
   try {
-    const res = await fetch('/.netlify/functions/submit-response', {
+    const res = await fetch(`${FN_BASE}/submit-response`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, rating, comment })

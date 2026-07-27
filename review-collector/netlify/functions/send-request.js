@@ -86,7 +86,7 @@ exports.handler = async function (event) {
   );
   const customers = await custRes.json();
 
-  const siteUrl = process.env.URL || process.env.SITE_URL || '';
+  const siteUrl = process.env.SITE_URL || process.env.URL || '';
   const results = [];
 
   for (const customer of customers) {

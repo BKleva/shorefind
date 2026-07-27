@@ -2,3 +2,23 @@
   for = "/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Proxy the Review Collector app so it lives under this domain at /reviews,
+# while it stays deployed as its own separate Netlify site/functions.
+[[redirects]]
+  from = "/reviews-api/*"
+  to = "https://shoreworks-review-collector.netlify.app/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/reviews"
+  to = "https://shoreworks-review-collector.netlify.app/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/reviews/*"
+  to = "https://shoreworks-review-collector.netlify.app/:splat"
+  status = 200
+  force = true

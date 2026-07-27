@@ -287,7 +287,8 @@ document.getElementById('sendBtn').onclick = async () => {
   sendMsg.innerHTML = `<div class="msg">Sending…</div>`;
 
   const { data: { session } } = await sb.auth.getSession();
-  const res = await fetch('/.netlify/functions/send-request', {
+  const fnBase = window.location.pathname.startsWith('/reviews/') ? '/reviews-api' : '/.netlify/functions';
+  const res = await fetch(`${fnBase}/send-request`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
     body: JSON.stringify({ business_id: business.id, customer_ids: ids, channel: document.getElementById('sendChannel').value })
