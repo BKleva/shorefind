@@ -181,6 +181,17 @@
       </form>
       <div id="settingsMsg"></div>
     </div>
+    <div class="card">
+      <h2>Change password</h2>
+      <form id="passwordForm">
+        <div class="row">
+          <div><label>New password</label><input type="password" id="newPassword" minlength="6" required></div>
+          <div><label>Confirm new password</label><input type="password" id="confirmNewPassword" minlength="6" required></div>
+        </div>
+        <button class="btn" type="submit" style="margin-top:14px">Update password</button>
+      </form>
+      <div id="passwordMsg"></div>
+    </div>
   </div>
 
 </main>
@@ -381,6 +392,24 @@ document.getElementById('settingsForm').addEventListener('submit', async (e) => 
   const settingsMsg = document.getElementById('settingsMsg');
   settingsMsg.innerHTML = error ? `<div class="msg error">${error.message}</div>` : `<div class="msg ok">Saved.</div>`;
   if (!error) { business.name = name; business.google_place_id = google_place_id; business.review_prompt = review_prompt; business.gate_enabled = gate_enabled; document.getElementById('bizName').textContent = name; }
+});
+
+document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+  const passwordMsg = document.getElementById('passwordMsg');
+
+  if (newPassword !== confirmNewPassword) {
+    passwordMsg.innerHTML = `<div class="msg error">Passwords don't match.</div>`;
+    return;
+  }
+
+  const { error } = await sb.auth.updateUser({ password: newPassword });
+  if (error) { passwordMsg.innerHTML = `<div class="msg error">${error.message}</div>`; return; }
+
+  document.getElementById('passwordForm').reset();
+  passwordMsg.innerHTML = `<div class="msg ok">Password updated.</div>`;
 });
 
 init();
