@@ -14,7 +14,7 @@ exports.handler = async function (event) {
   if (!token) return { statusCode: 400, body: JSON.stringify({ error: 'Missing rid' }) };
 
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/review_requests?token=eq.${token}&select=id,status,businesses(name,brand_color,gate_enabled,logo_url,review_prompt)`,
+    `${SUPABASE_URL}/rest/v1/review_requests?token=eq.${token}&select=id,status,sent_at,businesses(name,brand_color,gate_enabled,logo_url,review_prompt)`,
     { headers: svcHeaders() }
   );
   const rows = await res.json();
@@ -31,6 +31,10 @@ exports.handler = async function (event) {
     });
   }
 
+  const hoursSinceSent = (Date.now() - new Date(request.sent_at).getTime()) / 3600000;
+  const isResponded = request.status === 'routed_google' || request.status === 'private_feedback';
+  const alreadyResponded = isResponded && hoursSinceSent > 24;
+
   return {
     statusCode: 200,
     body: JSON.stringify({
@@ -39,7 +43,7 @@ exports.handler = async function (event) {
       gate_enabled: request.businesses.gate_enabled,
       logo_url: request.businesses.logo_url,
       review_prompt: request.businesses.review_prompt,
-      already_responded: request.status === 'routed_google' || request.status === 'private_feedback'
+      already_responded: alreadyResponded
     })
   };
 };
