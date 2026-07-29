@@ -2,6 +2,9 @@
   functions = "netlify/functions"
   publish = "."
 
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "RESEND_FROM"
+
 [[headers]]
   for = "/*"
   [headers.values]
