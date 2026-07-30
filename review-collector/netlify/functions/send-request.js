@@ -105,7 +105,7 @@ exports.handler = async function (event) {
     if ((channel === 'email' || channel === 'both') && customer.email) {
       const r = await sendEmail(
         customer.email,
-        `How was your experience with ${business.name}?`,
+        `How was your experience with ${business.name}? (Ref #${token.slice(0, 6).toUpperCase()})`,
         `<div style="font-family:sans-serif;max-width:480px;color:#1a1a1a">
           <div style="background:${business.brand_color || '#0D3D54'};border-radius:12px 12px 0 0;padding:24px 28px">
             ${business.logo_url ? `<img src="${business.logo_url}" alt="${business.name}" style="max-height:36px;max-width:160px;margin-bottom:10px;display:block">` : ''}
