@@ -311,6 +311,7 @@ document.getElementById('sendBtn').onclick = async () => {
   const { results } = await res.json();
   const okCount = results.filter(r => r.ok).length;
   sendMsg.innerHTML = `<div class="msg ok">Sent to ${okCount} of ${results.length} customer(s).</div>`;
+  document.querySelectorAll('.custCheck:checked').forEach(el => { el.checked = false; });
   await loadRequests();
 };
 
