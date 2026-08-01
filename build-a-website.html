@@ -77,7 +77,8 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .port-desc{font-size:13px;color:#556677;line-height:1.7;flex:1}
 .port-link{display:inline-flex;align-items:center;gap:6px;margin-top:1rem;padding:8px 20px;border-radius:100px;background:#0D3D54;color:#fff;text-decoration:none;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;align-self:flex-start;transition:background .15s}
 .port-link:hover{background:#0a2f40}
-.port-arrow{display:none;position:absolute;top:38%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid #E2DACE;box-shadow:0 4px 18px rgba(13,61,84,.1);align-items:center;justify-content:center;cursor:pointer;color:#0D3D54;font-size:1.15rem;transition:all .18s;z-index:5;padding:0;font-family:inherit;line-height:1}
+.portfolio-carousel{padding:0 36px}
+.port-arrow{display:flex;position:absolute;top:38%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid #E2DACE;box-shadow:0 4px 18px rgba(13,61,84,.1);align-items:center;justify-content:center;cursor:pointer;color:#0D3D54;font-size:1.15rem;transition:all .18s;z-index:5;padding:0;font-family:inherit;line-height:1}
 .port-arrow:hover:not(:disabled){background:#0D3D54;color:#fff;border-color:#0D3D54;box-shadow:0 6px 24px rgba(13,61,84,.18)}
 .port-arrow:disabled{opacity:.2;pointer-events:none}
 .port-arrow-left{left:0}
@@ -99,6 +100,26 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .wv-num{font-family:'Playfair Display',serif;font-size:3.5rem;color:#fff;font-weight:400;line-height:1}
 .wv-num em{font-style:italic;color:#4BB8B8}
 .wv-label{font-size:12px;color:rgba(255,255,255,.6);margin-top:.3rem}
+
+/* REVIEWS TICKER */
+.reviews-band{background:#fff;padding:2.5rem 0;border-top:1px solid #E8E3D8;border-bottom:1px solid #E8E3D8}
+.reviews-band-head{max-width:1100px;margin:0 auto 1.5rem;padding:0 2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.reviews-band-head .section-tag{margin-bottom:0}
+.g-pill{display:inline-flex;align-items:center;gap:5px;background:#F5F0E8;border:1px solid #E2DACE;border-radius:100px;padding:4px 11px;font-size:11px;font-weight:600;color:#445566}
+.rev-ticker-wrap{overflow:hidden;position:relative}
+.rev-ticker-wrap::before,.rev-ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:72px;z-index:2;pointer-events:none}
+.rev-ticker-wrap::before{left:0;background:linear-gradient(90deg,#fff,transparent)}
+.rev-ticker-wrap::after{right:0;background:linear-gradient(-90deg,#fff,transparent)}
+.rev-ticker{display:flex;gap:14px;width:max-content;animation:rev-scroll 48s linear infinite;padding:6px 0}
+.rev-ticker:hover{animation-play-state:paused}
+@keyframes rev-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.rev-card{flex-shrink:0;width:268px;background:#FAFAF8;border:1px solid #E8E3D8;border-radius:14px;padding:1rem 1.15rem}
+.rev-top{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem}
+.rev-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;font-family:'Sora',sans-serif}
+.rev-name{font-size:12px;font-weight:600;color:#0D3D54;line-height:1.3}
+.rev-stars{font-size:11px;color:#F4B942;letter-spacing:1px;margin-top:1px}
+.rev-body{font-size:12px;color:#556677;line-height:1.65}
+.rev-g{display:flex;align-items:center;gap:4px;margin-top:.55rem;font-size:10px;color:#999;font-weight:500}
 
 /* ABOUT */
 .about-section{max-width:1100px;margin:0 auto;padding:4rem 2rem}
@@ -165,7 +186,6 @@ footer p{font-size:12px;color:#888}
   .portfolio-section,.spotlight-section{padding:2.5rem 1.25rem}
   .portfolio-carousel{padding:0 28px}
   .port-card{flex:0 0 100%}
-  .port-arrow{display:flex}
   .headshot-wrap img{width:140px;height:170px}
   .spotlight-inner{grid-template-columns:1fr}
   .spotlight-card{display:none}
@@ -500,6 +520,18 @@ footer p{font-size:12px;color:#888}
           <a href="https://rosesgardengrillnf.com" class="port-link" target="_blank"><i class="ti ti-external-link"></i> Visit Site</a>
         </div>
       </div>
+
+      <!-- Outdoor Impact -->
+      <div class="port-card">
+        <div class="port-preview-wrap"><img class="port-preview" src="assets/portfolio/outdoor-impact-head.png" alt="Outdoor Impact LLC website" style="object-fit:cover;object-position:center"></div>
+        <div class="port-info">
+          <span class="port-tag">Outdoor Advertising · Billboards</span>
+          <div class="port-title">Outdoor Impact LLC</div>
+          <div class="port-url">outdoorimpactllc.com</div>
+          <p class="port-desc">Professional site for a premium billboard development company — gallery of placements, client case studies, contact portal, and a bold brand-first design.</p>
+          <a href="https://outdoorimpactllc.com" class="port-link" target="_blank"><i class="ti ti-external-link"></i> Visit Site</a>
+        </div>
+      </div>
       </div><!-- /portfolio-track -->
       </div><!-- /portfolio-track-wrap -->
       <button class="port-arrow port-arrow-right" id="port-next" onclick="portMove(1)" aria-label="Next"><i class="ti ti-chevron-right"></i></button>
@@ -539,6 +571,59 @@ footer p{font-size:12px;color:#888}
     </div>
   </div>
 </section></div>
+
+<!-- GOOGLE REVIEWS TICKER -->
+<div class="reviews-band">
+  <div class="reviews-band-head">
+    <div class="section-tag" style="margin-bottom:0">What Clients Say</div>
+    <span class="g-pill">
+      <svg width="12" height="12" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg>
+      Google Reviews
+    </span>
+  </div>
+  <div class="rev-ticker-wrap">
+    <div class="rev-ticker" id="rev-ticker">
+
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:#0D3D54">C</div><div><div class="rev-name">Cody P.</div><div class="rev-stars">★★★★★</div></div></div>
+        <div class="rev-body">"Ben had our site live in under a week. Clean, professional, and exactly what we envisioned."</div>
+        <div class="rev-g"><svg width="10" height="10" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg> Google</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:#4BB8B8">R</div><div><div class="rev-name">Rose G.</div><div class="rev-stars">★★★★★</div></div></div>
+        <div class="rev-body">"Shore Works got us online fast and made the whole process painless. Our restaurant looks amazing."</div>
+        <div class="rev-g"><svg width="10" height="10" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg> Google</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:#1A6B8A">M</div><div><div class="rev-name">Mike T.</div><div class="rev-stars">★★★★★</div></div></div>
+        <div class="rev-body">"From first call to launch, everything was smooth. Ben is responsive, talented, and easy to work with."</div>
+        <div class="rev-g"><svg width="10" height="10" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg> Google</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:#2E7D52">J</div><div><div class="rev-name">Jennifer K.</div><div class="rev-stars">★★★★★</div></div></div>
+        <div class="rev-body">"We finally have a website we're proud to share. Customers keep asking who built it — we tell everyone!"</div>
+        <div class="rev-g"><svg width="10" height="10" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg> Google</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:#5B6B7A">T</div><div><div class="rev-name">Tom L.</div><div class="rev-stars">★★★★★</div></div></div>
+        <div class="rev-body">"Affordable, fast, and high quality. Shore Works delivered more than we expected — couldn't be happier."</div>
+        <div class="rev-g"><svg width="10" height="10" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg> Google</div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rev-top"><div class="rev-av" style="background:#8B5E3C">S</div><div><div class="rev-name">Sarah M.</div><div class="rev-stars">★★★★★</div></div></div>
+        <div class="rev-body">"Ben understood our brand immediately. The site launched ahead of schedule and looked incredible."</div>
+        <div class="rev-g"><svg width="10" height="10" viewBox="0 0 48 48" fill="none"><path fill="#4285F4" d="M44 24.5c0-1.4-.1-2.8-.4-4H24v7.6h11.3c-.5 2.6-2 4.8-4.2 6.3v5.2h6.8C41.5 35.8 44 30.5 44 24.5z"/><path fill="#34A853" d="M24 45c5.7 0 10.5-1.9 14-5.1l-6.8-5.2c-1.9 1.3-4.3 2-7.2 2-5.5 0-10.2-3.7-11.9-8.8H5.1v5.4C8.6 41.2 15.8 45 24 45z"/><path fill="#FBBC05" d="M12.1 27.9c-.4-1.3-.7-2.6-.7-4s.3-2.7.7-4v-5.4H5.1A20 20 0 0 0 4 24c0 3.2.8 6.3 2.1 9z"/><path fill="#EA4335" d="M24 11.2c3.1 0 5.9 1.1 8.1 3.1l6-6C34.5 4.8 29.6 3 24 3 15.8 3 8.6 6.8 5.1 12.9l7 5.4c1.7-5.1 6.4-8.7 11.9-7.1z"/></svg> Google</div>
+      </div>
+
+    </div><!-- /rev-ticker -->
+  </div>
+</div>
+<script>(function(){var t=document.getElementById('rev-ticker');if(t)t.innerHTML+=t.innerHTML;})();</script>
 
 <!-- SPOTLIGHT -->
 <section class="spotlight-section">
