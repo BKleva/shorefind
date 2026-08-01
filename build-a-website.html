@@ -159,6 +159,11 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .btn-teal{padding:14px 34px;border-radius:100px;background:#4BB8B8;color:#0D3D54;text-decoration:none;font-size:13px;font-weight:700;font-family:'Sora',sans-serif;display:inline-block;position:relative;z-index:1;transition:background .15s}
 .btn-teal:hover{background:#3aa3a3}
 
+/* BACK TO TOP */
+#back-to-top{position:fixed;bottom:1.5rem;right:1.5rem;width:42px;height:42px;border-radius:50%;background:#0D3D54;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 4px 18px rgba(13,61,84,.25);opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s;pointer-events:none;z-index:900}
+#back-to-top.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+#back-to-top:hover{background:#1A6B8A}
+
 /* FOOTER */
 footer{border-top:1px solid #DDD8CE;padding:2.5rem 2rem;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
 .foot-logo{font-family:'Playfair Display',serif;font-size:18px;color:#0D3D54}
@@ -523,7 +528,7 @@ footer p{font-size:12px;color:#888}
 
       <!-- Outdoor Impact -->
       <div class="port-card">
-        <div class="port-preview-wrap"><img class="port-preview port-preview-logo" src="assets/portfolio/outdoor-impact-logo.png" alt="Outdoor Impact LLC website" style="object-fit:scale-down;padding:2.5rem"></div>
+        <div class="port-preview-wrap"><img class="port-preview port-preview-logo" src="assets/portfolio/outdoor-impact-logo.png" alt="Outdoor Impact LLC website" style="object-fit:scale-down;padding:2.5rem;object-position:center"></div>
         <div class="port-info">
           <span class="port-tag">Outdoor Advertising · Billboards</span>
           <div class="port-title">Outdoor Impact LLC</div>
@@ -662,6 +667,8 @@ footer p{font-size:12px;color:#888}
   </div>
 </section>
 
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><i class="ti ti-chevron-up"></i></button>
+
 <footer>
   <div class="foot-logo">Shore<em>works</em> <span style="font-size:13px;font-weight:400;color:#1A6B8A">Web Solutions</span></div>
   <p>© 2026 Shore Works. All rights reserved.</p>
@@ -710,6 +717,9 @@ footer p{font-size:12px;color:#888}
   if (document.readyState !== 'loading') portUpdate();
   else document.addEventListener('DOMContentLoaded', portUpdate);
 })();
+window.addEventListener('scroll', function(){
+  document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
 </script>
 
 </body>
