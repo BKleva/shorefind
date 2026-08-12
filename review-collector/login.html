@@ -126,6 +126,9 @@ tabSignup.onclick = () => {
   authSubmit.textContent = 'Sign up'; authMsg.innerHTML = '';
   confirmPasswordWrap.classList.remove('hidden'); confirmPasswordInput.required = true;
 };
+if (new URLSearchParams(window.location.search).get('tab') === 'signup') {
+  tabSignup.onclick();
+};
 
 document.getElementById('backToLoginBtn').onclick = () => { showBox('authBox'); };
 
