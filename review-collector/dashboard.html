@@ -54,6 +54,15 @@
   .hidden{display:none}
   .delBtn{background:none;border:none;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;padding:2px 8px;border-radius:6px}
   .delBtn:hover{background:#fbeceb;color:var(--red)}
+  .custTable .custName{font-weight:600}
+  .custTable .custContact{font-size:12px;margin-top:2px}
+  @media (max-width:640px){
+    main{padding:16px}
+    .card{padding:16px}
+    .custTable th, .custTable td{padding:8px 6px}
+    .custTable th:nth-child(2), .custTable td:nth-child(2){padding-left:2px}
+    .custTable .custContact{font-size:11px}
+  }
 </style>
 </head>
 <body>
@@ -71,6 +80,7 @@
   <button class="tab" data-tab="requests">Requests</button>
   <button class="tab" data-tab="feedback">Feedback</button>
   <button class="tab" data-tab="settings">Settings</button>
+  <a class="tab" href="https://www.shoreworksnj.com" style="margin-left:auto;text-decoration:none">← Shore Works Catalog &amp; Web Design</a>
 </nav>
 
 <main>
@@ -112,8 +122,8 @@
           <button class="btn" id="sendBtn" style="white-space:nowrap">Send to selected</button>
         </div>
       </div>
-      <table>
-        <thead><tr><th></th><th>Name</th><th>Email</th><th>Phone</th><th></th></tr></thead>
+      <table class="custTable">
+        <thead><tr><th></th><th>Customer</th><th></th></tr></thead>
         <tbody id="customersTable"></tbody>
       </table>
       <div id="customersEmpty" class="empty">No customers yet — add one above.</div>
@@ -246,9 +256,10 @@ async function loadCustomers() {
   tbody.innerHTML = customers.map(c => `
     <tr>
       <td><input type="checkbox" class="custCheck" value="${c.id}"></td>
-      <td>${esc(c.name)}</td>
-      <td class="muted">${esc(c.email) || '—'}</td>
-      <td class="muted">${esc(c.phone) || '—'}</td>
+      <td>
+        <div class="custName">${esc(c.name)}</div>
+        <div class="muted custContact">${[esc(c.email), esc(c.phone)].filter(Boolean).join(' · ') || '—'}</div>
+      </td>
       <td><button class="delBtn" data-id="${c.id}" title="Delete customer">&times;</button></td>
     </tr>`).join('');
   tbody.querySelectorAll('.delBtn').forEach(btn => {
