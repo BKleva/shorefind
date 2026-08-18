@@ -2181,9 +2181,13 @@ async function init() {
   renderDir();
   if (isAdmin) renderAdmin();
   handleHash();
-  // Auto-open listing form when returning from login
+  // Auto-open listing form when returning from login — only if already authenticated
   const listPlan = sessionStorage.getItem('pending_list') || new URLSearchParams(location.search).get('list');
-  if (listPlan) { sessionStorage.removeItem('pending_list'); startSignup(listPlan); }
+  if (listPlan) {
+    sessionStorage.removeItem('pending_list'); // always clear, even if not logged in
+    const { data: { session: listSession } } = await sb.auth.getSession();
+    if (listSession) startSignup(listPlan);
+  }
 }
 init();
 </script>
