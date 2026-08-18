@@ -51,8 +51,26 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
 .claim-btn{padding:7px 16px;border-radius:100px;background:#4BB8B8;color:#0D3D54;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .claim-btn:hover{background:#3aa3a3}
 .claim-btn.owned{background:#E8F8EE;color:#257A43;border:1.5px solid #B8E8C8;cursor:default}
-.claim-btn.taken{background:#FEE8E8;color:#B83030;border:1.5px solid #F0C8C8;cursor:default}
+.claim-btn.taken{background:#F8F4EE;color:#889;border:1.5px solid #E0DBD0;cursor:default}
+.claim-btn.pending{background:#FFF8E8;color:#8a6520;border:1.5px solid #E8D48A;cursor:default}
+.claim-btn.denied{background:#FEE8E8;color:#B83030;border:1.5px solid #F0C8C8}
 .no-results{font-size:13px;color:#889;padding:.5rem 0;text-align:center}
+
+/* REQUEST MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(8,25,40,.7);z-index:900;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(5px)}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:22px;width:100%;max-width:480px;box-shadow:0 28px 80px rgba(13,61,84,.28);overflow:hidden}
+.modal-hd{padding:1.4rem 1.5rem;border-bottom:1px solid #F0EBE3;display:flex;align-items:center;justify-content:space-between}
+.modal-hd h2{font-family:'Playfair Display',serif;font-size:19px;color:#0D3D54;font-weight:400}
+.modal-x{width:30px;height:30px;border-radius:50%;border:1.5px solid #E0DBD0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#778;font-size:14px;transition:all .15s}
+.modal-x:hover{background:#F5F0E8}
+.modal-bd{padding:1.25rem 1.5rem 1.75rem}
+.modal-sub{font-size:13px;color:#556677;line-height:1.7;margin-bottom:1.1rem}
+.submit-btn{width:100%;padding:12px;border-radius:100px;background:#0D3D54;color:#fff;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s;margin-top:.25rem}
+.submit-btn:hover{background:#0a2f40}
+.submit-btn:disabled{opacity:.45;cursor:not-allowed}
+.modal-err{padding:.6rem 1rem;border-radius:10px;background:#FEE8E8;color:#B83030;font-size:12px;margin-bottom:.9rem;display:none}
+.modal-err.show{display:block}
 
 /* EDIT FORM */
 .edit-form{display:none}
@@ -220,7 +238,7 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
           <h2>Find &amp; Claim Your Listing</h2>
         </div>
         <div class="card-bd">
-          <p style="font-size:13px;color:#556677;margin-bottom:1rem;line-height:1.7">Search for your business by name. Once you find it, click <strong>Claim</strong> to link it to your account so you can manage it.</p>
+          <p style="font-size:13px;color:#556677;margin-bottom:1rem;line-height:1.7">Search for your business by name. Click <strong>Request Ownership</strong> and we'll review and approve it — usually within 24 hours.</p>
           <div class="search-row">
             <input type="text" class="search-input" id="claim-search" placeholder="Search your business name…" onkeydown="if(event.key==='Enter')searchListings()">
             <button class="search-btn" id="claim-btn" onclick="searchListings()">Search</button>
@@ -232,6 +250,25 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
     </div>
   </div>
 
+</div>
+
+<!-- REQUEST OWNERSHIP MODAL -->
+<div class="overlay" id="req-overlay" onclick="if(event.target===this)closeReqModal()">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2>Request Ownership</h2>
+      <button class="modal-x" onclick="closeReqModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-bd">
+      <p class="modal-sub">You're requesting ownership of <strong id="req-biz-name"></strong>. We'll verify and approve it — usually within 24 hours.</p>
+      <div class="modal-err" id="req-err"></div>
+      <div class="fld">
+        <label>Note to admin <span style="font-weight:400;color:#bbb;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <textarea id="req-note" placeholder="e.g. I'm the owner — my name is John Smith, I can be reached at (609) 555-0100…" style="min-height:80px"></textarea>
+      </div>
+      <button class="submit-btn" id="req-submit" onclick="submitOwnershipRequest()">Submit Request</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -308,26 +345,46 @@ async function saveListing() {
   setTimeout(() => ok.classList.remove('show'), 4000);
 }
 
+let pendingRequestId = null; // listing id being requested
+
 async function searchListings() {
   const q = document.getElementById('claim-search').value.trim();
   if (!q) return;
   const btn = document.getElementById('claim-btn');
   btn.disabled = true; btn.textContent = 'Searching…';
-  const { data, error } = await sb.from('listings').select('id,bname,town,county,service,owner_id').ilike('bname', `%${q}%`).limit(8);
+
+  const [{ data, error }, { data: myReqs }] = await Promise.all([
+    sb.from('listings').select('id,bname,town,county,service,owner_id').ilike('bname', `%${q}%`).limit(8),
+    sb.from('ownership_requests').select('listing_id,status').eq('user_id', currentUser.id)
+  ]);
+
   btn.disabled = false; btn.textContent = 'Search';
   const results = document.getElementById('claim-results');
   if (error || !data?.length) {
     results.innerHTML = `<div class="no-results">${error ? 'Search failed: '+esc(error.message) : 'No listings found. Try a different name.'}</div>`;
     return;
   }
+
+  const reqMap = {};
+  (myReqs || []).forEach(r => { reqMap[r.listing_id] = r.status; });
+
   results.innerHTML = data.map(l => {
     const isOwn = l.owner_id === currentUser?.id;
     const isTaken = l.owner_id && l.owner_id !== currentUser?.id;
-    const btnHtml = isOwn
-      ? `<button class="claim-btn owned"><i class="ti ti-circle-check"></i> Yours</button>`
-      : isTaken
-        ? `<button class="claim-btn taken">Claimed</button>`
-        : `<button class="claim-btn" onclick="claimListing(${l.id},this)">Claim</button>`;
+    const reqStatus = reqMap[l.id];
+    let btnHtml;
+    if (isOwn) {
+      btnHtml = `<button class="claim-btn owned"><i class="ti ti-circle-check"></i> Yours</button>`;
+    } else if (reqStatus === 'pending') {
+      btnHtml = `<button class="claim-btn pending"><i class="ti ti-clock"></i> Request pending</button>`;
+    } else if (reqStatus === 'approved') {
+      btnHtml = `<button class="claim-btn owned"><i class="ti ti-circle-check"></i> Approved</button>`;
+    } else if (isTaken) {
+      btnHtml = `<button class="claim-btn taken">Already claimed</button>`;
+    } else {
+      const label = reqStatus === 'denied' ? 'Re-request Ownership' : 'Request Ownership';
+      btnHtml = `<button class="claim-btn" onclick="showRequestForm(${l.id},'${esc(l.bname).replace(/'/g,"\\'")}')"><i class="ti ti-send"></i> ${label}</button>`;
+    }
     return `<div class="result-item">
       <div>
         <div class="result-name">${esc(l.bname)}</div>
@@ -338,16 +395,44 @@ async function searchListings() {
   }).join('');
 }
 
-async function claimListing(id, btn) {
-  btn.disabled = true; btn.textContent = 'Claiming…';
-  const { error } = await sb.from('listings').update({ owner_id: currentUser.id }).eq('id', id);
-  if (error) {
-    btn.disabled = false; btn.textContent = 'Claim';
-    showToast('Could not claim: ' + error.message);
-    return;
-  }
-  showToast('Listing claimed! Loading your dashboard…');
-  setTimeout(() => location.reload(), 1400);
+function showRequestForm(listingId, listingName) {
+  pendingRequestId = listingId;
+  document.getElementById('req-biz-name').textContent = listingName;
+  document.getElementById('req-note').value = '';
+  document.getElementById('req-err').classList.remove('show');
+  document.getElementById('req-overlay').classList.add('open');
+}
+
+function closeReqModal() {
+  document.getElementById('req-overlay').classList.remove('open');
+  pendingRequestId = null;
+}
+
+async function submitOwnershipRequest() {
+  if (!pendingRequestId) return;
+  const note = document.getElementById('req-note').value.trim();
+  const err = document.getElementById('req-err');
+  const btn = document.getElementById('req-submit');
+  err.classList.remove('show');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+
+  const meta = currentUser.user_metadata || {};
+  const { error } = await sb.from('ownership_requests').insert({
+    listing_id: pendingRequestId,
+    listing_name: document.getElementById('req-biz-name').textContent,
+    user_id: currentUser.id,
+    author_name: meta.full_name || currentUser.email.split('@')[0],
+    business_name: meta.business_name || null,
+    note: note || null,
+    status: 'pending'
+  });
+
+  btn.disabled = false; btn.textContent = 'Submit Request';
+  if (error) { err.textContent = 'Could not submit: ' + error.message; err.classList.add('show'); return; }
+
+  closeReqModal();
+  showToast('Request sent! We\'ll review it within 24 hours.');
+  await searchListings(); // refresh button states
 }
 
 async function signOut() {

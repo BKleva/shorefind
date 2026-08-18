@@ -215,6 +215,16 @@ div,p,span,h1,h2,h3,h4,label,li,td,th,a{color:inherit}
 .suc-ico{width:60px;height:60px;border-radius:50%;background:#E4F5ED;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:24px;color:#1A7A4A}
 .suc-wrap h2{font-family:'Playfair Display',serif;font-size:30px;color:#0F1923;margin-bottom:.5rem}
 .suc-wrap p{font-size:13px;color:#3a3a3a;line-height:1.8;margin-bottom:1.75rem}
+.own-req-card{background:#fff;border:1.5px solid #E8E3D8;border-radius:14px;padding:1rem 1.25rem;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.own-req-card.urgent{border-color:#E8D48A;background:#FFFDF0}
+.own-req-biz{font-size:13px;font-weight:700;color:#0D3D54;margin-bottom:3px}
+.own-req-meta{font-size:12px;color:#778;line-height:1.6}
+.own-req-note{font-size:12px;color:#445566;font-style:italic;margin-top:.4rem;padding:.5rem .75rem;background:#F8F4EE;border-radius:8px;border-left:3px solid #E0C878}
+.own-req-actions{display:flex;gap:8px;flex-shrink:0;align-items:center}
+.req-approve{padding:7px 16px;border-radius:100px;background:#2E8D57;color:#fff;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'Sora',sans-serif;transition:background .15s;white-space:nowrap}
+.req-approve:hover{background:#246e43}
+.req-deny{padding:7px 16px;border-radius:100px;background:transparent;color:#B83030;font-size:12px;font-weight:600;border:1.5px solid #E8C0C0;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;white-space:nowrap}
+.req-deny:hover{background:#FEE8E8;border-color:#B83030}
 .adm-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
 .adm-hdr h2{font-family:'Playfair Display',serif;font-size:26px;color:#0F1923}
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.5rem}
@@ -762,6 +772,15 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
       </div>
     </div>
     <div class="info-note"><i class="ti ti-info-circle"></i><span>Only <strong>Active</strong> listings appear in the public directory. Approve pending submissions or toggle visibility here.</span></div>
+
+    <!-- OWNERSHIP REQUESTS -->
+    <div id="own-req-panel" style="display:none;margin-bottom:1.5rem">
+      <div class="tier-hdr" style="margin-bottom:.75rem">
+        <div class="tier-title" style="font-size:15px">Ownership Requests</div>
+        <span id="own-req-badge" class="tbadge tb-feat">0 pending</span>
+      </div>
+      <div id="own-req-list"></div>
+    </div>
     <div class="stats-row">
       <div class="sc"><p class="sc-lbl">Total</p><p class="sc-num o" id="st-total">0</p></div>
       <div class="sc"><p class="sc-lbl">Active</p><p class="sc-num" id="st-active">0</p></div>
@@ -1680,7 +1699,54 @@ async function submitSu() {
 // ============================================================
 // ADMIN
 // ============================================================
+async function loadOwnershipRequests() {
+  const { data } = await sb.from('ownership_requests')
+    .select('*').eq('status','pending').order('created_at',{ascending:false});
+  const panel = document.getElementById('own-req-panel');
+  const list  = document.getElementById('own-req-list');
+  if (!data?.length) { panel.style.display = 'none'; return; }
+  panel.style.display = 'block';
+  document.getElementById('own-req-badge').textContent = data.length + ' pending';
+  list.innerHTML = data.map(r => `
+    <div class="own-req-card urgent">
+      <div style="flex:1;min-width:0">
+        <div class="own-req-biz">${esc(r.listing_name||'Unknown listing')}</div>
+        <div class="own-req-meta">
+          Requested by <strong>${esc(r.author_name)}</strong>${r.business_name?' ('+esc(r.business_name)+')':''}<br>
+          Listing ID: ${r.listing_id} &nbsp;·&nbsp; ${new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+        </div>
+        ${r.note ? `<div class="own-req-note">"${esc(r.note)}"</div>` : ''}
+      </div>
+      <div class="own-req-actions">
+        <button class="req-approve" onclick="approveOwnershipReq(${r.id},this)"><i class="ti ti-check"></i> Approve</button>
+        <button class="req-deny"    onclick="denyOwnershipReq(${r.id},this)">Deny</button>
+      </div>
+    </div>`).join('');
+}
+
+async function approveOwnershipReq(id, btn) {
+  btn.disabled = true; btn.textContent = 'Approving…';
+  const { error } = await sb.rpc('approve_ownership_request', { request_id: id });
+  if (error) { btn.disabled = false; btn.textContent = 'Approve'; alert('Error: ' + error.message); return; }
+  btn.closest('.own-req-card').remove();
+  const remaining = document.querySelectorAll('.own-req-card').length;
+  if (!remaining) document.getElementById('own-req-panel').style.display = 'none';
+  else document.getElementById('own-req-badge').textContent = remaining + ' pending';
+}
+
+async function denyOwnershipReq(id, btn) {
+  if (!confirm('Deny this ownership request?')) return;
+  btn.disabled = true; btn.textContent = 'Denying…';
+  const { error } = await sb.rpc('deny_ownership_request', { request_id: id });
+  if (error) { btn.disabled = false; btn.textContent = 'Deny'; alert('Error: ' + error.message); return; }
+  btn.closest('.own-req-card').remove();
+  const remaining = document.querySelectorAll('.own-req-card').length;
+  if (!remaining) document.getElementById('own-req-panel').style.display = 'none';
+  else document.getElementById('own-req-badge').textContent = remaining + ' pending';
+}
+
 function renderAdmin() {
+  loadOwnershipRequests();
   const tbody = document.getElementById('adm-tbody');
   const empty = document.getElementById('adm-empty');
   tbody.innerHTML = '';
