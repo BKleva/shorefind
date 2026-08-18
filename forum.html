@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community — Shore Works Catalog</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230D3D54'/><text x='8' y='23' font-family='Georgia,serif' font-size='19' fill='white' font-weight='400'>S</text><text x='19' y='23' font-family='Georgia,serif' font-size='16' fill='%234BB8B8' font-style='italic'>w</text></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#EDE5D4;scroll-behavior:smooth}
+body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14px;min-height:100vh}
+
+/* NAV */
+.nav-bar{position:sticky;top:0;z-index:500;background:rgba(13,61,84,.97);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(75,184,184,.2)}
+.nav-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.5rem;gap:10px}
+.nav-logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;text-decoration:none;white-space:nowrap}
+.nav-logo em{color:#4BB8B8;font-style:italic}
+.nav-logo span{font-size:11px;color:rgba(255,255,255,.45);font-family:'Sora',sans-serif;font-weight:500;margin-left:4px}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-link{font-size:12px;color:rgba(255,255,255,.65);text-decoration:none;padding:5px 12px;border-radius:100px;transition:all .15s;border:1px solid transparent;white-space:nowrap}
+.nav-link:hover{color:#fff;border-color:rgba(75,184,184,.3)}
+.nav-btn{font-size:12px;font-weight:600;padding:6px 16px;border-radius:100px;border:1.5px solid rgba(75,184,184,.6);background:transparent;color:#4BB8B8;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;white-space:nowrap;text-decoration:none;display:inline-block}
+.nav-btn:hover{background:#4BB8B8;color:#0D3D54;border-color:#4BB8B8}
+.nav-btn.solid{background:#4BB8B8;color:#0D3D54;border-color:#4BB8B8}
+.nav-btn.solid:hover{background:#3aa3a3}
+.nav-btn.danger{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.55)}
+.nav-btn.danger:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3)}
+.nav-av{width:30px;height:30px;border-radius:50%;background:#4BB8B8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0D3D54;cursor:pointer;flex-shrink:0;text-decoration:none}
+.nav-biz{font-size:12px;color:rgba(255,255,255,.75);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* HERO */
+.hero{background:linear-gradient(145deg,#082737 0%,#0D3D54 55%,#0f4a65 100%);padding:3.25rem 1.5rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(75,184,184,.07);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:350px;height:350px;border-radius:50%;border:1px solid rgba(75,184,184,.05);pointer-events:none}
+.hero-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#4BB8B8;font-weight:700;margin-bottom:.75rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,3.2rem);color:#fff;font-weight:400;line-height:1.1;margin-bottom:.65rem;position:relative;z-index:1}
+.hero h1 em{font-style:italic;color:#4BB8B8}
+.hero p{font-size:13.5px;color:rgba(255,255,255,.6);max-width:440px;margin:0 auto 1.75rem;line-height:1.75;position:relative;z-index:1}
+.hero-post-btn{display:inline-flex;align-items:center;gap:.5rem;padding:12px 26px;border-radius:100px;background:#4BB8B8;color:#0D3D54;font-size:13px;font-weight:700;border:none;cursor:pointer;font-family:'Sora',sans-serif;transition:background .15s;position:relative;z-index:1}
+.hero-post-btn:hover{background:#3aa3a3}
+.hero-post-btn i{font-size:15px}
+
+/* CATEGORY STRIP */
+.cat-bar{background:#fff;border-bottom:2px solid #E8E3D8;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.cat-bar::-webkit-scrollbar{display:none}
+.cat-bar-inner{display:flex;max-width:860px;margin:0 auto;padding:0 1rem}
+.ctab{flex-shrink:0;padding:13px 18px;font-size:12px;font-weight:600;color:#889;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:5px;background:none;border-left:none;border-right:none;border-top:none;font-family:'Sora',sans-serif}
+.ctab:hover{color:#0D3D54}
+.ctab.on{color:#0D3D54;border-bottom-color:#4BB8B8}
+
+/* FEED */
+.feed{max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 5rem}
+
+/* POST CARD */
+.post-card{background:#fff;border-radius:18px;border:1px solid #E8E3D8;overflow:hidden;transition:box-shadow .2s,transform .2s;margin-bottom:14px}
+.post-card:hover{box-shadow:0 6px 28px rgba(13,61,84,.09)}
+.post-body{padding:1.2rem 1.4rem 1rem}
+.post-top{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.85rem}
+.post-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;font-family:'Sora',sans-serif}
+.post-meta{flex:1;min-width:0}
+.post-biz{font-size:13px;font-weight:700;color:#0D3D54;line-height:1.3}
+.post-time{font-size:11px;color:#aaa;margin-top:2px}
+.cat-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;white-space:nowrap}
+.post-title{font-family:'Playfair Display',serif;font-size:17px;color:#0D3D54;margin-bottom:.5rem;line-height:1.35;font-weight:500}
+.post-content{font-size:13px;color:#445566;line-height:1.8;word-break:break-word}
+.post-img-wrap{border-top:1px solid #F0EBE3;overflow:hidden;max-height:380px;display:flex;align-items:center;justify-content:center;background:#F8F4ED}
+.post-img{width:100%;max-height:380px;object-fit:contain;display:block}
+.post-footer{padding:.7rem 1.4rem;border-top:1px solid #F5F1EC;display:flex;align-items:center;gap:1rem}
+.post-like{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#aab;cursor:pointer;background:none;border:none;font-family:'Sora',sans-serif;transition:all .15s;padding:4px 8px;border-radius:8px}
+.post-like:hover{color:#E05555;background:#FFF0F0}
+.post-like.liked{color:#E05555}
+.post-like i{font-size:15px}
+
+/* CATEGORY BADGE COLORS */
+.badge-announcement{background:rgba(75,184,184,.13);color:#1A8A8A}
+.badge-event{background:rgba(100,80,220,.12);color:#5244a8}
+.badge-deal{background:rgba(40,160,80,.12);color:#237a40}
+.badge-closing{background:rgba(220,100,40,.13);color:#b84c1a}
+.badge-photo{background:rgba(26,107,138,.12);color:#155c7a}
+.badge-general{background:rgba(80,100,120,.11);color:#3c5060}
+
+/* EMPTY / LOADING */
+.state-box{text-align:center;padding:4.5rem 2rem;color:#aab}
+.state-box i{font-size:2.75rem;display:block;margin-bottom:1rem;color:#C8D0D8}
+.state-box h3{font-size:15px;font-weight:600;color:#556677;margin-bottom:.4rem}
+.state-box p{font-size:13px;line-height:1.7;color:#889}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{animation:spin .8s linear infinite}
+
+/* NEW POST MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(8,25,40,.7);z-index:900;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(5px)}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:22px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:0 28px 80px rgba(13,61,84,.28)}
+.modal-hd{padding:1.4rem 1.5rem 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.modal-hd h2{font-family:'Playfair Display',serif;font-size:20px;color:#0D3D54;font-weight:400}
+.modal-x{width:32px;height:32px;border-radius:50%;border:1.5px solid #E0DBD0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#778;font-size:15px;transition:all .15s;flex-shrink:0}
+.modal-x:hover{background:#F5F0E8;border-color:#C0BBB0}
+.modal-bd{padding:0 1.5rem 1.75rem}
+.fld{margin-bottom:1rem}
+.fld label{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#778;margin-bottom:.4rem}
+.fld input,.fld select,.fld textarea{width:100%;padding:10px 13px;border-radius:10px;border:1.5px solid #E0DBD0;background:#FDFAF6;font-family:'Sora',sans-serif;font-size:13px;color:#1a1a1a;outline:none;transition:border-color .15s}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:#4BB8B8;background:#fff}
+.fld textarea{resize:vertical;min-height:108px;line-height:1.65}
+.fld select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23778' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}
+.char-ct{font-size:10px;color:#bbb;text-align:right;margin-top:3px}
+.submit-btn{width:100%;padding:13px;border-radius:100px;background:#0D3D54;color:#fff;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s;margin-top:.25rem}
+.submit-btn:hover{background:#0a2f40}
+.submit-btn:disabled{opacity:.45;cursor:not-allowed}
+.modal-err{padding:.6rem 1rem;border-radius:10px;background:#FEE8E8;color:#B83030;font-size:12px;margin-bottom:.9rem;display:none}
+.modal-err.show{display:block}
+
+/* AUTH GATE MODAL */
+.auth-gate{text-align:center;padding:2.5rem 1.75rem 2.25rem}
+.auth-gate i{font-size:2.5rem;color:#4BB8B8;display:block;margin-bottom:1rem}
+.auth-gate h2{font-family:'Playfair Display',serif;font-size:22px;color:#0D3D54;margin-bottom:.5rem}
+.auth-gate p{font-size:13px;color:#556677;line-height:1.7;margin-bottom:1.5rem}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:11px 26px;border-radius:100px;background:#0D3D54;color:#fff;text-decoration:none;font-size:13px;font-weight:700;font-family:'Sora',sans-serif;border:none;cursor:pointer;transition:background .15s;display:inline-block}
+.btn-primary:hover{background:#0a2f40}
+.btn-outline{padding:11px 24px;border-radius:100px;background:transparent;color:#0D3D54;text-decoration:none;font-size:13px;font-weight:600;font-family:'Sora',sans-serif;border:2px solid #D4CFC6;cursor:pointer;transition:all .15s;display:inline-block}
+.btn-outline:hover{border-color:#0D3D54}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);background:#0D3D54;color:#fff;padding:.7rem 1.4rem;border-radius:100px;font-size:13px;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 24px rgba(13,61,84,.3);white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+  .nav-biz{display:none}
+  .hero{padding:2.25rem 1.25rem 2rem}
+  .ctab{padding:11px 14px;font-size:11.5px}
+  .feed{padding:1.1rem 1rem 5rem}
+  .post-body{padding:1rem 1.1rem .85rem}
+  .post-footer{padding:.65rem 1.1rem}
+  .overlay{align-items:flex-end;padding:0}
+  .modal{border-radius:18px 18px 0 0;max-height:88vh;align-self:flex-end}
+}
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Shore<em>works</em><span>Community</span></a>
+    <div class="nav-right" id="nav-auth"></div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Shore Works Network</div>
+  <h1>South Jersey<br><em>Business Community</em></h1>
+  <p>Share announcements, events, deals, and updates with businesses across the Jersey Shore.</p>
+  <button class="hero-post-btn" onclick="showPostModal()"><i class="ti ti-edit"></i> Share Something</button>
+</div>
+
+<div class="cat-bar">
+  <div class="cat-bar-inner" id="cat-bar">
+    <button class="ctab on" data-cat="all" onclick="filterCat('all',this)">All Posts</button>
+    <button class="ctab" data-cat="announcement" onclick="filterCat('announcement',this)">📢 Announcements</button>
+    <button class="ctab" data-cat="event" onclick="filterCat('event',this)">🗓 Events</button>
+    <button class="ctab" data-cat="deal" onclick="filterCat('deal',this)">🏷 Deals</button>
+    <button class="ctab" data-cat="closing" onclick="filterCat('closing',this)">⏸ Closings</button>
+    <button class="ctab" data-cat="photo" onclick="filterCat('photo',this)">📸 Photos</button>
+    <button class="ctab" data-cat="general" onclick="filterCat('general',this)">💬 General</button>
+  </div>
+</div>
+
+<div class="feed">
+  <div id="posts-area"><div class="state-box"><i class="ti ti-loader-2 spinning"></i><p>Loading posts…</p></div></div>
+</div>
+
+<!-- NEW POST MODAL -->
+<div class="overlay" id="post-overlay" onclick="closeOverlay(event,'post-overlay')">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2>Share with the Community</h2>
+      <button class="modal-x" onclick="closeModal('post-overlay')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-bd">
+      <div class="modal-err" id="post-err"></div>
+      <div class="fld">
+        <label>Category</label>
+        <select id="p-cat">
+          <option value="announcement">📢 Announcement</option>
+          <option value="event">🗓 Event</option>
+          <option value="deal">🏷 Deal / Promotion</option>
+          <option value="closing">⏸ Closing / Hours Change</option>
+          <option value="photo">📸 Photo / Gallery</option>
+          <option value="general">💬 General</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Title <span style="font-weight:400;color:#bbb;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="text" id="p-title" placeholder="e.g. Grand Opening This Saturday!">
+      </div>
+      <div class="fld">
+        <label>Message</label>
+        <textarea id="p-content" maxlength="1000" placeholder="What's happening? Share news, details, or any info your community should know…" oninput="document.getElementById('cc').textContent=this.value.length+'/1000'"></textarea>
+        <div class="char-ct" id="cc">0/1000</div>
+      </div>
+      <div class="fld">
+        <label>Photo URL <span style="font-weight:400;color:#bbb;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="url" id="p-img" placeholder="Paste a direct link to an image…">
+      </div>
+      <button class="submit-btn" id="p-submit" onclick="submitPost()">Post to Community</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH GATE MODAL -->
+<div class="overlay" id="auth-overlay" onclick="closeOverlay(event,'auth-overlay')">
+  <div class="modal">
+    <div class="modal-hd" style="margin-bottom:.5rem">
+      <span></span>
+      <button class="modal-x" onclick="closeModal('auth-overlay')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="auth-gate">
+      <i class="ti ti-users"></i>
+      <h2>Join the Community</h2>
+      <p>Create a free Shore Works account to share announcements, events, deals, and updates with South Jersey businesses.</p>
+      <div class="btn-row">
+        <a href="login.html?next=forum.html" class="btn-primary">Sign In / Register</a>
+        <button class="btn-outline" onclick="closeModal('auth-overlay')">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL = 'https://gjhkjtmnpckcpnnnqtbx.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqaGtqdG1ucGNrY3Bubm5xdGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTc2OTMsImV4cCI6MjA5NTU3MzY5M30.iukNPG3C1hvY6WeLrXta898i5OVNN50A48BbfWej4v8';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+const CATS = {
+  announcement: { label: 'Announcement', icon: '📢', cls: 'badge-announcement' },
+  event:        { label: 'Event',         icon: '🗓', cls: 'badge-event' },
+  deal:         { label: 'Deal',          icon: '🏷', cls: 'badge-deal' },
+  closing:      { label: 'Closing',       icon: '⏸', cls: 'badge-closing' },
+  photo:        { label: 'Photo',         icon: '📸', cls: 'badge-photo' },
+  general:      { label: 'General',       icon: '💬', cls: 'badge-general' },
+};
+
+const AV_COLORS = ['#0D3D54','#4BB8B8','#1A6B8A','#2E7D52','#5B6B7A','#7B68EE','#C45C2A','#8B5E3C'];
+function avColor(s) {
+  let h = 0;
+  for (const c of String(s||'?')) h = (h*31 + c.charCodeAt(0)) >>> 0;
+  return AV_COLORS[h % AV_COLORS.length];
+}
+
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - new Date(ts)) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  if (s < 604800) return `${Math.floor(s/86400)}d ago`;
+  return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let allPosts = [];
+let currentCat = 'all';
+let currentUser = null;
+
+function renderPosts(posts) {
+  const area = document.getElementById('posts-area');
+  if (!posts.length) {
+    const label = currentCat === 'all' ? '' : ` in ${CATS[currentCat]?.label||currentCat}`;
+    area.innerHTML = `<div class="state-box"><i class="ti ti-message-off"></i><h3>No posts yet${label}</h3><p>Be the first to share something with the community!</p></div>`;
+    return;
+  }
+  const liked = new Set(JSON.parse(localStorage.getItem('liked_posts')||'[]'));
+  area.innerHTML = posts.map(p => {
+    const cat = CATS[p.category] || CATS.general;
+    const biz = p.business_name || p.author_name || 'Community Member';
+    const isLiked = liked.has(String(p.id));
+    return `<div class="post-card">
+      <div class="post-body">
+        <div class="post-top">
+          <div class="post-av" style="background:${avColor(biz)}">${biz[0].toUpperCase()}</div>
+          <div class="post-meta">
+            <div class="post-biz">${esc(biz)}</div>
+            <div class="post-time">${timeAgo(p.created_at)}</div>
+          </div>
+          <span class="cat-badge ${cat.cls}">${cat.icon} ${cat.label}</span>
+        </div>
+        ${p.title ? `<div class="post-title">${esc(p.title)}</div>` : ''}
+        <div class="post-content">${esc(p.content).replace(/\n/g,'<br>')}</div>
+      </div>
+      ${p.image_url ? `<div class="post-img-wrap"><img class="post-img" src="${esc(p.image_url)}" alt="" loading="lazy" onerror="this.closest('.post-img-wrap').remove()"></div>` : ''}
+      <div class="post-footer">
+        <button class="post-like${isLiked?' liked':''}" onclick="likePost(${p.id},this)">
+          <i class="ti ${isLiked?'ti-heart-filled':'ti-heart'}"></i>
+          <span class="lc">${p.likes||0}</span>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadPosts() {
+  document.getElementById('posts-area').innerHTML = '<div class="state-box"><i class="ti ti-loader-2 spinning"></i><p>Loading posts…</p></div>';
+  const {data, error} = await sb.from('community_posts').select('*').eq('status','active').order('created_at',{ascending:false});
+  if (error) {
+    document.getElementById('posts-area').innerHTML = `<div class="state-box"><i class="ti ti-wifi-off"></i><h3>Couldn't load posts</h3><p>${esc(error.message)}</p></div>`;
+    return;
+  }
+  allPosts = data || [];
+  filterPosts();
+}
+
+function filterPosts() {
+  const posts = currentCat === 'all' ? allPosts : allPosts.filter(p => p.category === currentCat);
+  renderPosts(posts);
+}
+
+function filterCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.ctab').forEach(t => t.classList.toggle('on', t.dataset.cat === cat));
+  filterPosts();
+}
+
+async function likePost(id, btn) {
+  const liked = new Set(JSON.parse(localStorage.getItem('liked_posts')||'[]'));
+  if (liked.has(String(id))) return;
+  const ct = btn.querySelector('.lc');
+  const icon = btn.querySelector('i');
+  const n = parseInt(ct.textContent) + 1;
+  ct.textContent = n;
+  icon.className = 'ti ti-heart-filled';
+  btn.classList.add('liked');
+  liked.add(String(id));
+  localStorage.setItem('liked_posts', JSON.stringify([...liked]));
+  const post = allPosts.find(p => p.id === id);
+  if (post) { post.likes = n; }
+  await sb.rpc('increment_post_likes', { post_id: id }).catch(() =>
+    sb.from('community_posts').update({likes: n}).eq('id', id)
+  );
+}
+
+function showPostModal() {
+  if (!currentUser) { openModal('auth-overlay'); return; }
+  document.getElementById('p-err').classList.remove('show');
+  document.getElementById('p-content').value = '';
+  document.getElementById('p-title').value = '';
+  document.getElementById('p-img').value = '';
+  document.getElementById('cc').textContent = '0/1000';
+  openModal('post-overlay');
+}
+
+async function submitPost() {
+  const content = document.getElementById('p-content').value.trim();
+  const title = document.getElementById('p-title').value.trim();
+  const cat = document.getElementById('p-cat').value;
+  const img = document.getElementById('p-img').value.trim();
+  const err = document.getElementById('p-err');
+  const btn = document.getElementById('p-submit');
+  if (!content) { err.textContent = 'Please write something to share.'; err.classList.add('show'); return; }
+  err.classList.remove('show');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  const meta = currentUser.user_metadata || {};
+  const { error } = await sb.from('community_posts').insert({
+    user_id: currentUser.id,
+    author_name: meta.full_name || currentUser.email.split('@')[0],
+    business_name: meta.business_name || null,
+    category: cat,
+    title: title || null,
+    content,
+    image_url: img || null,
+    likes: 0,
+    status: 'active'
+  });
+  btn.disabled = false; btn.textContent = 'Post to Community';
+  if (error) { err.textContent = 'Could not post: ' + error.message; err.classList.add('show'); return; }
+  closeModal('post-overlay');
+  showToast('Posted! Your update is live.');
+  await loadPosts();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeOverlay(e, id) { if (e.target.id === id) closeModal(id); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function updateNav(user) {
+  currentUser = user;
+  const nav = document.getElementById('nav-auth');
+  if (user) {
+    const meta = user.user_metadata || {};
+    const name = meta.business_name || meta.full_name || user.email.split('@')[0];
+    nav.innerHTML = `
+      <a href="/forum.html" class="nav-link" style="color:#4BB8B8">Community</a>
+      <a href="/index.html" class="nav-link">Directory</a>
+      <span class="nav-biz">${esc(name)}</span>
+      <a href="dashboard.html" class="nav-av" title="My Listing">${esc(name[0].toUpperCase())}</a>
+      <button class="nav-btn danger" onclick="signOut()">Sign Out</button>
+      <button class="nav-btn solid" onclick="showPostModal()">+ Post</button>`;
+  } else {
+    nav.innerHTML = `
+      <a href="/forum.html" class="nav-link" style="color:#4BB8B8">Community</a>
+      <a href="/index.html" class="nav-link">Directory</a>
+      <a href="login.html?next=forum.html" class="nav-btn">Sign In</a>
+      <button class="nav-btn solid" onclick="showPostModal()">+ Post</button>`;
+  }
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  location.reload();
+}
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  updateNav(session?.user || null);
+  sb.auth.onAuthStateChange((_, s) => updateNav(s?.user || null));
+  await loadPosts();
+})();
+</script>
+</body>
+</html>

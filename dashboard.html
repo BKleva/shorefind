@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Listing — Shore Works</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230D3D54'/><text x='8' y='23' font-family='Georgia,serif' font-size='19' fill='white' font-weight='400'>S</text><text x='19' y='23' font-family='Georgia,serif' font-size='16' fill='%234BB8B8' font-style='italic'>w</text></svg>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#EDE5D4}
+body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14px;min-height:100vh}
+
+/* NAV */
+.nav-bar{background:#0D3D54;border-bottom:1px solid rgba(75,184,184,.18)}
+.nav-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.5rem;gap:10px}
+.nav-logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;text-decoration:none}
+.nav-logo em{color:#4BB8B8;font-style:italic}
+.nav-logo span{font-size:11px;color:rgba(255,255,255,.4);font-family:'Sora',sans-serif;font-weight:500;margin-left:4px}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-link{font-size:12px;color:rgba(255,255,255,.6);text-decoration:none;padding:5px 12px;border-radius:100px;transition:all .15s}
+.nav-link:hover{color:#fff}
+.nav-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:100px;border:1.5px solid rgba(75,184,184,.5);background:transparent;color:#4BB8B8;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s}
+.nav-btn:hover{background:#4BB8B8;color:#0D3D54;border-color:#4BB8B8}
+
+/* BODY */
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-hd{margin-bottom:2rem}
+.page-hd h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:#0D3D54;font-weight:400;margin-bottom:.3rem}
+.page-hd p{font-size:13px;color:#667;line-height:1.7}
+
+/* CARDS */
+.card{background:#fff;border-radius:18px;border:1px solid #E8E3D8;overflow:hidden;margin-bottom:1.25rem}
+.card-hd{padding:1.25rem 1.5rem;border-bottom:1px solid #F0EBE3;display:flex;align-items:center;gap:.75rem}
+.card-hd h2{font-size:15px;font-weight:700;color:#0D3D54;flex:1}
+.card-hd i{font-size:18px;color:#4BB8B8}
+.card-bd{padding:1.5rem}
+
+/* SEARCH CLAIM */
+.search-row{display:flex;gap:10px}
+.search-input{flex:1;padding:11px 14px;border-radius:11px;border:1.5px solid #E0DBD0;background:#FDFAF6;font-family:'Sora',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.search-input:focus{border-color:#4BB8B8;background:#fff}
+.search-btn{padding:11px 20px;border-radius:11px;background:#0D3D54;color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap;transition:background .15s}
+.search-btn:hover{background:#0a2f40}
+.search-btn:disabled{opacity:.45;cursor:not-allowed}
+.search-results{margin-top:1rem}
+.result-item{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1rem;border-radius:12px;border:1.5px solid #E8E3D8;background:#FDFAF8;margin-bottom:8px;gap:.75rem;flex-wrap:wrap}
+.result-name{font-size:13px;font-weight:700;color:#0D3D54;flex:1;min-width:0}
+.result-sub{font-size:11px;color:#889;margin-top:2px}
+.claim-btn{padding:7px 16px;border-radius:100px;background:#4BB8B8;color:#0D3D54;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'Sora',sans-serif;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.claim-btn:hover{background:#3aa3a3}
+.claim-btn.owned{background:#E8F8EE;color:#257A43;border:1.5px solid #B8E8C8;cursor:default}
+.claim-btn.taken{background:#FEE8E8;color:#B83030;border:1.5px solid #F0C8C8;cursor:default}
+.no-results{font-size:13px;color:#889;padding:.5rem 0;text-align:center}
+
+/* EDIT FORM */
+.edit-form{display:none}
+.edit-form.show{display:block}
+.fld{margin-bottom:1.1rem}
+.fld label{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#778;margin-bottom:.4rem}
+.fld input,.fld textarea,.fld select{width:100%;padding:10px 13px;border-radius:10px;border:1.5px solid #E0DBD0;background:#FDFAF6;font-family:'Sora',sans-serif;font-size:13px;color:#1a1a1a;outline:none;transition:border-color .15s}
+.fld input:focus,.fld textarea:focus,.fld select:focus{border-color:#4BB8B8;background:#fff}
+.fld textarea{resize:vertical;min-height:90px;line-height:1.65}
+.fld-hint{font-size:11px;color:#bbb;margin-top:3px}
+.fld-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.save-btn{padding:13px 32px;border-radius:100px;background:#0D3D54;color:#fff;font-family:'Sora',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s}
+.save-btn:hover{background:#0a2f40}
+.save-btn:disabled{opacity:.45;cursor:not-allowed}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#889;margin:1.5rem 0 .9rem;padding-bottom:.5rem;border-bottom:1px solid #F0EBE3}
+
+/* CLAIMED BADGE */
+.claimed-badge{display:inline-flex;align-items:center;gap:5px;background:#E8F8EE;color:#257A43;border:1px solid #B8E8C8;border-radius:100px;font-size:11px;font-weight:700;padding:4px 11px}
+.unclaimed-badge{display:inline-flex;align-items:center;gap:5px;background:#F8F4EE;color:#8a6520;border:1px solid #E0C878;border-radius:100px;font-size:11px;font-weight:700;padding:4px 11px}
+
+/* ALERTS */
+.alert{padding:.75rem 1rem;border-radius:10px;font-size:12.5px;margin-bottom:1rem;display:none}
+.alert.show{display:block}
+.alert-err{background:#FEE8E8;color:#B83030}
+.alert-ok{background:#E8F8EE;color:#257A43}
+
+/* LOADING */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{animation:spin .7s linear infinite}
+.loading-wrap{text-align:center;padding:3rem;color:#aab}
+.loading-wrap i{font-size:2rem;display:block;margin-bottom:.75rem}
+
+/* STAT PILLS */
+.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1.25rem}
+.stat{background:#F8F4EE;border:1px solid #E8E3D8;border-radius:12px;padding:.7rem 1rem;flex:1;min-width:120px}
+.stat-val{font-size:18px;font-weight:700;color:#0D3D54}
+.stat-lbl{font-size:11px;color:#889;margin-top:2px}
+
+/* AUTH GATE */
+.auth-gate{text-align:center;padding:4rem 2rem}
+.auth-gate i{font-size:3rem;color:#C8D0D8;display:block;margin-bottom:1rem}
+.auth-gate h2{font-size:18px;font-weight:600;color:#556677;margin-bottom:.4rem}
+.auth-gate p{font-size:13px;color:#889;margin-bottom:1.5rem;line-height:1.7}
+.btn-primary{display:inline-block;padding:11px 26px;border-radius:100px;background:#0D3D54;color:#fff;text-decoration:none;font-size:13px;font-weight:700;font-family:'Sora',sans-serif;transition:background .15s}
+.btn-primary:hover{background:#0a2f40}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120px);background:#0D3D54;color:#fff;padding:.7rem 1.4rem;border-radius:100px;font-size:13px;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 24px rgba(13,61,84,.3);white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+  .wrap{padding:1.5rem 1rem 4rem}
+  .search-row{flex-direction:column}
+  .fld-row{grid-template-columns:1fr}
+  .result-item{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Shore<em>works</em><span>Dashboard</span></a>
+    <div class="nav-right">
+      <a href="forum.html" class="nav-link">Community</a>
+      <a href="/" class="nav-link">Directory</a>
+      <button class="nav-btn" id="signout-btn" onclick="signOut()" style="display:none">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- NOT LOGGED IN -->
+  <div id="gate-view" class="auth-gate" style="display:none">
+    <i class="ti ti-lock"></i>
+    <h2>Sign in to manage your listing</h2>
+    <p>Create a free account to claim your Shore Works listing and keep your hours, contact info, and details up to date.</p>
+    <a href="login.html?next=dashboard.html" class="btn-primary">Sign In / Register</a>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loading-view" class="loading-wrap">
+    <i class="ti ti-loader-2 spinning"></i>
+    <p>Loading your dashboard…</p>
+  </div>
+
+  <!-- MAIN DASHBOARD -->
+  <div id="main-view" style="display:none">
+    <div class="page-hd">
+      <h1>My Listing</h1>
+      <p id="dash-sub">Manage your Shore Works business profile.</p>
+    </div>
+
+    <!-- CLAIMED LISTING SECTION -->
+    <div id="claimed-section" style="display:none">
+      <div class="stat-row" id="stat-row"></div>
+      <div class="card">
+        <div class="card-hd">
+          <i class="ti ti-building-store"></i>
+          <h2 id="owned-biz-name">Your Listing</h2>
+          <span class="claimed-badge"><i class="ti ti-circle-check"></i> Claimed</span>
+        </div>
+        <div class="card-bd">
+          <div class="alert alert-err" id="edit-err"></div>
+          <div class="alert alert-ok" id="edit-ok"></div>
+
+          <div class="section-title">Contact &amp; Hours</div>
+          <div class="fld-row">
+            <div class="fld">
+              <label>Phone</label>
+              <input type="tel" id="e-phone" placeholder="(xxx) xxx-xxxx">
+            </div>
+            <div class="fld">
+              <label>Website</label>
+              <input type="url" id="e-website" placeholder="https://…">
+            </div>
+          </div>
+          <div class="fld">
+            <label>Hours</label>
+            <input type="text" id="e-hours" placeholder="e.g. Mon-Fri: 9am-5pm, Sat: 10am-3pm">
+          </div>
+          <div class="fld">
+            <label>Address</label>
+            <input type="text" id="e-address" placeholder="Street, City, NJ ZIP">
+          </div>
+
+          <div class="section-title">Your Story</div>
+          <div class="fld">
+            <label>Tagline</label>
+            <input type="text" id="e-tagline" placeholder="One-line description of your business" maxlength="120">
+            <div class="fld-hint">Shown under your business name in the directory</div>
+          </div>
+          <div class="fld">
+            <label>Description</label>
+            <textarea id="e-desc" placeholder="Tell customers what makes your business special — services, history, what to expect…"></textarea>
+          </div>
+
+          <div class="section-title">Social Links</div>
+          <div class="fld-row">
+            <div class="fld">
+              <label>Instagram URL</label>
+              <input type="url" id="e-ig" placeholder="https://instagram.com/…">
+            </div>
+            <div class="fld">
+              <label>Facebook URL</label>
+              <input type="url" id="e-fb" placeholder="https://facebook.com/…">
+            </div>
+          </div>
+          <div class="fld">
+            <label>Email</label>
+            <input type="email" id="e-email" placeholder="contact@yourbusiness.com">
+          </div>
+
+          <button class="save-btn" id="save-btn" onclick="saveListing()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLAIM SECTION (no listing yet) -->
+    <div id="claim-section" style="display:none">
+      <div class="card">
+        <div class="card-hd">
+          <i class="ti ti-search"></i>
+          <h2>Find &amp; Claim Your Listing</h2>
+        </div>
+        <div class="card-bd">
+          <p style="font-size:13px;color:#556677;margin-bottom:1rem;line-height:1.7">Search for your business by name. Once you find it, click <strong>Claim</strong> to link it to your account so you can manage it.</p>
+          <div class="search-row">
+            <input type="text" class="search-input" id="claim-search" placeholder="Search your business name…" onkeydown="if(event.key==='Enter')searchListings()">
+            <button class="search-btn" id="claim-btn" onclick="searchListings()">Search</button>
+          </div>
+          <div id="claim-results" class="search-results"></div>
+          <p style="font-size:12px;color:#aab;margin-top:1rem">Can't find your listing? <a href="/" style="color:#1A6B8A;text-decoration:none">Submit your business →</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL = 'https://gjhkjtmnpckcpnnnqtbx.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqaGtqdG1ucGNrY3Bubm5xdGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTc2OTMsImV4cCI6MjA5NTU3MzY5M30.iukNPG3C1hvY6WeLrXta898i5OVNN50A48BbfWej4v8';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+let currentUser = null;
+let ownedListing = null;
+
+function show(id) { document.getElementById(id).style.display = ''; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fillEditForm(listing) {
+  document.getElementById('owned-biz-name').textContent = listing.bname || 'Your Listing';
+  document.getElementById('e-phone').value = listing.phone || '';
+  document.getElementById('e-website').value = listing.website || '';
+  document.getElementById('e-hours').value = listing.hours || '';
+  document.getElementById('e-address').value = listing.address || '';
+  document.getElementById('e-tagline').value = listing.tagline || '';
+  document.getElementById('e-desc').value = listing.description || '';
+  document.getElementById('e-ig').value = listing.instagram || '';
+  document.getElementById('e-fb').value = listing.facebook || '';
+  document.getElementById('e-email').value = listing.email || '';
+
+  const statRow = document.getElementById('stat-row');
+  const plan = listing.plan || 'local';
+  const planLabel = plan === 'spotlight' ? 'Spotlight' : plan === 'featured' ? 'Featured' : 'Local';
+  statRow.innerHTML = `
+    <div class="stat"><div class="stat-val">${esc(planLabel)}</div><div class="stat-lbl">Membership Tier</div></div>
+    <div class="stat"><div class="stat-val">${esc(listing.town||'—')}</div><div class="stat-lbl">Town</div></div>
+    <div class="stat"><div class="stat-val">${esc(listing.service||listing.cat||'—')}</div><div class="stat-lbl">Category</div></div>`;
+}
+
+async function saveListing() {
+  if (!ownedListing) return;
+  const err = document.getElementById('edit-err');
+  const ok = document.getElementById('edit-ok');
+  const btn = document.getElementById('save-btn');
+  err.classList.remove('show'); ok.classList.remove('show');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const updates = {
+    phone: document.getElementById('e-phone').value.trim() || null,
+    website: document.getElementById('e-website').value.trim() || null,
+    hours: document.getElementById('e-hours').value.trim() || null,
+    address: document.getElementById('e-address').value.trim() || null,
+    tagline: document.getElementById('e-tagline').value.trim() || null,
+    description: document.getElementById('e-desc').value.trim() || null,
+    instagram: document.getElementById('e-ig').value.trim() || null,
+    facebook: document.getElementById('e-fb').value.trim() || null,
+    email: document.getElementById('e-email').value.trim() || null,
+  };
+  const { error } = await sb.from('listings').update(updates).eq('id', ownedListing.id);
+  btn.disabled = false; btn.textContent = 'Save Changes';
+  if (error) { err.textContent = 'Could not save: ' + error.message; err.classList.add('show'); return; }
+  Object.assign(ownedListing, updates);
+  ok.textContent = 'Saved! Your listing has been updated.';
+  ok.classList.add('show');
+  showToast('Changes saved!');
+  setTimeout(() => ok.classList.remove('show'), 4000);
+}
+
+async function searchListings() {
+  const q = document.getElementById('claim-search').value.trim();
+  if (!q) return;
+  const btn = document.getElementById('claim-btn');
+  btn.disabled = true; btn.textContent = 'Searching…';
+  const { data, error } = await sb.from('listings').select('id,bname,town,county,service,owner_id').ilike('bname', `%${q}%`).limit(8);
+  btn.disabled = false; btn.textContent = 'Search';
+  const results = document.getElementById('claim-results');
+  if (error || !data?.length) {
+    results.innerHTML = `<div class="no-results">${error ? 'Search failed: '+esc(error.message) : 'No listings found. Try a different name.'}</div>`;
+    return;
+  }
+  results.innerHTML = data.map(l => {
+    const isOwn = l.owner_id === currentUser?.id;
+    const isTaken = l.owner_id && l.owner_id !== currentUser?.id;
+    const btnHtml = isOwn
+      ? `<button class="claim-btn owned"><i class="ti ti-circle-check"></i> Yours</button>`
+      : isTaken
+        ? `<button class="claim-btn taken">Claimed</button>`
+        : `<button class="claim-btn" onclick="claimListing(${l.id},this)">Claim</button>`;
+    return `<div class="result-item">
+      <div>
+        <div class="result-name">${esc(l.bname)}</div>
+        <div class="result-sub">${esc(l.town||'')}${l.county?', '+esc(l.county):''} · ${esc(l.service||'')}</div>
+      </div>
+      ${btnHtml}
+    </div>`;
+  }).join('');
+}
+
+async function claimListing(id, btn) {
+  btn.disabled = true; btn.textContent = 'Claiming…';
+  const { error } = await sb.from('listings').update({ owner_id: currentUser.id }).eq('id', id);
+  if (error) {
+    btn.disabled = false; btn.textContent = 'Claim';
+    showToast('Could not claim: ' + error.message);
+    return;
+  }
+  showToast('Listing claimed! Loading your dashboard…');
+  setTimeout(() => location.reload(), 1400);
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  location.href = 'login.html';
+}
+
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    hide('loading-view');
+    show('gate-view');
+    return;
+  }
+  currentUser = session.user;
+  document.getElementById('signout-btn').style.display = '';
+
+  // Check if user has a claimed listing
+  const { data: listings, error } = await sb.from('listings').select('*').eq('owner_id', currentUser.id).limit(1);
+
+  hide('loading-view');
+  show('main-view');
+
+  if (!error && listings?.length) {
+    ownedListing = listings[0];
+    show('claimed-section');
+    fillEditForm(ownedListing);
+    document.getElementById('dash-sub').textContent = `Managing: ${ownedListing.bname}`;
+  } else {
+    show('claim-section');
+    document.getElementById('dash-sub').textContent = 'Claim your Shore Works listing to start managing it.';
+  }
+}
+
+init();
+</script>
+</body>
+</html>

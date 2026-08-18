@@ -497,9 +497,12 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
       <span class="nb" id="nav-about" onclick="showPage('about')">About</span>
       <span class="nb" id="nav-contact" onclick="showPage('contact')">Contact</span>
       <span class="nb" id="nav-admin" onclick="showPage('admin')" style="display:none">Admin</span>
+      <a href="/forum.html" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Community</a>
       <a href="/build-a-website.html" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Build a Website</a>
       <a href="/reviews" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Get Google Reviews</a>
-      <span class="nb solid" onclick="startSignup('featured')">List Your Business</span>
+      <span class="nb solid" id="nav-cta" onclick="startSignup('featured')">List Your Business</span>
+      <span class="nb" id="nav-signin" onclick="window.location='login.html?next=forum.html'" style="display:none">Sign In</span>
+      <a href="dashboard.html" class="nb" id="nav-account" style="display:none;text-decoration:none;font-weight:600">My Listing</a>
     </div>
   </nav>
   <div id="sticky-search">
@@ -982,6 +985,19 @@ const SUPABASE_URL  = 'https://gjhkjtmnpckcpnnnqtbx.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqaGtqdG1ucGNrY3Bubm5xdGJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTc2OTMsImV4cCI6MjA5NTU3MzY5M30.iukNPG3C1hvY6WeLrXta898i5OVNN50A48BbfWej4v8';
 const ADMIN_EMAIL   = 'bkleva96@gmail.com';
 const sb            = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Auth-aware nav
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  const user = session?.user;
+  const signinEl = document.getElementById('nav-signin');
+  const accountEl = document.getElementById('nav-account');
+  if (user) {
+    if (accountEl) accountEl.style.display = '';
+  } else {
+    if (signinEl) signinEl.style.display = '';
+  }
+})();
 
 // ============================================================
 // CONFIGURATION — edit prices, plan names, and seed businesses here
