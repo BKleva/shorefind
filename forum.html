@@ -220,7 +220,7 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
       <h2>Join the Community</h2>
       <p>Create a free Shore Works account to share announcements, events, deals, and updates with South Jersey businesses.</p>
       <div class="btn-row">
-        <a href="login.html?next=forum.html" class="btn-primary">Sign In / Register</a>
+        <a href="login?next=/forum" class="btn-primary">Sign In / Register</a>
         <button class="btn-outline" onclick="closeModal('auth-overlay')">Maybe Later</button>
       </div>
     </div>
@@ -404,14 +404,14 @@ function updateNav(user) {
       <a href="/forum.html" class="nav-link" style="color:#4BB8B8">Community</a>
       <a href="/index.html" class="nav-link">Directory</a>
       <span class="nav-biz">${esc(name)}</span>
-      <a href="dashboard.html" class="nav-av" title="My Listing">${esc(name[0].toUpperCase())}</a>
+      <a href="/dashboard" class="nav-av" title="My Listing">${esc(name[0].toUpperCase())}</a>
       <button class="nav-btn danger" onclick="signOut()">Sign Out</button>
       <button class="nav-btn solid" onclick="showPostModal()">+ Post</button>`;
   } else {
     nav.innerHTML = `
       <a href="/forum.html" class="nav-link" style="color:#4BB8B8">Community</a>
       <a href="/index.html" class="nav-link">Directory</a>
-      <a href="login.html?next=forum.html" class="nav-btn">Sign In</a>
+      <a href="login?next=/forum" class="nav-btn">Sign In</a>
       <button class="nav-btn solid" onclick="showPostModal()">+ Post</button>`;
   }
 }

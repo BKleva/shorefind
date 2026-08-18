@@ -3,6 +3,22 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Clean URLs — serve .html files at path without extension
+[[redirects]]
+  from = "/login"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/forum"
+  to = "/forum.html"
+  status = 200
+
 # Proxy the Review Collector app so it lives under this domain at /reviews,
 # while it stays deployed as its own separate Netlify site/functions.
 [[redirects]]

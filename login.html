@@ -125,7 +125,7 @@ const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 function getNext() {
-  return new URLSearchParams(location.search).get('next') || 'forum.html';
+  return new URLSearchParams(location.search).get('next') || '/forum';
 }
 
 // If already logged in, redirect immediately

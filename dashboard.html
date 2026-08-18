@@ -135,7 +135,7 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
   <div class="nav-inner">
     <a href="/" class="nav-logo">Shore<em>works</em><span>Dashboard</span></a>
     <div class="nav-right">
-      <a href="forum.html" class="nav-link">Community</a>
+      <a href="/forum" class="nav-link">Community</a>
       <a href="/" class="nav-link">Directory</a>
       <button class="nav-btn" id="signout-btn" onclick="signOut()" style="display:none">Sign Out</button>
     </div>
@@ -149,7 +149,7 @@ body{font-family:'Sora',sans-serif;color:#1a1a1a;background:#EDE5D4;font-size:14
     <i class="ti ti-lock"></i>
     <h2>Sign in to manage your listing</h2>
     <p>Create a free account to claim your Shore Works listing and keep your hours, contact info, and details up to date.</p>
-    <a href="login.html?next=dashboard.html" class="btn-primary">Sign In / Register</a>
+    <a href="/login?next=dashboard.html" class="btn-primary">Sign In / Register</a>
   </div>
 
   <!-- LOADING -->
@@ -437,7 +437,7 @@ async function submitOwnershipRequest() {
 
 async function signOut() {
   await sb.auth.signOut();
-  location.href = 'login.html';
+  location.href = '/login';
 }
 
 async function init() {

@@ -507,12 +507,12 @@ textarea.einput{height:auto;min-height:160px;resize:vertical;line-height:1.6;whi
       <span class="nb" id="nav-about" onclick="showPage('about')">About</span>
       <span class="nb" id="nav-contact" onclick="showPage('contact')">Contact</span>
       <span class="nb" id="nav-admin" onclick="showPage('admin')" style="display:none">Admin</span>
-      <a href="/forum.html" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Community</a>
+      <a href="//forum" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Community</a>
       <a href="/build-a-website.html" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Build a Website</a>
       <a href="/reviews" class="nb" style="text-decoration:none;color:#1A6B8A;border-color:#1A6B8A;font-weight:600">Get Google Reviews</a>
       <span class="nb solid" id="nav-cta" onclick="startSignup('featured')">List Your Business</span>
-      <span class="nb" id="nav-signin" onclick="window.location='login.html?next=forum.html'" style="display:none">Sign In</span>
-      <a href="dashboard.html" class="nb" id="nav-account" style="display:none;text-decoration:none;font-weight:600">My Listing</a>
+      <span class="nb" id="nav-signin" onclick="window.location='/login?next=/forum'" style="display:none">Sign In</span>
+      <a href="/dashboard" class="nb" id="nav-account" style="display:none;text-decoration:none;font-weight:600">My Listing</a>
     </div>
   </nav>
   <div id="sticky-search">
@@ -1571,7 +1571,7 @@ async function startSignup(plan, isAdmin) {
   if (!isAdmin) {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) {
-      window.location.href = 'login.html?next=' + encodeURIComponent('index.html?list=' + plan);
+      window.location.href = '/login?next=' + encodeURIComponent('index.html?list=' + plan);
       return;
     }
   }
