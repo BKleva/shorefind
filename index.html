@@ -1545,8 +1545,18 @@ function switchPlan(plan) {
   updatePlanUI(plan);
 }
 
-function startSignup(plan, isAdmin) {
+async function startSignup(plan, isAdmin) {
   if (plan === 'spotlight' && !isAdmin) { showPage('contact'); return; }
+
+  // Require sign-in before listing (skip for admin panel)
+  if (!isAdmin) {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      window.location.href = 'login.html?next=' + encodeURIComponent('index.html?list=' + plan);
+      return;
+    }
+  }
+
   selPlan = plan; selCat = ''; fromAdmin = isAdmin || false;
   document.querySelectorAll('.cat-opt').forEach(b => b.classList.remove('sel'));
   ['su-bname','su-county','su-town','su-address','su-service','su-logo','su-website','su-instagram','su-facebook','su-tiktok','su-orderurl','su-reserveurl','su-memberurl','su-doordash','su-ubereats','su-toast','su-tags','su-fname','su-lname','su-email','su-phone','su-hours','su-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
@@ -2105,6 +2115,9 @@ async function init() {
   renderDir();
   if (isAdmin) renderAdmin();
   handleHash();
+  // Auto-open listing form when returning from login with ?list= param
+  const listPlan = new URLSearchParams(location.search).get('list');
+  if (listPlan) startSignup(listPlan);
 }
 init();
 </script>
