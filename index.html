@@ -1571,7 +1571,8 @@ async function startSignup(plan, isAdmin) {
   if (!isAdmin) {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) {
-      window.location.href = '/login?next=' + encodeURIComponent('index.html?list=' + plan);
+      sessionStorage.setItem('pending_list', plan);
+      window.location.href = '/login';
       return;
     }
   }
@@ -2181,9 +2182,9 @@ async function init() {
   renderDir();
   if (isAdmin) renderAdmin();
   handleHash();
-  // Auto-open listing form when returning from login with ?list= param
-  const listPlan = new URLSearchParams(location.search).get('list');
-  if (listPlan) startSignup(listPlan);
+  // Auto-open listing form when returning from login
+  const listPlan = sessionStorage.getItem('pending_list') || new URLSearchParams(location.search).get('list');
+  if (listPlan) { sessionStorage.removeItem('pending_list'); startSignup(listPlan); }
 }
 init();
 </script>

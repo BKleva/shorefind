@@ -154,7 +154,7 @@ async function signIn() {
   const { error } = await sb.auth.signInWithPassword({ email, password: pass });
   setLoading('in-btn', false);
   if (error) { err.textContent = error.message; err.classList.add('show'); return; }
-  location.href = getNext();
+  location.href = sessionStorage.getItem('pending_list') ? '/' : getNext();
 }
 
 async function signUp() {
@@ -179,7 +179,7 @@ async function signUp() {
   ok.classList.add('show');
   // If email confirmation disabled in Supabase, sign in immediately
   const { data: { session } } = await sb.auth.getSession();
-  if (session) { setTimeout(() => location.href = getNext(), 1200); }
+  if (session) { setTimeout(() => { location.href = sessionStorage.getItem('pending_list') ? '/' : getNext(); }, 1200); }
 }
 
 async function forgotPw(e) {
