@@ -21,7 +21,7 @@ async function getCallerUserId(accessToken) {
   return user.id || null;
 }
 
-async function sendEmail(to, subject, html) {
+async function sendEmail(to, fromName, subject, html) {
   return fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -29,7 +29,7 @@ async function sendEmail(to, subject, html) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      from: process.env.RESEND_FROM || 'Review Requests <reviews@shoreworksnj.com>',
+      from: `${fromName} <reviews@shoreworksnj.com>`,
       to: [to],
       subject,
       html
@@ -105,6 +105,7 @@ exports.handler = async function (event) {
     if ((channel === 'email' || channel === 'both') && customer.email) {
       const r = await sendEmail(
         customer.email,
+        `${business.name} Review Request`,
         `How was your experience with ${business.name}? (Ref #${token.slice(0, 6).toUpperCase()})`,
         `<div style="font-family:sans-serif;max-width:480px;color:#1a1a1a">
           <div style="background:${business.brand_color || '#0D3D54'};border-radius:12px 12px 0 0;padding:24px 28px">

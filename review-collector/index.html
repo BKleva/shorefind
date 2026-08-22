@@ -21,6 +21,11 @@
   .cta:hover{opacity:.9}
   .cta.secondary{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;margin-left:12px}
   .cta.secondary:hover{background:rgba(255,255,255,.08);opacity:1}
+  .swMenuBtn{background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer}
+  .swMenuPanel{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(13,61,84,.15);padding:6px;min-width:180px;z-index:50;text-align:left}
+  .swMenuPanel.hidden{display:none}
+  .swMenuPanel a{display:block;padding:8px 12px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:13px}
+  .swMenuPanel a:hover{background:var(--cream)}
   main{padding:0 24px}
   .cards{max-width:880px;margin:-60px auto 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;box-shadow:0 12px 30px rgba(13,61,84,.08)}
@@ -37,6 +42,16 @@
 <body>
 <header>
   <div class="wrap">
+    <div style="text-align:right;margin-bottom:24px">
+      <div class="swMenu" style="display:inline-block;position:relative">
+        <button class="swMenuBtn" id="swMenuBtn">Shore Works ▾</button>
+        <div class="swMenuPanel hidden" id="swMenuPanel">
+          <a href="https://www.shoreworksnj.com">Catalog Home</a>
+          <a href="https://www.shoreworksnj.com/build-a-website.html">Build a Website</a>
+          <a href="https://www.shoreworksnj.com/forum">Community</a>
+        </div>
+      </div>
+    </div>
     <p class="eyebrow">Review Collector</p>
     <h1>Turn happy customers into Google reviews — automatically.</h1>
     <p>Text or email your customers a quick "how was your experience?" link. Happy ones get routed straight to your Google review page. Unhappy ones tell you privately, before it becomes a public 1-star.</p>
@@ -56,5 +71,15 @@
   </div>
 </main>
 <footer>Review Collector — <a href="privacy.html" style="color:var(--muted)">Privacy Policy</a> · <a href="terms.html" style="color:var(--muted)">Terms &amp; Conditions</a></footer>
+<script>
+document.getElementById('swMenuBtn').onclick = (e) => {
+  e.stopPropagation();
+  document.getElementById('swMenuPanel').classList.toggle('hidden');
+};
+document.addEventListener('click', (e) => {
+  const menu = document.querySelector('.swMenu');
+  if (menu && !menu.contains(e.target)) document.getElementById('swMenuPanel').classList.add('hidden');
+});
+</script>
 </body>
 </html>

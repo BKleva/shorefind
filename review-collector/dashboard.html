@@ -17,6 +17,12 @@
   header .biz{font-size:16px;font-weight:700}
   header .headerLogo{height:28px;width:28px;border-radius:6px;object-fit:cover;background:#fff}
   header button{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer}
+  .swMenu{position:relative}
+  .swMenuBtn{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer}
+  .swMenuPanel{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(13,61,84,.15);padding:6px;min-width:180px;z-index:50}
+  .swMenuPanel.hidden{display:none}
+  .swMenuPanel a{display:block;padding:8px 12px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:13px}
+  .swMenuPanel a:hover{background:var(--cream)}
   nav{display:flex;gap:4px;background:#fff;border-bottom:1px solid var(--line);padding:0 28px}
   nav button{border:none;background:none;padding:14px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
   nav button.active{color:var(--navy);border-bottom-color:var(--teal)}
@@ -72,7 +78,17 @@
     <img id="headerLogo" class="headerLogo hidden" alt="">
     <div class="biz" id="bizName">Loading…</div>
   </div>
-  <button id="signOutBtn">Sign out</button>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="swMenu">
+      <button class="swMenuBtn" id="swMenuBtn">Shore Works ▾</button>
+      <div class="swMenuPanel hidden" id="swMenuPanel">
+        <a href="https://www.shoreworksnj.com">Catalog Home</a>
+        <a href="https://www.shoreworksnj.com/build-a-website.html">Build a Website</a>
+        <a href="https://www.shoreworksnj.com/forum">Community</a>
+      </div>
+    </div>
+    <button id="signOutBtn">Sign out</button>
+  </div>
 </header>
 
 <nav>
@@ -80,7 +96,6 @@
   <button class="tab" data-tab="requests">Requests</button>
   <button class="tab" data-tab="feedback">Feedback</button>
   <button class="tab" data-tab="settings">Settings</button>
-  <a class="tab" href="https://www.shoreworksnj.com" style="margin-left:auto;text-decoration:none">← Shore Works Catalog &amp; Web Design</a>
 </nav>
 
 <main>
@@ -238,6 +253,15 @@ async function init() {
 }
 
 document.getElementById('signOutBtn').onclick = async () => { await sb.auth.signOut(); window.location.href = 'login.html'; };
+
+document.getElementById('swMenuBtn').onclick = (e) => {
+  e.stopPropagation();
+  document.getElementById('swMenuPanel').classList.toggle('hidden');
+};
+document.addEventListener('click', (e) => {
+  const menu = document.querySelector('.swMenu');
+  if (menu && !menu.contains(e.target)) document.getElementById('swMenuPanel').classList.add('hidden');
+});
 
 document.querySelectorAll('nav .tab').forEach(btn => {
   btn.onclick = () => {
