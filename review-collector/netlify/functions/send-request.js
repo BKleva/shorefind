@@ -42,7 +42,9 @@ const DEFAULT_PROMPT = 'Thanks for choosing us! Mind sharing a quick word about 
 async function sendSms(to, body) {
   const sid = process.env.TWILIO_ACCOUNT_SID;
   const auth = process.env.TWILIO_AUTH_TOKEN;
-  const params = new URLSearchParams({ To: to, From: process.env.TWILIO_FROM_NUMBER, Body: body });
+  const params = process.env.TWILIO_MESSAGING_SERVICE_SID
+    ? new URLSearchParams({ To: to, MessagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID, Body: body })
+    : new URLSearchParams({ To: to, From: process.env.TWILIO_FROM_NUMBER, Body: body });
   return fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
     method: 'POST',
     headers: {
