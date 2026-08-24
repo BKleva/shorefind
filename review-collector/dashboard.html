@@ -107,8 +107,7 @@
       <form id="addCustomerForm">
         <div class="row">
           <div><label>Name</label><input type="text" id="custName" required></div>
-          <div><label>Email</label><input type="email" id="custEmail"></div>
-          <div><label>Phone</label><input type="tel" id="custPhone" placeholder="+15551234567"></div>
+          <div><label>Email</label><input type="email" id="custEmail" required></div>
         </div>
         <button class="btn" type="submit" style="margin-top:14px">Add customer</button>
       </form>
@@ -116,8 +115,8 @@
 
     <div class="card">
       <h2>Bulk import</h2>
-      <label>One per line: name,email,phone</label>
-      <textarea id="bulkText" placeholder="Jane Doe,jane@example.com,+15551234567"></textarea>
+      <label>One per line: name,email</label>
+      <textarea id="bulkText" placeholder="Jane Doe,jane@example.com"></textarea>
       <button class="btn secondary" id="bulkImportBtn" style="margin-top:12px">Import list</button>
       <div id="bulkMsg"></div>
     </div>
@@ -127,11 +126,7 @@
       <div class="row" style="align-items:end;margin-bottom:14px">
         <div>
           <label>Channel</label>
-          <select id="sendChannel">
-            <option value="both">Email + SMS</option>
-            <option value="email">Email only</option>
-            <option value="sms">SMS only</option>
-          </select>
+          <div style="padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;color:var(--muted);background:var(--cream)">Email only</div>
         </div>
         <div style="flex:0">
           <button class="btn" id="sendBtn" style="white-space:nowrap">Send to selected</button>
@@ -196,7 +191,7 @@
         <div style="margin-top:16px">
           <label>Review request message</label>
           <textarea id="settingsPrompt" placeholder="Thanks for choosing us! Mind sharing a quick word about your experience?"></textarea>
-          <p class="muted" style="font-size:12px;margin:6px 0 0">Shown in the text/email you send, and on the page your customer lands on. Keep it short for SMS.</p>
+          <p class="muted" style="font-size:12px;margin:6px 0 0">Shown in the email you send, and on the page your customer lands on.</p>
         </div>
         <div class="toggle" style="margin-top:16px">
           <input type="checkbox" id="settingsGate" style="width:auto">
@@ -282,7 +277,7 @@ async function loadCustomers() {
       <td><input type="checkbox" class="custCheck" value="${c.id}"></td>
       <td>
         <div class="custName">${esc(c.name)}</div>
-        <div class="muted custContact">${[esc(c.email), esc(c.phone)].filter(Boolean).join(' · ') || '—'}</div>
+        <div class="muted custContact">${esc(c.email) || '—'}</div>
       </td>
       <td><button class="delBtn" data-id="${c.id}" title="Delete customer">&times;</button></td>
     </tr>`).join('');
@@ -295,9 +290,8 @@ async function loadCustomers() {
 document.getElementById('addCustomerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('custName').value.trim();
-  const email = document.getElementById('custEmail').value.trim() || null;
-  const phone = document.getElementById('custPhone').value.trim() || null;
-  await sb.from('customers').insert({ business_id: business.id, name, email, phone });
+  const email = document.getElementById('custEmail').value.trim();
+  await sb.from('customers').insert({ business_id: business.id, name, email });
   document.getElementById('addCustomerForm').reset();
   await loadCustomers();
 });
@@ -313,8 +307,8 @@ async function deleteCustomer(id) {
 document.getElementById('bulkImportBtn').onclick = async () => {
   const lines = document.getElementById('bulkText').value.split('\n').map(l => l.trim()).filter(Boolean);
   const rows = lines.map(line => {
-    const [name, email, phone] = line.split(',').map(p => (p || '').trim());
-    return { business_id: business.id, name: name || 'Unnamed', email: email || null, phone: phone || null };
+    const [name, email] = line.split(',').map(p => (p || '').trim());
+    return { business_id: business.id, name: name || 'Unnamed', email: email || null };
   });
   const bulkMsg = document.getElementById('bulkMsg');
   if (!rows.length) { bulkMsg.innerHTML = `<div class="msg error">Paste at least one line first.</div>`; return; }
@@ -338,11 +332,11 @@ document.getElementById('sendBtn').onclick = async () => {
   const res = await fetch(`${fnBase}/send-request`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-    body: JSON.stringify({ business_id: business.id, customer_ids: ids, channel: document.getElementById('sendChannel').value })
+    body: JSON.stringify({ business_id: business.id, customer_ids: ids, channel: 'email' })
   });
   btn.disabled = false;
 
-  if (!res.ok) { sendMsg.innerHTML = `<div class="msg error">Send failed — check your Resend/Twilio setup.</div>`; return; }
+  if (!res.ok) { sendMsg.innerHTML = `<div class="msg error">Send failed — check your Resend setup.</div>`; return; }
   const { results } = await res.json();
   const okCount = results.filter(r => r.ok).length;
   sendMsg.innerHTML = `<div class="msg ok">Sent to ${okCount} of ${results.length} customer(s).</div>`;

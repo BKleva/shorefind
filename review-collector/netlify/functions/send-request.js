@@ -39,22 +39,6 @@ async function sendEmail(to, fromName, subject, html) {
 
 const DEFAULT_PROMPT = 'Thanks for choosing us! Mind sharing a quick word about your experience?';
 
-async function sendSms(to, body) {
-  const sid = process.env.TWILIO_ACCOUNT_SID;
-  const auth = process.env.TWILIO_AUTH_TOKEN;
-  const params = process.env.TWILIO_MESSAGING_SERVICE_SID
-    ? new URLSearchParams({ To: to, MessagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID, Body: body })
-    : new URLSearchParams({ To: to, From: process.env.TWILIO_FROM_NUMBER, Body: body });
-  return fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${sid}:${auth}`).toString('base64')}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: params
-  });
-}
-
 exports.handler = async function (event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -64,11 +48,11 @@ exports.handler = async function (event) {
   try { body = JSON.parse(event.body); }
   catch (e) { return { statusCode: 400, body: 'Invalid JSON' }; }
 
-  const { business_id, customer_ids, channel } = body;
+  const { business_id, customer_ids } = body;
   const accessToken = (event.headers.authorization || '').replace(/^Bearer /i, '');
 
-  if (!business_id || !Array.isArray(customer_ids) || !customer_ids.length || !channel || !accessToken) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing business_id, customer_ids, channel, or auth token' }) };
+  if (!business_id || !Array.isArray(customer_ids) || !customer_ids.length || !accessToken) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Missing business_id, customer_ids, or auth token' }) };
   }
 
   const userId = await getCallerUserId(accessToken);
@@ -96,7 +80,7 @@ exports.handler = async function (event) {
     const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/review_requests`, {
       method: 'POST',
       headers: { ...svcHeaders(), Prefer: 'return=representation' },
-      body: JSON.stringify({ business_id, customer_id: customer.id, token, channel, status: 'sent' })
+      body: JSON.stringify({ business_id, customer_id: customer.id, token, channel: 'email', status: 'sent' })
     });
     if (!insertRes.ok) { results.push({ customer_id: customer.id, ok: false, error: 'insert failed' }); continue; }
 
@@ -104,7 +88,7 @@ exports.handler = async function (event) {
     const prompt = business.review_prompt || DEFAULT_PROMPT;
     const sendErrors = [];
 
-    if ((channel === 'email' || channel === 'both') && customer.email) {
+    if (customer.email) {
       const r = await sendEmail(
         customer.email,
         `${business.name} Review Request`,
@@ -121,11 +105,6 @@ exports.handler = async function (event) {
         </div>`
       );
       if (!r.ok) sendErrors.push('email');
-    }
-
-    if ((channel === 'sms' || channel === 'both') && customer.phone) {
-      const r = await sendSms(customer.phone, `${business.name}: ${prompt} ${link}`);
-      if (!r.ok) sendErrors.push('sms');
     }
 
     results.push({ customer_id: customer.id, ok: sendErrors.length === 0, errors: sendErrors });

@@ -30,7 +30,7 @@ create table if not exists review_requests (
   business_id uuid not null references businesses(id) on delete cascade,
   customer_id uuid references customers(id) on delete set null,
   token text unique not null,
-  channel text not null,               -- 'email' | 'sms' | 'both'
+  channel text not null,               -- 'email'
   status text not null default 'sent', -- sent -> opened -> routed_google | private_feedback
   rating int,
   sent_at timestamptz default now(),
