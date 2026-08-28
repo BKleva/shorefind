@@ -223,7 +223,16 @@ footer p{font-size:12px;color:#888}
     <a href="build-contact.html" class="cta">Contact</a>
   </div>
 </nav></div>
-<script>document.getElementById('main-nav-links').addEventListener('click',function(e){if(e.target.closest('a'))this.classList.remove('open');});</script>
+<script>
+(function(){
+  var nav = document.getElementById('main-nav-links');
+  if (!nav) return;
+  nav.addEventListener('click', function(e) {
+    var t = e.target;
+    while (t && t !== nav) { if (t.tagName === 'A') { nav.classList.remove('open'); return; } t = t.parentElement; }
+  });
+})();
+</script>
 
 <!-- HERO -->
 <section class="hero" id="top">
@@ -729,7 +738,10 @@ footer p{font-size:12px;color:#888}
   else document.addEventListener('DOMContentLoaded', portUpdate);
 })();
 window.addEventListener('scroll', function(){
-  document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+  var btt = document.getElementById('back-to-top');
+  if (!btt) return;
+  if (window.scrollY > 400) btt.classList.add('visible');
+  else btt.classList.remove('visible');
 });
 </script>
 
