@@ -277,11 +277,17 @@
   .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5rem;
+    gap: 3rem 5rem;
     align-items: start;
   }
 
-  .about-text p {
+  .about-heading { grid-column: 1; grid-row: 1; }
+  .about-copy { grid-column: 1; grid-row: 2; }
+  .about-figures { grid-column: 1; grid-row: 3; }
+  .headshot { grid-column: 2; grid-row: 1; }
+  .about-panel { grid-column: 2; grid-row: 2 / span 2; }
+
+  .about-copy p {
     font-size: 1.02rem;
     line-height: 1.85;
     color: var(--charcoal);
@@ -298,10 +304,11 @@
   }
 
   .about-figure .num {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 700;
     font-size: 2.6rem;
     line-height: 1;
+    letter-spacing: -0.5px;
   }
 
   .about-figure .lbl {
@@ -310,12 +317,6 @@
     text-transform: uppercase;
     color: var(--gray);
     margin-top: 0.4rem;
-  }
-
-  .about-side {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
   }
 
   .headshot {
@@ -854,6 +855,15 @@
 
   @media (max-width: 900px) {
     .about-grid, .fitting-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-heading, .about-copy, .about-figures, .headshot, .about-panel {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .about-heading { order: 1; }
+    .headshot { order: 2; margin-top: 1.5rem; }
+    .about-copy { order: 3; margin-top: 1.5rem; }
+    .about-figures { order: 4; }
+    .about-panel { order: 5; }
     .brand-grid { grid-template-columns: repeat(3, 1fr); }
     .footer-inner { grid-template-columns: 1fr 1fr; }
   }
@@ -945,49 +955,45 @@
   <section class="about" id="about">
     <div class="container">
       <div class="about-grid">
-        <div class="about-text">
+        <div class="about-heading">
           <p class="section-label">Our Story</p>
           <div class="title-bar">
             <h2 class="section-title">Four Decades of<br>Dressing Men Well</h2>
             <div class="title-rule"></div>
           </div>
-          <p>Since 1984, Lou Marchiano For Men has been Northfield's destination for men who want to look and feel their best. We're a true full service clothier — not a chain, not a discount rack, but a shop built on knowledge, fit, and personal attention.</p>
-          <p>From suits and tuxedos for the big day to the shirts, shoes, and accessories you reach for every day, we carry pieces chosen with care. Every purchase includes complimentary in-store alterations, because a great garment isn't finished until it fits you exactly right.</p>
-          <div class="about-figures">
-            <div class="about-figure">
-              <div class="num">40+</div>
-              <div class="lbl">Years in Business</div>
-            </div>
-            <div class="about-figure">
-              <div class="num">100%</div>
-              <div class="lbl">Free Alterations</div>
-            </div>
-            <div class="about-figure">
-              <div class="num">1</div>
-              <div class="lbl">Family-Run Shop</div>
-            </div>
+        </div>
+        <div class="headshot">
+          <div class="headshot-placeholder">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+          </div>
+          <div class="headshot-caption">
+            <strong>Lou Marchiano</strong>
+            <span>Owner &amp; Founder</span>
           </div>
         </div>
-        <div class="about-side">
-          <div class="headshot">
-            <div class="headshot-placeholder">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-            </div>
-            <div class="headshot-caption">
-              <strong>Lou Marchiano</strong>
-              <span>Owner &amp; Founder</span>
-            </div>
+        <div class="about-copy">
+          <p>Since 1984, Lou Marchiano For Men has been Northfield's destination for men who want to look and feel their best. We're a true full service clothier — not a chain, not a discount rack, but a shop built on knowledge, fit, and personal attention.</p>
+          <p>From suits and tuxedos for the big day to the shirts, shoes, and accessories you reach for every day, we carry pieces chosen with care. Every purchase includes complimentary in-store alterations, because a great garment isn't finished until it fits you exactly right.</p>
+        </div>
+        <div class="about-figures">
+          <div class="about-figure">
+            <div class="num">40+</div>
+            <div class="lbl">Years in Business</div>
           </div>
-          <div class="about-panel">
-            <h3>Why Shop With Us</h3>
-            <ul>
-              <li>Full service fittings from a knowledgeable staff</li>
-              <li>Complimentary alterations on every purchase</li>
-              <li>Suits &amp; tuxedos for weddings and formal events</li>
-              <li>Everyday essentials — shirts, knits, denim &amp; more</li>
-              <li>Locally owned in Northfield since 1984</li>
-            </ul>
+          <div class="about-figure">
+            <div class="num">1</div>
+            <div class="lbl">Family-Run Shop</div>
           </div>
+        </div>
+        <div class="about-panel">
+          <h3>Why Shop With Us</h3>
+          <ul>
+            <li>Full service fittings from a knowledgeable staff</li>
+            <li>Complimentary alterations on every purchase</li>
+            <li>Suits &amp; tuxedos for weddings and formal events</li>
+            <li>Everyday essentials — shirts, knits, denim &amp; more</li>
+            <li>Locally owned in Northfield since 1984</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -1016,14 +1022,6 @@
         <div class="brand-tile brand-tile-more"><span class="brand-word">&amp; More</span></div>
       </div>
     </div>
-  </section>
-
-  <!-- SERVICE BANNER -->
-  <section class="service-banner" id="services">
-    <p class="section-label">Our Promise</p>
-    <h2>Complimentary Alterations On Every Purchase</h2>
-    <p>Every suit, shirt, and pair of pants we sell is finished to fit you — not the mannequin. Our in-house tailoring is included at no extra charge, every time.</p>
-    <a href="#fitting" class="btn btn-secondary">Book A Fitting</a>
   </section>
 
   <!-- COLLECTIONS / GALLERY -->
@@ -1176,6 +1174,14 @@
         <p>Proudly carried in-store — stop by to see the current selection.</p>
       </div>
     </div>
+  </section>
+
+  <!-- SERVICE BANNER -->
+  <section class="service-banner" id="services">
+    <p class="section-label">Our Promise</p>
+    <h2>Complimentary Alterations On Every Purchase</h2>
+    <p>Every suit, shirt, and pair of pants we sell is finished to fit you — not the mannequin. Our in-house tailoring is included at no extra charge, every time.</p>
+    <a href="#fitting" class="btn btn-secondary">Book A Fitting</a>
   </section>
 
   <!-- BOOK A FITTING -->
