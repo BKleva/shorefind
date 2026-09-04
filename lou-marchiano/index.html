@@ -803,7 +803,16 @@
     .nav-links.open a {
       width: 100%;
       padding: 0.8rem 0;
-      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+    .nav-links.open a::after {
+      content: none;
+      display: none;
+    }
+    .nav-links.open a:active,
+    .nav-links.open a:focus {
+      color: #b3261e;
+      outline: none;
     }
     section { padding: 4rem 1.5rem; }
     .cat-grid { grid-template-columns: repeat(2, 1fr); }
