@@ -404,17 +404,32 @@
   }
 
   /* ── CATEGORIES / BRANDS ── */
-  .categories { background: var(--off-white); }
+  .categories { background: var(--off-white); padding-left: 0; padding-right: 0; }
 
-  .brand-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--black);
-    border: 1px solid var(--black);
+  .categories .container { padding: 0 2rem; }
+
+  .brand-marquee {
+    overflow: hidden;
+    margin-top: 3rem;
+    border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
   }
 
+  .brand-track {
+    display: flex;
+    gap: 1px;
+    background: var(--black);
+    width: max-content;
+    animation: marquee-scroll 38s linear infinite;
+  }
+
+  .brand-marquee:hover .brand-track { animation-play-state: paused; }
+
   .brand-tile {
+    width: 210px;
+    flex-shrink: 0;
     background: var(--white);
     padding: 2.6rem 1.5rem;
     display: flex;
@@ -438,11 +453,6 @@
     letter-spacing: 0.5px;
     color: inherit;
   }
-
-  .brand-tile-more { background: var(--off-white); }
-  .brand-tile-more .brand-word { color: var(--gray); }
-  .brand-tile-more:hover { background: var(--black); }
-  .brand-tile-more:hover .brand-word { color: var(--white); }
 
   /* ── SERVICE BANNER ── */
   .service-banner {
@@ -860,11 +870,11 @@
       grid-row: auto;
     }
     .about-heading { order: 1; }
-    .headshot { order: 2; margin-top: 1.5rem; }
-    .about-copy { order: 3; margin-top: 1.5rem; }
+    .about-heading .title-bar { margin-bottom: 1.2rem; }
+    .headshot { order: 2; margin-top: 0; }
+    .about-copy { order: 3; margin-top: 1rem; }
     .about-figures { order: 4; }
     .about-panel { order: 5; }
-    .brand-grid { grid-template-columns: repeat(3, 1fr); }
     .footer-inner { grid-template-columns: 1fr 1fr; }
   }
 
@@ -907,8 +917,7 @@
       outline: none;
     }
     section { padding: 4rem 1.5rem; }
-    .brand-grid { grid-template-columns: repeat(2, 1fr); }
-    .brand-tile { padding: 1.8rem 1rem; min-height: 90px; }
+    .brand-tile { width: 170px; padding: 1.8rem 1rem; min-height: 90px; }
   }
 
   @media (max-width: 560px) {
@@ -945,7 +954,7 @@
       <h1>LOU MARCHIANO<span>For Men</span></h1>
       <p class="hero-sub">A true full service men's clothing store — suits and tuxedos to shirts, shoes, and everything in between. See the difference that experience makes.</p>
       <div class="hero-btns">
-        <a href="#collections" class="btn btn-primary">Shop Collections</a>
+        <a href="#gallery" class="btn btn-primary">Shop Collections</a>
         <a href="#visit" class="btn btn-secondary">Visit The Store</a>
       </div>
     </div>
@@ -1007,7 +1016,10 @@
         <h2 class="section-title">What We Carry</h2>
         <div class="title-rule"></div>
       </div>
-      <div class="brand-grid">
+    </div>
+
+    <div class="brand-marquee">
+      <div class="brand-track">
         <div class="brand-tile"><span class="brand-word">Robert Graham</span></div>
         <div class="brand-tile"><span class="brand-word">Bugatchi</span></div>
         <div class="brand-tile"><span class="brand-word">Tommy Bahama</span></div>
@@ -1019,7 +1031,19 @@
         <div class="brand-tile"><span class="brand-word">Raffi</span></div>
         <div class="brand-tile"><span class="brand-word">Tallia</span></div>
         <div class="brand-tile"><span class="brand-word">True Grit</span></div>
-        <div class="brand-tile brand-tile-more"><span class="brand-word">&amp; More</span></div>
+
+        <!-- duplicate set for seamless loop -->
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Robert Graham</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Bugatchi</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Tommy Bahama</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Cole Haan</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Johnston &amp; Murphy</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">DL1961</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Joe's Jeans</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Alberto</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Raffi</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">Tallia</span></div>
+        <div class="brand-tile" aria-hidden="true"><span class="brand-word">True Grit</span></div>
       </div>
     </div>
   </section>
